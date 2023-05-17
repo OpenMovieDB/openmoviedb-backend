@@ -1,36 +1,23 @@
-import { ClassSerializerInterceptor, ValidationPipe, VersioningType } from '@nestjs/common';
-import { NestFactory, Reflector } from '@nestjs/core';
+import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { NestFastifyApplication } from '@nestjs/platform-fastify';
-import { setupFastify } from './fastify';
 import { statusAppMessage } from './common/utils/status-app-message.util';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 
 async function bootstrap() {
-  const { PORT } = process.env;
+  const app = await NestFactory.create(AppModule);
 
-  const adapter = setupFastify();
+  app.useGlobalPipes(new ValidationPipe());
 
-  const app = await NestFactory.create<NestFastifyApplication>(
-      AppModule,
-      adapter,
-      {
-        bufferLogs: true,
-      },
-  );
+  const prismaService: PrismaService = app.get(PrismaService);
+  await prismaService.enableShutdownHooks(app);
 
-  app.enableCors({ origin: '*' });
+  const { httpAdapter } = app.get(HttpAdapterHost);
+  app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
-  app.useGlobalPipes(
-      new ValidationPipe({
-        transform: true,
-      }),
-  );
+  app.enableCors();
 
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
-
-
-  await app.listen(PORT || 3000, '0.0.0.0');
-
+  await app.listen(process.env.PORT || 3000);
   await statusAppMessage(app);
 }
 

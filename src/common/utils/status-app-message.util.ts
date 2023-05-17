@@ -1,7 +1,6 @@
-import { NestFastifyApplication } from '@nestjs/platform-fastify';
-import { Logger as NestLogger } from '@nestjs/common';
+import { INestApplication, Logger as NestLogger } from '@nestjs/common';
 
-export const statusAppMessage = async (app: NestFastifyApplication) => {
+export const statusAppMessage = async (app: INestApplication) => {
   const { NODE_ENV } = process.env;
 
   const logger = new NestLogger('Main');
