@@ -1,0 +1,35 @@
+mutation Admin {
+  login(data: { email: "mdwit0r@gmail.com", password: "123456789" }) {
+    ...AuthTokens
+  }
+}
+
+mutation User {
+  login(data: { email: "mdwit0r+1@gmail.com", password: "123456789" }) {
+    ...AuthTokens
+  }
+}
+
+mutation RefreshToken {
+  refreshToken(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNzU5ZGRiMS0wNDBkLTQ2ZGMtYTQ5Yi0yM2JiNzhlY2RkODYiLCJpYXQiOjE2ODQzMzE5MzAsImV4cCI6MTY4NDkzNjczMH0.f8wy5dxEJi9klsESn1U7bfU-NNDV2YTzXDJcJWVpJ_w") {
+    ...TokenData
+  }
+}
+
+fragment UserData on User {
+  id
+  email
+}
+
+fragment AuthTokens on Auth {
+  accessToken
+  refreshToken
+  user {
+    ...UserData
+  }
+}
+
+fragment TokenData on Token {
+  accessToken
+  refreshToken
+}
