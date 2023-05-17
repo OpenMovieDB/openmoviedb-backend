@@ -1,8 +1,10 @@
 import { ValidationPipe } from '@nestjs/common';
 import { AppModule } from './app.module';
-import { statusAppMessage } from './common/utils/status-app-message.util';
 import { HttpAdapterHost, NestFactory } from '@nestjs/core';
 import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
+import { ConfigService } from '@nestjs/config';
+import { CorsConfig, NestConfig } from './common/configs/config.interface';
+import { statusAppMessage } from './common/utils/status-app-message.util';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,10 +17,15 @@ async function bootstrap() {
   const { httpAdapter } = app.get(HttpAdapterHost);
   app.useGlobalFilters(new PrismaClientExceptionFilter(httpAdapter));
 
-  app.enableCors();
+  const configService = app.get(ConfigService);
+  const nestConfig = configService.get<NestConfig>('nest');
+  const corsConfig = configService.get<CorsConfig>('cors');
 
-  await app.listen(process.env.PORT || 3000);
+  if (corsConfig.enabled) {
+    app.enableCors();
+  }
+
+  await app.listen(process.env.PORT || nestConfig.port || 3000);
   await statusAppMessage(app);
 }
-
 bootstrap();
