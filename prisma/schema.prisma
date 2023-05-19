@@ -31,6 +31,7 @@ model User {
   role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  votes     Vote[]
 }
 
 // ====================================================
@@ -89,6 +90,53 @@ model Movie {
   countries   Country[]
   releases    ReleaseDate[]
   seasons     Season[]
+  rating      Rating             @relation(fields: [ratingId], references: [id])
+  ratingId    String             @unique @db.Uuid
+}
+
+// ====================================================
+//                      RATING
+// ====================================================
+
+model Rating {
+  id            String         @id @default(uuid()) @db.Uuid
+  votes         Vote[]
+  vendorRatings VendorRating[]
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  movie         Movie?
+}
+
+model Vote {
+  id        String   @id @default(uuid()) @db.Uuid
+  value     Int      @default(0)
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?  @db.Uuid
+  rating    Rating   @relation(fields: [ratingId], references: [id])
+  ratingId  String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, ratingId])
+}
+
+enum Vendor {
+  KINOPOISK
+  IMDB
+  TMDB
+  ROTTEN_TOMATOES
+}
+
+model VendorRating {
+  id        String   @id @default(uuid()) @db.Uuid
+  vendor    Vendor
+  value     Float    @default(0)
+  rating    Rating   @relation(fields: [ratingId], references: [id])
+  ratingId  String   @db.Uuid
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([vendor, ratingId])
 }
 
 // ====================================================
@@ -113,13 +161,13 @@ model Season {
 model Episode {
   id          String     @id @default(uuid()) @db.Uuid
   image       ImageLink? @relation(fields: [imageLinkId], references: [id])
+  imageLinkId String?    @db.Uuid
   number      Int
   title       String
   season      Season     @relation(fields: [seasonId], references: [id])
   seasonId    String     @db.Uuid
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  imageLinkId String?    @db.Uuid
 }
 
 // ====================================================
@@ -142,10 +190,10 @@ model ReleaseDate {
   countryId String          @db.Uuid
   movie     Movie           @relation(fields: [movieId], references: [id])
   movieId   String          @db.Uuid
+  season    Season?         @relation(fields: [seasonId], references: [id])
+  seasonId  String?         @db.Uuid
   createdAt DateTime        @default(now())
   updatedAt DateTime        @updatedAt
-  Season    Season?         @relation(fields: [seasonId], references: [id])
-  seasonId  String?         @db.Uuid
 }
 
 // ====================================================
@@ -227,10 +275,10 @@ model Seo {
   title       String?
   description String?
   imageLink   ImageLink? @relation(fields: [imageLinkId], references: [id])
+  imageLinkId String?    @db.Uuid
   type        SeoType
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  imageLinkId String?    @db.Uuid
 }
 
 // ====================================================
@@ -279,12 +327,14 @@ model Image {
 }
 
 model ImageAsset {
-  id      String           @id @default(uuid()) @db.Uuid
-  format  ImageAssetFormat
-  width   ImageAssetWidth
-  url     String
-  image   Image            @relation(fields: [imageId], references: [id])
-  imageId String           @db.Uuid
+  id        String           @id @default(uuid()) @db.Uuid
+  format    ImageAssetFormat
+  width     ImageAssetWidth
+  url       String
+  image     Image            @relation(fields: [imageId], references: [id])
+  imageId   String           @db.Uuid
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
 }
 
 model ImageLink {
@@ -295,13 +345,12 @@ model ImageLink {
   movieId   String?   @db.Uuid
   seo       Seo[]
   medias    Media[]
+  episode   Episode[]
+  person    Person[]
+  genre     Genre[]
+  country   Country[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
-  Person    Person[]
-  Genre     Genre[]
-  Country   Country?  @relation(fields: [countryId], references: [id])
-  countryId String?   @db.Uuid
-  Episode   Episode[]
 }
 
 // ====================================================
@@ -335,12 +384,12 @@ model Media {
   id          String       @id @default(uuid()) @db.Uuid
   title       String
   images      ImageLink?   @relation(fields: [imageLinkId], references: [id])
+  imageLinkId String       @db.Uuid
   asset       MediaAsset[]
   source      MediaSource
+  mediaLink   MediaLink?
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  imageLinkId String       @db.Uuid
-  mediaLink   MediaLink?
 }
 
 model MediaAsset {
@@ -350,10 +399,10 @@ model MediaAsset {
   type      MediaType
   source    MediaSource
   format    MediaFormat
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
   media     Media?      @relation(fields: [mediaId], references: [id])
   mediaId   String?     @db.Uuid
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
 }
 
 model MediaLink {
