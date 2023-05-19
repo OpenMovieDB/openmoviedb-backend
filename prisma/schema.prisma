@@ -73,17 +73,17 @@ enum MovieType {
 }
 
 model Movie {
-  id         String       @id @default(uuid()) @db.Uuid
-  slug       String       @unique
+  id         String             @id @default(uuid()) @db.Uuid
+  slug       String             @unique
   type       MovieType
   externalID ExternalID[]
   title      String
   year       Int
-  createdAt  DateTime     @default(now())
-  updatedAt  DateTime     @updatedAt
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
   medias     MediaLink[]
   images     ImageLink[]
-  persons    PersonRole[]
+  persons    FilmographyEntry[]
 }
 
 // ====================================================
@@ -101,25 +101,25 @@ enum PersonRoleType {
 }
 
 model Person {
-  id          String       @id @default(uuid()) @db.Uuid
+  id          String             @id @default(uuid()) @db.Uuid
   externalID  ExternalID[]
   name        String
-  photo       ImageLink?   @relation(fields: [imageLinkId], references: [id])
-  roles       PersonRole[]
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  imageLinkId String?      @db.Uuid
+  images      ImageLink[]
+  filmography FilmographyEntry[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
 }
 
-model PersonRole {
-  id        String         @id @default(uuid()) @db.Uuid
-  role      PersonRoleType
-  person    Person         @relation(fields: [personId], references: [id])
-  personId  String         @db.Uuid
-  movie     Movie          @relation(fields: [movieId], references: [id])
-  movieId   String         @db.Uuid
-  createdAt DateTime       @default(now())
-  updatedAt DateTime       @updatedAt
+model FilmographyEntry {
+  id          String         @id @default(uuid()) @db.Uuid
+  role        PersonRoleType
+  description String?
+  person      Person         @relation(fields: [personId], references: [id])
+  personId    String         @db.Uuid
+  movie       Movie          @relation(fields: [movieId], references: [id])
+  movieId     String         @db.Uuid
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
 }
 
 // ====================================================
