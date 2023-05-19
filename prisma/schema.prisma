@@ -74,26 +74,29 @@ enum MovieType {
 }
 
 model Movie {
-  id          String             @id @default(uuid()) @db.Uuid
-  slug        String             @unique
-  type        MovieType
-  externalID  ExternalID[]
-  title       String
-  description String?
-  year        Int
-  createdAt   DateTime           @default(now())
-  updatedAt   DateTime           @updatedAt
-  medias      MediaLink[]
-  images      ImageLink[]
-  persons     FilmographyEntry[]
-  genres      Genre[]
-  countries   Country[]
-  releases    ReleaseDate[]
-  seasons     Season[]
-  rating      Rating             @relation(fields: [ratingId], references: [id])
-  ratingId    String             @unique @db.Uuid
-  collection  Collection[]
-  seo         Seo[]
+  id            String             @id @default(uuid()) @db.Uuid
+  slug          String             @unique
+  type          MovieType
+  externalID    ExternalID[]
+  pageInfo      PageInfo           @relation(fields: [pageInfoId], references: [id])
+  pageInfoId    String             @db.Uuid
+  title         String
+  originalTitle String?
+  description   String?
+  year          Int
+  createdAt     DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  medias        MediaLink[]
+  images        ImageLink[]
+  persons       FilmographyEntry[]
+  genres        Genre[]
+  countries     Country[]
+  releases      ReleaseDate[]
+  seasons       Season[]
+  rating        Rating             @relation(fields: [ratingId], references: [id])
+  ratingId      String             @unique @db.Uuid
+  collection    Collection[]
+  slides        Slide[]
 }
 
 // ====================================================
@@ -203,12 +206,14 @@ model ReleaseDate {
 // ====================================================
 
 model Genre {
-  id        String      @id @default(uuid()) @db.Uuid
-  title     String
-  images    ImageLink[]
-  movies    Movie[]
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id         String      @id @default(uuid()) @db.Uuid
+  pageInfo   PageInfo    @relation(fields: [pageInfoId], references: [id])
+  pageInfoId String      @db.Uuid
+  title      String
+  images     ImageLink[]
+  movies     Movie[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 // ====================================================
@@ -217,6 +222,8 @@ model Genre {
 
 model Country {
   id           String        @id @default(uuid()) @db.Uuid
+  pageInfo     PageInfo      @relation(fields: [pageInfoId], references: [id])
+  pageInfoId   String        @db.Uuid
   title        String
   images       ImageLink[]
   movies       Movie[]
@@ -262,6 +269,24 @@ model FilmographyEntry {
 }
 
 // ====================================================
+//                       PAGE_INFO
+// ====================================================
+
+model PageInfo {
+  id          String       @id @default(uuid()) @db.Uuid
+  title       String
+  description String
+  seo         Seo[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  Movie       Movie[]
+  Collection  Collection[]
+  Page        Page[]
+  Genre       Genre[]
+  Country     Country[]
+}
+
+// ====================================================
 //                      SEO
 // ====================================================
 
@@ -273,18 +298,16 @@ enum SeoType {
 }
 
 model Seo {
-  id           String      @id @default(uuid()) @db.Uuid
-  title        String?
-  description  String?
-  imageLink    ImageLink?  @relation(fields: [imageLinkId], references: [id])
-  imageLinkId  String?     @db.Uuid
-  type         SeoType
-  collection   Collection? @relation(fields: [collectionId], references: [id])
-  collectionId String?     @db.Uuid
-  movie        Movie?      @relation(fields: [movieId], references: [id])
-  movieId      String?     @db.Uuid
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
+  id          String     @id @default(uuid()) @db.Uuid
+  title       String?
+  description String?
+  imageLink   ImageLink? @relation(fields: [imageLinkId], references: [id])
+  imageLinkId String?    @db.Uuid
+  type        SeoType
+  pageInfo    PageInfo?  @relation(fields: [pageInfoId], references: [id])
+  pageInfoId  String?    @db.Uuid
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }
 
 // ====================================================
@@ -357,8 +380,11 @@ model ImageLink {
   country      Country[]
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
-  Collection   Collection? @relation(fields: [collectionId], references: [id])
+  collection   Collection? @relation(fields: [collectionId], references: [id])
   collectionId String?     @db.Uuid
+  block        Block[]
+  slide        Slide?      @relation(fields: [slideId], references: [id])
+  slideId      String?     @db.Uuid
 }
 
 // ====================================================
@@ -429,11 +455,85 @@ model MediaLink {
 // ====================================================
 
 model Collection {
-  id        String      @id @default(uuid()) @db.Uuid
-  images    ImageLink[]
-  seo       Seo[]
-  title     String
-  movies    Movie[]
-  createdAt DateTime    @default(now())
-  updatedAt DateTime    @updatedAt
+  id         String      @id @default(uuid()) @db.Uuid
+  images     ImageLink[]
+  pageInfo   PageInfo    @relation(fields: [pageInfoId], references: [id])
+  pageInfoId String      @db.Uuid
+  title      String
+  movies     Movie[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
+  block      Block?      @relation(fields: [blockId], references: [id])
+  blockId    String?     @db.Uuid
+}
+
+// ====================================================
+//                      PAGE
+// ====================================================
+
+model Page {
+  id          String   @id @default(uuid()) @db.Uuid
+  slug        String   @unique
+  title       String
+  pageInfo    PageInfo @relation(fields: [pageInfoId], references: [id])
+  pageInfoId  String   @db.Uuid
+  blocks      Block[]
+  isPublished Boolean
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ====================================================
+//                      BLOCK
+// ====================================================
+
+enum BlockType {
+  TEXT
+  IMAGE
+  VIDEO
+  MOVIE_COLLECTION
+  SLIDER
+}
+
+model Block {
+  id          String       @id @default(uuid()) @db.Uuid
+  blockType   BlockType
+  title       String
+  content     String
+  order       Int
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  collection  Collection[]
+  slider      Slider[]
+  imageLink   ImageLink?   @relation(fields: [imageLinkId], references: [id])
+  imageLinkId String?      @db.Uuid
+  page        Page?        @relation(fields: [pageId], references: [id])
+  pageId      String?      @db.Uuid
+}
+
+// ====================================================
+//                      SLIDER
+// ====================================================
+
+model Slider {
+  id        String   @id @default(uuid()) @db.Uuid
+  slides    Slide[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  block     Block?   @relation(fields: [blockId], references: [id])
+  blockId   String?  @db.Uuid
+}
+
+model Slide {
+  id          String      @id @default(uuid()) @db.Uuid
+  title       String
+  position    Int
+  description String
+  images      ImageLink[]
+  movie       Movie       @relation(fields: [movieId], references: [id])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  slider      Slider?     @relation(fields: [sliderId], references: [id])
+  sliderId    String?     @db.Uuid
+  movieId     String      @db.Uuid
 }
