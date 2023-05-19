@@ -73,17 +73,49 @@ enum MovieType {
 }
 
 model Movie {
-  id         String             @id @default(uuid()) @db.Uuid
-  slug       String             @unique
-  type       MovieType
-  externalID ExternalID[]
-  title      String
-  year       Int
-  createdAt  DateTime           @default(now())
-  updatedAt  DateTime           @updatedAt
-  medias     MediaLink[]
-  images     ImageLink[]
-  persons    FilmographyEntry[]
+  id          String             @id @default(uuid()) @db.Uuid
+  slug        String             @unique
+  type        MovieType
+  externalID  ExternalID[]
+  title       String
+  description String?
+  year        Int
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+  medias      MediaLink[]
+  images      ImageLink[]
+  persons     FilmographyEntry[]
+  genres      Genre[]
+  countries   Country[]
+  releases    ReleaseDate[]
+  seasons     Season[]
+}
+
+// ====================================================
+//                       GENRE
+// ====================================================
+
+model Genre {
+  id        String      @id @default(uuid()) @db.Uuid
+  title     String
+  images    ImageLink[]
+  movies    Movie[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+// ====================================================
+//                       COUNTRY
+// ====================================================
+
+model Country {
+  id           String        @id @default(uuid()) @db.Uuid
+  title        String
+  images       ImageLink[]
+  movies       Movie[]
+  releaseDates ReleaseDate[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
 }
 
 // ====================================================
@@ -199,16 +231,20 @@ model ImageAsset {
 }
 
 model ImageLink {
-  id        String   @id @default(uuid()) @db.Uuid
-  image     Image    @relation(fields: [imageId], references: [id])
-  imageId   String   @unique @db.Uuid
-  movie     Movie?   @relation(fields: [movieId], references: [id])
-  movieId   String?  @db.Uuid
+  id        String    @id @default(uuid()) @db.Uuid
+  image     Image     @relation(fields: [imageId], references: [id])
+  imageId   String    @unique @db.Uuid
+  movie     Movie?    @relation(fields: [movieId], references: [id])
+  movieId   String?   @db.Uuid
   seo       Seo[]
   medias    Media[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
   Person    Person[]
+  Genre     Genre[]
+  Country   Country?  @relation(fields: [countryId], references: [id])
+  countryId String?   @db.Uuid
+  Episode   Episode[]
 }
 
 // ====================================================
