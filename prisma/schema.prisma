@@ -29,9 +29,9 @@ model User {
   password  String
   name      String?
   role      Role     @default(USER)
+  votes     Vote[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  votes     Vote[]
 }
 
 // ====================================================
@@ -92,6 +92,8 @@ model Movie {
   seasons     Season[]
   rating      Rating             @relation(fields: [ratingId], references: [id])
   ratingId    String             @unique @db.Uuid
+  collection  Collection[]
+  seo         Seo[]
 }
 
 // ====================================================
@@ -271,14 +273,18 @@ enum SeoType {
 }
 
 model Seo {
-  id          String     @id @default(uuid()) @db.Uuid
-  title       String?
-  description String?
-  imageLink   ImageLink? @relation(fields: [imageLinkId], references: [id])
-  imageLinkId String?    @db.Uuid
-  type        SeoType
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id           String      @id @default(uuid()) @db.Uuid
+  title        String?
+  description  String?
+  imageLink    ImageLink?  @relation(fields: [imageLinkId], references: [id])
+  imageLinkId  String?     @db.Uuid
+  type         SeoType
+  collection   Collection? @relation(fields: [collectionId], references: [id])
+  collectionId String?     @db.Uuid
+  movie        Movie?      @relation(fields: [movieId], references: [id])
+  movieId      String?     @db.Uuid
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
 }
 
 // ====================================================
@@ -414,4 +420,17 @@ model MediaLink {
   movieId   String?   @db.Uuid
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+}
+
+// ====================================================
+//                      COLLECTION
+// ====================================================
+
+model Collection {
+  id        String   @id @default(uuid()) @db.Uuid
+  seo       Seo[]
+  title     String
+  movies    Movie[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
