@@ -44,11 +44,19 @@ enum ExternalIDSource {
   KINOPOISK
 }
 
+enum ExternalIDType {
+  MOVIE
+  PERSON
+}
+
 model ExternalID {
   source    ExternalIDSource
+  type      ExternalIDType
   value     String
-  movieId   String           @db.Uuid
-  movie     Movie            @relation(fields: [movieId], references: [id])
+  movieId   String?          @db.Uuid
+  movie     Movie?           @relation(fields: [movieId], references: [id])
+  person    Person?          @relation(fields: [personId], references: [id])
+  personId  String?          @db.Uuid
   createdAt DateTime         @default(now())
   updatedAt DateTime         @updatedAt
 
@@ -75,6 +83,43 @@ model Movie {
   updatedAt  DateTime     @updatedAt
   medias     MediaLink[]
   images     ImageLink[]
+  persons    PersonRole[]
+}
+
+// ====================================================
+//                       PERSON
+// ====================================================
+
+enum PersonRoleType {
+  ACTOR
+  DIRECTOR
+  WRITER
+  PRODUCER
+  COMPOSER
+  CINEMATOGRAPHER
+  EDITOR
+}
+
+model Person {
+  id          String       @id @default(uuid()) @db.Uuid
+  externalID  ExternalID[]
+  name        String
+  photo       ImageLink?   @relation(fields: [imageLinkId], references: [id])
+  roles       PersonRole[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  imageLinkId String?      @db.Uuid
+}
+
+model PersonRole {
+  id        String         @id @default(uuid()) @db.Uuid
+  role      PersonRoleType
+  person    Person         @relation(fields: [personId], references: [id])
+  personId  String         @db.Uuid
+  movie     Movie          @relation(fields: [movieId], references: [id])
+  movieId   String         @db.Uuid
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
 }
 
 // ====================================================
@@ -163,6 +208,7 @@ model ImageLink {
   medias    Media[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  Person    Person[]
 }
 
 // ====================================================
@@ -197,7 +243,6 @@ model Media {
   title       String
   images      ImageLink?   @relation(fields: [imageLinkId], references: [id])
   asset       MediaAsset[]
-  type        MediaType
   source      MediaSource
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -219,11 +264,12 @@ model MediaAsset {
 }
 
 model MediaLink {
-  id        String   @id @default(uuid()) @db.Uuid
-  media     Media    @relation(fields: [mediaId], references: [id])
-  mediaId   String   @unique @db.Uuid
-  movie     Movie?   @relation(fields: [movieId], references: [id])
-  movieId   String?  @db.Uuid
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id        String    @id @default(uuid()) @db.Uuid
+  type      MediaType
+  media     Media     @relation(fields: [mediaId], references: [id])
+  mediaId   String    @unique @db.Uuid
+  movie     Movie?    @relation(fields: [movieId], references: [id])
+  movieId   String?   @db.Uuid
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
