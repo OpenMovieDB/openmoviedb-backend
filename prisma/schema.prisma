@@ -92,6 +92,63 @@ model Movie {
 }
 
 // ====================================================
+//                      SEASON
+// ====================================================
+
+model Season {
+  id          String        @id @default(uuid()) @db.Uuid
+  number      Int
+  episodes    Episode[]
+  movie       Movie         @relation(fields: [movieId], references: [id])
+  movieId     String        @db.Uuid
+  releaseDate ReleaseDate[]
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+// ====================================================
+//                      EPISODE
+// ====================================================
+
+model Episode {
+  id          String     @id @default(uuid()) @db.Uuid
+  image       ImageLink? @relation(fields: [imageLinkId], references: [id])
+  number      Int
+  title       String
+  season      Season     @relation(fields: [seasonId], references: [id])
+  seasonId    String     @db.Uuid
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  imageLinkId String?    @db.Uuid
+}
+
+// ====================================================
+//                     RELEASE_DATE
+// ====================================================
+
+enum ReleaseDateType {
+  WORLDWIDE
+  THEATRICAL
+  DIGITAL
+  PHYSICAL
+  TV
+}
+
+model ReleaseDate {
+  id        String          @id @default(uuid()) @db.Uuid
+  type      ReleaseDateType
+  date      DateTime
+  country   Country         @relation(fields: [countryId], references: [id])
+  countryId String          @db.Uuid
+  movie     Movie           @relation(fields: [movieId], references: [id])
+  movieId   String          @db.Uuid
+  createdAt DateTime        @default(now())
+  updatedAt DateTime        @updatedAt
+  Season    Season?         @relation(fields: [seasonId], references: [id])
+  seasonId  String?         @db.Uuid
+}
+
+// ====================================================
 //                       GENRE
 // ====================================================
 
