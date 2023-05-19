@@ -14,6 +14,10 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ====================================================
+//                       USER
+// ====================================================
+
 enum Role {
   ADMIN
   USER
@@ -25,6 +29,201 @@ model User {
   password  String
   name      String?
   role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ====================================================
+//                    EXTERNAL ID
+// ====================================================
+
+enum ExternalIDSource {
+  IMDB
+  TMDB
+  WIKIPEDIA
+  KINOPOISK
+}
+
+model ExternalID {
+  source    ExternalIDSource
+  value     String
+  movieId   String           @db.Uuid
+  movie     Movie            @relation(fields: [movieId], references: [id])
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+
+  @@id([source, value])
+}
+
+// ====================================================
+//                       MOVIE
+// ====================================================
+
+enum MovieType {
+  MOVIE
+  TV_SERIES
+}
+
+model Movie {
+  id         String       @id @default(uuid()) @db.Uuid
+  slug       String       @unique
+  type       MovieType
+  externalID ExternalID[]
+  title      String
+  year       Int
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
+  medias     MediaLink[]
+  images     ImageLink[]
+}
+
+// ====================================================
+//                      SEO
+// ====================================================
+
+enum SeoType {
+  OPEN_GRAPH
+  TWITTER_CARD
+  JSONLD
+  BASIC
+}
+
+model Seo {
+  id          String     @id @default(uuid()) @db.Uuid
+  title       String?
+  description String?
+  imageLink   ImageLink? @relation(fields: [imageLinkId], references: [id])
+  type        SeoType
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  imageLinkId String?    @db.Uuid
+}
+
+// ====================================================
+//                      IMAGE
+// ====================================================
+enum ImageType {
+  POSTER
+  BACKDROP
+  LOGO
+  PHOTO
+  STILL
+  SHOOTING
+  ICON
+  PROFILE
+  SEO
+  HERO
+}
+
+enum ImageAssetFormat {
+  AVIF
+  GIF
+  JPEG
+  PNG
+  WEBP
+}
+
+enum ImageAssetWidth {
+  W375
+  W768
+  W1024
+  W1280
+  W1366
+  W1600
+  W1920
+  W2560
+}
+
+model Image {
+  id        String       @id @default(uuid()) @db.Uuid
+  link      ImageLink?
+  assets    ImageAsset[]
+  height    Int
+  width     Int
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+model ImageAsset {
+  id      String           @id @default(uuid()) @db.Uuid
+  format  ImageAssetFormat
+  width   ImageAssetWidth
+  url     String
+  image   Image            @relation(fields: [imageId], references: [id])
+  imageId String           @db.Uuid
+}
+
+model ImageLink {
+  id        String   @id @default(uuid()) @db.Uuid
+  image     Image    @relation(fields: [imageId], references: [id])
+  imageId   String   @unique @db.Uuid
+  movie     Movie?   @relation(fields: [movieId], references: [id])
+  movieId   String?  @db.Uuid
+  seo       Seo[]
+  medias    Media[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// ====================================================
+//                      MEDIA
+// ====================================================
+
+enum MediaType {
+  TRAILER
+  TEASER
+  BACKDROP
+  VIDEO
+  AUDIO
+}
+
+enum MediaSource {
+  YOUTUBE
+  VIMEO
+  S3
+}
+
+enum MediaFormat {
+  MP4
+  WEBM
+  OGG
+  MKV
+  MP3
+  WAV
+}
+
+model Media {
+  id          String       @id @default(uuid()) @db.Uuid
+  title       String
+  images      ImageLink?   @relation(fields: [imageLinkId], references: [id])
+  asset       MediaAsset[]
+  type        MediaType
+  source      MediaSource
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  imageLinkId String       @db.Uuid
+  mediaLink   MediaLink?
+}
+
+model MediaAsset {
+  id        String      @id @default(uuid()) @db.Uuid
+  url       String
+  duration  Float
+  type      MediaType
+  source    MediaSource
+  format    MediaFormat
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  media     Media?      @relation(fields: [mediaId], references: [id])
+  mediaId   String?     @db.Uuid
+}
+
+model MediaLink {
+  id        String   @id @default(uuid()) @db.Uuid
+  media     Media    @relation(fields: [mediaId], references: [id])
+  mediaId   String   @unique @db.Uuid
+  movie     Movie?   @relation(fields: [movieId], references: [id])
+  movieId   String?  @db.Uuid
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
