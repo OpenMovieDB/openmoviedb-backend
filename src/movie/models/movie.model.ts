@@ -13,7 +13,7 @@ import { SlideModel } from '../../slider/models/slide.model';
 import { ImageModel } from '../../common/models/image.model';
 import { ExternalIDModel } from '../../external-id/models/external-id.model';
 
-enum MovieType {
+export enum MovieType {
   MOVIE,
   TV_SERIES,
 }
@@ -65,17 +65,17 @@ export class MovieModel extends BasePageModel {
   releases: ReleaseDateModel[];
 
   @Field((type) => [SeasonModel])
-  seasons: SeasonModel[];
+  seasons?: SeasonModel[];
 
   @Field((type) => RatingModel)
   rating: RatingModel;
 
-  @Field((type) => [CollectionModel])
-  collection: CollectionModel[];
+  @Field((type) => [CollectionModel], { nullable: true })
+  collection?: CollectionModel[];
 
-  @Field((type) => [SlideModel])
-  slides: SlideModel[];
+  @Field((type) => [SlideModel], { nullable: true })
+  slides?: SlideModel[];
 
-  @Field((type) => [FactModel])
-  fact: FactModel[];
+  @Field((type) => [FactModel], { nullable: true })
+  facts?: FactModel[];
 }

@@ -11,15 +11,220 @@ type Auth {
   user: User!
 }
 
+type BlockModel {
+  blockType: BlockType!
+  collections: [CollectionModel!]!
+  content: String!
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  image: ImageModel
+  order: Int!
+  sliders: [SliderModel!]!
+  title: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+"""Type of the block"""
+enum BlockType {
+  IMAGE
+  MOVIE_COLLECTION
+  SLIDER
+  TEXT
+  VIDEO
+}
+
 input ChangePasswordInput {
   newPassword: String!
   oldPassword: String!
+}
+
+type CollectionModel {
+  block: BlockModel
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  images: [ImageModel!]!
+  movies: [MovieModel!]!
+  pageInfo: PageInfoModel!
+  seo: [SeoModel!]!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type CountryModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  images: [ImageModel!]!
+  movies: [MovieModel!]!
+  pageInfo: PageInfoModel!
+  seo: [SeoModel!]!
+  title: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
 }
 
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
 scalar DateTime
+
+type EpisodeModel {
+  id: String!
+  image: ImageModel
+  number: Int!
+  title: String!
+}
+
+type ExternalIDModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  movieId: String
+  personId: String
+  source: ExternalIDSource!
+  type: ExternalIDType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  value: String!
+}
+
+"""Source of the external id"""
+enum ExternalIDSource {
+  IMDB
+  KINOPOISK
+  TMDB
+  WIKIPEDIA
+}
+
+"""Type of the external id"""
+enum ExternalIDType {
+  MOVIE
+  PERSON
+}
+
+type FactModel {
+  content: String!
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  isSpoiler: Boolean!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type FilmographyEntryMovieModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  person: PersonModel!
+  role: PersonRoleType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type FilmographyEntryPersonModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  movie: MovieModel!
+  role: PersonRoleType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+input FindMoviesInput {
+  title: String
+}
+
+type GenreModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  images: [ImageModel!]!
+  movies: [MovieModel!]!
+  pageInfo: PageInfoModel!
+  seo: [SeoModel!]!
+  title: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+"""Format of the image asset"""
+enum ImageAssetFormat {
+  AVIF
+  GIF
+  JPEG
+  PNG
+  WEBP
+}
+
+type ImageAssetModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  format: ImageAssetFormat!
+  id: ID!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  url: String!
+  width: ImageAssetWidth!
+}
+
+"""Width of the image asset"""
+enum ImageAssetWidth {
+  W375
+  W768
+  W1024
+  W1280
+  W1366
+  W1600
+  W1920
+  W2560
+}
+
+type ImageModel {
+  assets: [ImageAssetModel]
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  height: Int!
+  id: ID!
+  type: ImageType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  width: Int!
+}
+
+"""Type of the image"""
+enum ImageType {
+  BACKDROP
+  HERO
+  ICON
+  LOGO
+  PHOTO
+  POSTER
+  PROFILE
+  SEO
+  SHOOTING
+  STILL
+}
 
 """
 A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
@@ -31,6 +236,106 @@ input LoginInput {
   password: String!
 }
 
+type MediaAssetModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  duration: Float!
+  format: MediaFormat!
+  id: ID!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  url: String!
+}
+
+"""Format of the media"""
+enum MediaFormat {
+  MKV
+  MP3
+  MP4
+  OGG
+  WAV
+  WEBM
+}
+
+type MediaModel {
+  assets: [MediaAssetModel!]!
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  image: ImageModel
+  source: MediaSource!
+  title: String!
+  type: MediaType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+"""Source of the media"""
+enum MediaSource {
+  S3
+  VIMEO
+  YOUTUBE
+}
+
+"""Type of the media"""
+enum MediaType {
+  AUDIO
+  BACKDROP
+  TEASER
+  TRAILER
+  VIDEO
+}
+
+type MovieModel {
+  collection: [CollectionModel!]
+  countries: [CountryModel!]!
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  description: String
+  externalIDs: [ExternalIDModel!]!
+  facts: [FactModel!]
+  genres: [GenreModel!]!
+  id: ID!
+  images: [ImageModel!]!
+  medias: [MediaModel!]!
+  originalTitle: String
+  pageInfo: PageInfoModel!
+  persons: [FilmographyEntryMovieModel!]!
+  rating: RatingModel!
+  releases: [ReleaseDateModel!]!
+  seasons: [SeasonModel!]!
+  seo: [SeoModel!]!
+  slides: [SlideModel!]
+  slug: String!
+  title: String!
+  type: MovieType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  year: Int!
+}
+
+type MovieModelEdge {
+  cursor: String!
+  node: MovieModel!
+}
+
+"""Type of the movie"""
+enum MovieType {
+  MOVIE
+  TV_SERIES
+}
+
+type MoviesModel {
+  edges: [MovieModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   login(data: LoginInput!): Auth!
@@ -39,8 +344,82 @@ type Mutation {
   updateUser(data: UpdateUserInput!): User!
 }
 
+type PageInfo {
+  endCursor: String
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+}
+
+type PageInfoModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  title: String
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type PersonModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  externalID: [ExternalIDModel]
+  filmography: [FilmographyEntryPersonModel]
+  id: ID!
+  images: [ImageModel]
+  name: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+"""Role of the person"""
+enum PersonRoleType {
+  ACTOR
+  CINEMATOGRAPHER
+  COMPOSER
+  DIRECTOR
+  EDITOR
+  PRODUCER
+  WRITER
+}
+
 type Query {
   me: User!
+  movie(id: String!): MovieModel!
+  movies(data: FindMoviesInput!): MoviesModel!
+}
+
+type RatingModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  vendorRatings: [VendorRatingModel]
+}
+
+type ReleaseDateModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  date: DateTime!
+  id: ID!
+  type: ReleaseDateType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+"""Type of the release date"""
+enum ReleaseDateType {
+  DIGITAL
+  PHYSICAL
+  THEATRICAL
+  TV
+  WORLDWIDE
 }
 
 """User role"""
@@ -49,10 +428,63 @@ enum Role {
   USER
 }
 
+type SeasonModel {
+  episodes: [EpisodeModel!]!
+  number: Int!
+  releaseDate: ReleaseDateModel!
+}
+
+type SeoModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  image: ImageModel
+  title: String
+  type: SeoType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+"""Type of SEO"""
+enum SeoType {
+  BASIC
+  JSONLD
+  OPEN_GRAPH
+  TWITTER_CARD
+}
+
 input SignupInput {
   email: String!
   name: String
   password: String!
+}
+
+type SlideModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  description: String!
+  id: ID!
+  images: [ImageModel!]!
+  movie: MovieModel!
+  position: Int!
+  title: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type SliderModel {
+  block: BlockModel
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  slides: [SlideModel!]!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
 }
 
 type Token {
@@ -77,4 +509,16 @@ type User {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+type VendorRatingModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  ratingId: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+  value: Float!
+  vendor: String!
 }

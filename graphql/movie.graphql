@@ -1,0 +1,113 @@
+query Movie {
+    movie(id: "ab2a7593-ef83-4349-8ed8-5a5c669cd756") {
+        ...MovieFragment
+    }
+}
+
+query Movies {
+    movies(data: {title: "Test"}) {
+        totalCount
+        pageInfo {
+            hasNextPage
+            hasPreviousPage
+            startCursor
+            endCursor
+        }
+        edges {
+            cursor
+            node {
+                ...MovieFragment
+            }
+        }
+    }
+}
+
+fragment MovieFragment on MovieModel {
+    id
+    type
+    pageInfo {
+        title
+        description
+
+    }
+    seo {
+        title
+        description
+        image {
+            ...ImageFragment
+        }
+    }
+    title
+    originalTitle
+    description
+    slug
+    countries {
+        title
+        createdAt
+        updatedAt
+    }
+    genres {
+        title
+        createdAt
+        updatedAt
+    }
+    persons {
+        role
+        description
+        person {
+            name
+            images {
+                ...ImageFragment
+            }
+            createdAt
+            updatedAt
+        }
+        createdAt
+        updatedAt
+    }
+    images {
+        ...ImageFragment
+    }
+    medias {
+        ...MediaFragment
+    }
+    facts {
+        content
+        isSpoiler
+        createdAt
+        updatedAt
+    }
+
+
+
+    createdAt
+    updatedAt
+}
+
+fragment ImageFragment on ImageModel {
+    type
+    height
+    width
+    assets {
+        url
+        width
+        createdAt
+        updatedAt
+    }
+    createdAt
+    updatedAt
+}
+
+fragment MediaFragment on MediaModel {
+    source
+    type
+    title
+    assets {
+        url
+        createdAt
+        updatedAt
+    }
+
+    createdAt
+    updatedAt
+}

@@ -15,14 +15,11 @@ import { ExternalIdModule } from './external-id/external-id.module';
 import { RatingModule } from './rating/rating.module';
 import { FactModule } from './fact/fact.module';
 import { SeasonModule } from './season/season.module';
-import { EpisodeModule } from './episode/episode.module';
 import { ReleaseDateModule } from './release-date/release-date.module';
-import { PageInfoModule } from './page-info/page-info.module';
 import { SeoModule } from './seo/seo.module';
 import { ImageModule } from './image/image.module';
 import { MediaModule } from './media/media.module';
 import { CollectionModule } from './collection/collection.module';
-import { Service } from './.service';
 import { PageModule } from './page/page.module';
 import { SliderModule } from './slider/slider.module';
 import { BlockModule } from './block/block.module';
@@ -56,9 +53,7 @@ import { BlockModule } from './block/block.module';
     RatingModule,
     FactModule,
     SeasonModule,
-    EpisodeModule,
     ReleaseDateModule,
-    PageInfoModule,
     SeoModule,
     ImageModule,
     MediaModule,
@@ -67,6 +62,5 @@ import { BlockModule } from './block/block.module';
     SliderModule,
     BlockModule,
   ],
-  providers: [Service],
 })
 export class AppModule {}
