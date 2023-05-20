@@ -1,76 +1,80 @@
-# This file was generated. Do not edit manually.
-
-schema {
-    query: Query
-    mutation: Mutation
-}
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
 
 type Auth {
-    "JWT access token"
-    accessToken: JWT!
-    "JWT refresh token"
-    refreshToken: JWT!
-    user: User!
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
+  user: User!
+}
+
+input ChangePasswordInput {
+  newPassword: String!
+  oldPassword: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""
+A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction.
+"""
+scalar JWT
+
+input LoginInput {
+  email: String!
+  password: String!
 }
 
 type Mutation {
-    changePassword(data: ChangePasswordInput!): User!
-    login(data: LoginInput!): Auth!
-    refreshToken(token: JWT!): Token!
-    signup(data: SignupInput!): Auth!
-    updateUser(data: UpdateUserInput!): User!
+  changePassword(data: ChangePasswordInput!): User!
+  login(data: LoginInput!): Auth!
+  refreshToken(token: JWT!): Token!
+  signup(data: SignupInput!): Auth!
+  updateUser(data: UpdateUserInput!): User!
 }
 
 type Query {
-    me: User!
+  me: User!
 }
 
-type Token {
-    "JWT access token"
-    accessToken: JWT!
-    "JWT refresh token"
-    refreshToken: JWT!
-}
-
-type User {
-    "Identifies the date and time when the object was created."
-    createdAt: DateTime!
-    email: String!
-    id: ID!
-    name: String
-    role: Role!
-    "Identifies the date and time when the object was last updated."
-    updatedAt: DateTime!
-}
-
-"User role"
+"""User role"""
 enum Role {
-    ADMIN
-    USER
-}
-
-"A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format."
-scalar DateTime
-
-"A field whose value is a JSON Web Token (JWT): https://jwt.io/introduction."
-scalar JWT
-
-input ChangePasswordInput {
-    newPassword: String!
-    oldPassword: String!
-}
-
-input LoginInput {
-    email: String!
-    password: String!
+  ADMIN
+  USER
 }
 
 input SignupInput {
-    email: String!
-    name: String
-    password: String!
+  email: String!
+  name: String
+  password: String!
+}
+
+type Token {
+  """JWT access token"""
+  accessToken: JWT!
+
+  """JWT refresh token"""
+  refreshToken: JWT!
 }
 
 input UpdateUserInput {
-    name: String
+  name: String
+}
+
+type User {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  name: String
+  role: Role!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
 }
