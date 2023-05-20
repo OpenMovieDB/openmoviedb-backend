@@ -106,6 +106,7 @@ model Movie {
 
 model Rating {
   id            String         @id @default(uuid()) @db.Uuid
+  value         Float          @default(0)
   votes         Vote[]
   vendorRatings VendorRating[]
   createdAt     DateTime       @default(now())
@@ -294,11 +295,11 @@ model PageInfo {
   seo         Seo[]
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
-  Movie       Movie[]
-  Collection  Collection[]
-  Page        Page[]
-  Genre       Genre[]
-  Country     Country[]
+  movie       Movie[]
+  collection  Collection[]
+  page        Page[]
+  genre       Genre[]
+  country     Country[]
 }
 
 // ====================================================
@@ -542,7 +543,7 @@ model Slider {
 model Slide {
   id          String      @id @default(uuid()) @db.Uuid
   title       String
-  position    Int
+  order       Int
   description String
   images      ImageLink[]
   movie       Movie       @relation(fields: [movieId], references: [id])

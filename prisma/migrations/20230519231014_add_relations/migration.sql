@@ -54,7 +54,7 @@ CREATE TABLE "ExternalID" (
 );
 
 -- CreateTable
-CREATE TABLE "Movie" (
+CREATE TABLE "MovieModel" (
     "id" UUID NOT NULL,
     "slug" STRING NOT NULL,
     "type" "MovieType" NOT NULL,
@@ -400,10 +400,10 @@ CREATE TABLE "_CollectionToMovie" (
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Movie_slug_key" ON "Movie"("slug");
+CREATE UNIQUE INDEX "Movie_slug_key" ON "MovieModel"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Movie_ratingId_key" ON "Movie"("ratingId");
+CREATE UNIQUE INDEX "Movie_ratingId_key" ON "MovieModel"("ratingId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "Vote_userId_ratingId_key" ON "Vote"("userId", "ratingId");
@@ -457,16 +457,16 @@ CREATE UNIQUE INDEX "_CollectionToMovie_AB_unique" ON "_CollectionToMovie"("A", 
 CREATE INDEX "_CollectionToMovie_B_index" ON "_CollectionToMovie"("B");
 
 -- AddForeignKey
-ALTER TABLE "ExternalID" ADD CONSTRAINT "ExternalID_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ExternalID" ADD CONSTRAINT "ExternalID_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "MovieModel"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ExternalID" ADD CONSTRAINT "ExternalID_personId_fkey" FOREIGN KEY ("personId") REFERENCES "Person"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Movie" ADD CONSTRAINT "Movie_pageInfoId_fkey" FOREIGN KEY ("pageInfoId") REFERENCES "PageInfo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MovieModel" ADD CONSTRAINT "Movie_pageInfoId_fkey" FOREIGN KEY ("pageInfoId") REFERENCES "PageInfo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Movie" ADD CONSTRAINT "Movie_ratingId_fkey" FOREIGN KEY ("ratingId") REFERENCES "Rating"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "MovieModel" ADD CONSTRAINT "Movie_ratingId_fkey" FOREIGN KEY ("ratingId") REFERENCES "Rating"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Vote" ADD CONSTRAINT "Vote_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -478,10 +478,10 @@ ALTER TABLE "Vote" ADD CONSTRAINT "Vote_ratingId_fkey" FOREIGN KEY ("ratingId") 
 ALTER TABLE "VendorRating" ADD CONSTRAINT "VendorRating_ratingId_fkey" FOREIGN KEY ("ratingId") REFERENCES "Rating"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Fact" ADD CONSTRAINT "Fact_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Fact" ADD CONSTRAINT "Fact_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "MovieModel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Season" ADD CONSTRAINT "Season_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Season" ADD CONSTRAINT "Season_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "MovieModel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Episode" ADD CONSTRAINT "Episode_imageLinkId_fkey" FOREIGN KEY ("imageLinkId") REFERENCES "ImageLink"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -493,7 +493,7 @@ ALTER TABLE "Episode" ADD CONSTRAINT "Episode_seasonId_fkey" FOREIGN KEY ("seaso
 ALTER TABLE "ReleaseDate" ADD CONSTRAINT "ReleaseDate_countryId_fkey" FOREIGN KEY ("countryId") REFERENCES "Country"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ReleaseDate" ADD CONSTRAINT "ReleaseDate_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ReleaseDate" ADD CONSTRAINT "ReleaseDate_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "MovieModel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ReleaseDate" ADD CONSTRAINT "ReleaseDate_seasonId_fkey" FOREIGN KEY ("seasonId") REFERENCES "Season"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -508,7 +508,7 @@ ALTER TABLE "Country" ADD CONSTRAINT "Country_pageInfoId_fkey" FOREIGN KEY ("pag
 ALTER TABLE "FilmographyEntry" ADD CONSTRAINT "FilmographyEntry_personId_fkey" FOREIGN KEY ("personId") REFERENCES "Person"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "FilmographyEntry" ADD CONSTRAINT "FilmographyEntry_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "FilmographyEntry" ADD CONSTRAINT "FilmographyEntry_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "MovieModel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Seo" ADD CONSTRAINT "Seo_imageLinkId_fkey" FOREIGN KEY ("imageLinkId") REFERENCES "ImageLink"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -523,7 +523,7 @@ ALTER TABLE "ImageAsset" ADD CONSTRAINT "ImageAsset_imageId_fkey" FOREIGN KEY ("
 ALTER TABLE "ImageLink" ADD CONSTRAINT "ImageLink_imageId_fkey" FOREIGN KEY ("imageId") REFERENCES "Image"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ImageLink" ADD CONSTRAINT "ImageLink_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ImageLink" ADD CONSTRAINT "ImageLink_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "MovieModel"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ImageLink" ADD CONSTRAINT "ImageLink_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "Collection"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -541,7 +541,7 @@ ALTER TABLE "MediaAsset" ADD CONSTRAINT "MediaAsset_mediaId_fkey" FOREIGN KEY ("
 ALTER TABLE "MediaLink" ADD CONSTRAINT "MediaLink_mediaId_fkey" FOREIGN KEY ("mediaId") REFERENCES "Media"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "MediaLink" ADD CONSTRAINT "MediaLink_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "MediaLink" ADD CONSTRAINT "MediaLink_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "MovieModel"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Collection" ADD CONSTRAINT "Collection_pageInfoId_fkey" FOREIGN KEY ("pageInfoId") REFERENCES "PageInfo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -562,7 +562,7 @@ ALTER TABLE "Block" ADD CONSTRAINT "Block_pageId_fkey" FOREIGN KEY ("pageId") RE
 ALTER TABLE "Slider" ADD CONSTRAINT "Slider_blockId_fkey" FOREIGN KEY ("blockId") REFERENCES "Block"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Slide" ADD CONSTRAINT "Slide_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Slide" ADD CONSTRAINT "Slide_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "MovieModel"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Slide" ADD CONSTRAINT "Slide_sliderId_fkey" FOREIGN KEY ("sliderId") REFERENCES "Slider"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -577,7 +577,7 @@ ALTER TABLE "_GenreToImageLink" ADD CONSTRAINT "_GenreToImageLink_B_fkey" FOREIG
 ALTER TABLE "_GenreToMovie" ADD CONSTRAINT "_GenreToMovie_A_fkey" FOREIGN KEY ("A") REFERENCES "Genre"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_GenreToMovie" ADD CONSTRAINT "_GenreToMovie_B_fkey" FOREIGN KEY ("B") REFERENCES "Movie"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_GenreToMovie" ADD CONSTRAINT "_GenreToMovie_B_fkey" FOREIGN KEY ("B") REFERENCES "MovieModel"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_CountryToImageLink" ADD CONSTRAINT "_CountryToImageLink_A_fkey" FOREIGN KEY ("A") REFERENCES "Country"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -589,7 +589,7 @@ ALTER TABLE "_CountryToImageLink" ADD CONSTRAINT "_CountryToImageLink_B_fkey" FO
 ALTER TABLE "_CountryToMovie" ADD CONSTRAINT "_CountryToMovie_A_fkey" FOREIGN KEY ("A") REFERENCES "Country"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_CountryToMovie" ADD CONSTRAINT "_CountryToMovie_B_fkey" FOREIGN KEY ("B") REFERENCES "Movie"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_CountryToMovie" ADD CONSTRAINT "_CountryToMovie_B_fkey" FOREIGN KEY ("B") REFERENCES "MovieModel"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_ImageLinkToPerson" ADD CONSTRAINT "_ImageLinkToPerson_A_fkey" FOREIGN KEY ("A") REFERENCES "ImageLink"("id") ON DELETE CASCADE ON UPDATE CASCADE;
@@ -601,4 +601,4 @@ ALTER TABLE "_ImageLinkToPerson" ADD CONSTRAINT "_ImageLinkToPerson_B_fkey" FORE
 ALTER TABLE "_CollectionToMovie" ADD CONSTRAINT "_CollectionToMovie_A_fkey" FOREIGN KEY ("A") REFERENCES "Collection"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_CollectionToMovie" ADD CONSTRAINT "_CollectionToMovie_B_fkey" FOREIGN KEY ("B") REFERENCES "Movie"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_CollectionToMovie" ADD CONSTRAINT "_CollectionToMovie_B_fkey" FOREIGN KEY ("B") REFERENCES "MovieModel"("id") ON DELETE CASCADE ON UPDATE CASCADE;
