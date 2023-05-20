@@ -273,7 +273,6 @@ Table MediaAsset {
   id String [pk]
   url String [not null]
   duration Float [not null]
-  type MediaType [not null]
   source MediaSource [not null]
   format MediaFormat [not null]
   media Media

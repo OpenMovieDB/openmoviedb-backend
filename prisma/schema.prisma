@@ -447,7 +447,6 @@ model MediaAsset {
   id        String      @id @default(uuid()) @db.Uuid
   url       String
   duration  Float
-  type      MediaType
   source    MediaSource
   format    MediaFormat
   media     Media?      @relation(fields: [mediaId], references: [id])
