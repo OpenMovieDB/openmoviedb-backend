@@ -237,6 +237,7 @@ Table ImageAsset {
 
 Table ImageLink {
   id String [pk]
+  type ImageType [not null]
   image Image [not null]
   imageId String [unique, not null]
   movie Movie
