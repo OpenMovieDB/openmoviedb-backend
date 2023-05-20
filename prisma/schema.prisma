@@ -97,6 +97,7 @@ model Movie {
   ratingId      String             @unique @db.Uuid
   collection    Collection[]
   slides        Slide[]
+  fact          Fact[]
 }
 
 // ====================================================
@@ -142,6 +143,20 @@ model VendorRating {
   updatedAt DateTime @updatedAt
 
   @@unique([vendor, ratingId])
+}
+
+// ====================================================
+//                      FACT
+// ====================================================
+
+model Fact {
+  id        String   @id @default(uuid()) @db.Uuid
+  content   String
+  movie     Movie    @relation(fields: [movieId], references: [id])
+  movieId   String   @db.Uuid
+  isSpoiler Boolean
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ====================================================

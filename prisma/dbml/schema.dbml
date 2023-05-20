@@ -8,11 +8,540 @@ Table User {
   password String [not null]
   name String
   role Role [not null, default: 'USER']
+  votes Vote [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+}
+
+Table ExternalID {
+  source ExternalIDSource [not null]
+  type ExternalIDType [not null]
+  value String [not null]
+  movieId String
+  movie Movie
+  person Person
+  personId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+
+  indexes {
+    (source, value) [pk]
+  }
+}
+
+Table Movie {
+  id String [pk]
+  slug String [unique, not null]
+  type MovieType [not null]
+  externalID ExternalID [not null]
+  pageInfo PageInfo [not null]
+  pageInfoId String [not null]
+  title String [not null]
+  originalTitle String
+  description String
+  year Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  medias MediaLink [not null]
+  images ImageLink [not null]
+  persons FilmographyEntry [not null]
+  genres Genre [not null]
+  countries Country [not null]
+  releases ReleaseDate [not null]
+  seasons Season [not null]
+  rating Rating [not null]
+  ratingId String [unique, not null]
+  collection Collection [not null]
+  slides Slide [not null]
+  fact Fact [not null]
+}
+
+Table Rating {
+  id String [pk]
+  votes Vote [not null]
+  vendorRatings VendorRating [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  movie Movie
+}
+
+Table Vote {
+  id String [pk]
+  value Int [not null, default: 0]
+  user User
+  userId String
+  rating Rating [not null]
+  ratingId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+
+  indexes {
+    (userId, ratingId) [unique]
+  }
+}
+
+Table VendorRating {
+  id String [pk]
+  vendor Vendor [not null]
+  value Float [not null, default: 0]
+  rating Rating [not null]
+  ratingId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+
+  indexes {
+    (vendor, ratingId) [unique]
+  }
+}
+
+Table Fact {
+  id String [pk]
+  content String [not null]
+  movie Movie [not null]
+  movieId String [not null]
+  isSpoiler Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Season {
+  id String [pk]
+  number Int [not null]
+  episodes Episode [not null]
+  movie Movie [not null]
+  movieId String [not null]
+  releaseDate ReleaseDate [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Episode {
+  id String [pk]
+  image ImageLink
+  imageLinkId String
+  number Int [not null]
+  title String [not null]
+  season Season [not null]
+  seasonId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table ReleaseDate {
+  id String [pk]
+  type ReleaseDateType [not null]
+  date DateTime [not null]
+  country Country [not null]
+  countryId String [not null]
+  movie Movie [not null]
+  movieId String [not null]
+  season Season
+  seasonId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Genre {
+  id String [pk]
+  pageInfo PageInfo [not null]
+  pageInfoId String [not null]
+  title String [not null]
+  images ImageLink [not null]
+  movies Movie [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Country {
+  id String [pk]
+  pageInfo PageInfo [not null]
+  pageInfoId String [not null]
+  title String [not null]
+  images ImageLink [not null]
+  movies Movie [not null]
+  releaseDates ReleaseDate [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Person {
+  id String [pk]
+  externalID ExternalID [not null]
+  name String [not null]
+  images ImageLink [not null]
+  filmography FilmographyEntry [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table FilmographyEntry {
+  id String [pk]
+  role PersonRoleType [not null]
+  description String
+  person Person [not null]
+  personId String [not null]
+  movie Movie [not null]
+  movieId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table PageInfo {
+  id String [pk]
+  title String [not null]
+  description String [not null]
+  seo Seo [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  Movie Movie [not null]
+  Collection Collection [not null]
+  Page Page [not null]
+  Genre Genre [not null]
+  Country Country [not null]
+}
+
+Table Seo {
+  id String [pk]
+  title String
+  description String
+  imageLink ImageLink
+  imageLinkId String
+  type SeoType [not null]
+  pageInfo PageInfo
+  pageInfoId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Image {
+  id String [pk]
+  link ImageLink
+  assets ImageAsset [not null]
+  height Int [not null]
+  width Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table ImageAsset {
+  id String [pk]
+  format ImageAssetFormat [not null]
+  width ImageAssetWidth [not null]
+  url String [not null]
+  image Image [not null]
+  imageId String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table ImageLink {
+  id String [pk]
+  image Image [not null]
+  imageId String [unique, not null]
+  movie Movie
+  movieId String
+  seo Seo [not null]
+  medias Media [not null]
+  episode Episode [not null]
+  person Person [not null]
+  genre Genre [not null]
+  country Country [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  collection Collection
+  collectionId String
+  block Block [not null]
+  slide Slide
+  slideId String
+}
+
+Table Media {
+  id String [pk]
+  title String [not null]
+  images ImageLink
+  imageLinkId String [not null]
+  asset MediaAsset [not null]
+  source MediaSource [not null]
+  mediaLink MediaLink
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table MediaAsset {
+  id String [pk]
+  url String [not null]
+  duration Float [not null]
+  type MediaType [not null]
+  source MediaSource [not null]
+  format MediaFormat [not null]
+  media Media
+  mediaId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table MediaLink {
+  id String [pk]
+  type MediaType [not null]
+  media Media [not null]
+  mediaId String [unique, not null]
+  movie Movie
+  movieId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Collection {
+  id String [pk]
+  images ImageLink [not null]
+  pageInfo PageInfo [not null]
+  pageInfoId String [not null]
+  title String [not null]
+  movies Movie [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  block Block
+  blockId String
+}
+
+Table Page {
+  id String [pk]
+  slug String [unique, not null]
+  title String [not null]
+  pageInfo PageInfo [not null]
+  pageInfoId String [not null]
+  blocks Block [not null]
+  isPublished Boolean [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table Block {
+  id String [pk]
+  blockType BlockType [not null]
+  title String [not null]
+  content String [not null]
+  order Int [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  collection Collection [not null]
+  slider Slider [not null]
+  imageLink ImageLink
+  imageLinkId String
+  page Page
+  pageId String
+}
+
+Table Slider {
+  id String [pk]
+  slides Slide [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  block Block
+  blockId String
+}
+
+Table Slide {
+  id String [pk]
+  title String [not null]
+  position Int [not null]
+  description String [not null]
+  images ImageLink [not null]
+  movie Movie [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  slider Slider
+  sliderId String
+  movieId String [not null]
 }
 
 Enum Role {
   ADMIN
   USER
 }
+
+Enum ExternalIDSource {
+  IMDB
+  TMDB
+  WIKIPEDIA
+  KINOPOISK
+}
+
+Enum ExternalIDType {
+  MOVIE
+  PERSON
+}
+
+Enum MovieType {
+  MOVIE
+  TV_SERIES
+}
+
+Enum Vendor {
+  KINOPOISK
+  IMDB
+  TMDB
+  ROTTEN_TOMATOES
+}
+
+Enum ReleaseDateType {
+  WORLDWIDE
+  THEATRICAL
+  DIGITAL
+  PHYSICAL
+  TV
+}
+
+Enum PersonRoleType {
+  ACTOR
+  DIRECTOR
+  WRITER
+  PRODUCER
+  COMPOSER
+  CINEMATOGRAPHER
+  EDITOR
+}
+
+Enum SeoType {
+  OPEN_GRAPH
+  TWITTER_CARD
+  JSONLD
+  BASIC
+}
+
+Enum ImageType {
+  POSTER
+  BACKDROP
+  LOGO
+  PHOTO
+  STILL
+  SHOOTING
+  ICON
+  PROFILE
+  SEO
+  HERO
+}
+
+Enum ImageAssetFormat {
+  AVIF
+  GIF
+  JPEG
+  PNG
+  WEBP
+}
+
+Enum ImageAssetWidth {
+  W375
+  W768
+  W1024
+  W1280
+  W1366
+  W1600
+  W1920
+  W2560
+}
+
+Enum MediaType {
+  TRAILER
+  TEASER
+  BACKDROP
+  VIDEO
+  AUDIO
+}
+
+Enum MediaSource {
+  YOUTUBE
+  VIMEO
+  S3
+}
+
+Enum MediaFormat {
+  MP4
+  WEBM
+  OGG
+  MKV
+  MP3
+  WAV
+}
+
+Enum BlockType {
+  TEXT
+  IMAGE
+  VIDEO
+  MOVIE_COLLECTION
+  SLIDER
+}
+
+Ref: ExternalID.movieId > Movie.id
+
+Ref: ExternalID.personId > Person.id
+
+Ref: Movie.pageInfoId > PageInfo.id
+
+Ref: Movie.ratingId - Rating.id
+
+Ref: Vote.userId > User.id
+
+Ref: Vote.ratingId > Rating.id
+
+Ref: VendorRating.ratingId > Rating.id
+
+Ref: Fact.movieId > Movie.id
+
+Ref: Season.movieId > Movie.id
+
+Ref: Episode.imageLinkId > ImageLink.id
+
+Ref: Episode.seasonId > Season.id
+
+Ref: ReleaseDate.countryId > Country.id
+
+Ref: ReleaseDate.movieId > Movie.id
+
+Ref: ReleaseDate.seasonId > Season.id
+
+Ref: Genre.pageInfoId > PageInfo.id
+
+Ref: Country.pageInfoId > PageInfo.id
+
+Ref: FilmographyEntry.personId > Person.id
+
+Ref: FilmographyEntry.movieId > Movie.id
+
+Ref: Seo.imageLinkId > ImageLink.id
+
+Ref: Seo.pageInfoId > PageInfo.id
+
+Ref: ImageAsset.imageId > Image.id
+
+Ref: ImageLink.imageId - Image.id
+
+Ref: ImageLink.movieId > Movie.id
+
+Ref: ImageLink.collectionId > Collection.id
+
+Ref: ImageLink.slideId > Slide.id
+
+Ref: Media.imageLinkId > ImageLink.id
+
+Ref: MediaAsset.mediaId > Media.id
+
+Ref: MediaLink.mediaId - Media.id
+
+Ref: MediaLink.movieId > Movie.id
+
+Ref: Collection.pageInfoId > PageInfo.id
+
+Ref: Collection.blockId > Block.id
+
+Ref: Page.pageInfoId > PageInfo.id
+
+Ref: Block.imageLinkId > ImageLink.id
+
+Ref: Block.pageId > Page.id
+
+Ref: Slider.blockId > Block.id
+
+Ref: Slide.movieId > Movie.id
+
+Ref: Slide.sliderId > Slider.id
