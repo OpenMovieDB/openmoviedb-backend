@@ -1,3 +1,4 @@
+import { IMapper } from 'src/common/interfaces/mapper.interface';
 import { MovieModel, MovieType } from './models/movie.model';
 import {
   Country,
@@ -26,7 +27,7 @@ type MovieEntity = Movie & {
   pageInfo: PageInfo;
 };
 
-export class MovieMapper {
+export class MovieMapper implements IMapper<MovieEntity, MovieModel> {
   public mapEntityToModel(entity: MovieEntity): MovieModel {
     return {
       ...entity,
