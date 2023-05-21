@@ -1,14 +1,13 @@
 import { BlockModel, BlockType } from './models/block.model';
 import { IMapper } from '../common/interfaces/mapper.interface';
 import { Block, Collection, Image, ImageLink, Slider } from '@prisma/client';
-import { ImageMapper } from 'src/image/mappers/image.mapper';
 
 type BlockEntity = Block & {
   images: ImageLink[];
   collections: Collection[];
   sliders: Slider[];
 };
-
+// TODO: Implement BlockMapper
 export class BlockMapper implements IMapper<BlockEntity, BlockModel> {
   public mapEntityToModel(entity: BlockEntity): BlockModel {
     return {
