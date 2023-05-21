@@ -323,14 +323,14 @@ Table Block {
   title String [not null]
   content String [not null]
   order Int [not null]
-  createdAt DateTime [default: `now()`, not null]
-  updatedAt DateTime [not null]
-  collection Collection [not null]
-  slider Slider [not null]
-  imageLink ImageLink
-  imageLinkId String
+  collections Collection [not null]
+  sliders Slider [not null]
+  image ImageLink
+  imageId String
   page Page
   pageId String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
 }
 
 Table Slider {
@@ -537,7 +537,7 @@ Ref: Collection.blockId > Block.id
 
 Ref: Page.pageInfoId > PageInfo.id
 
-Ref: Block.imageLinkId > ImageLink.id
+Ref: Block.imageId > ImageLink.id
 
 Ref: Block.pageId > Page.id
 

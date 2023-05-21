@@ -517,14 +517,14 @@ model Block {
   title       String
   content     String
   order       Int
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  collection  Collection[]
-  slider      Slider[]
-  imageLink   ImageLink?   @relation(fields: [imageLinkId], references: [id])
-  imageLinkId String?      @db.Uuid
+  collections Collection[]
+  sliders     Slider[]
+  image       ImageLink?   @relation(fields: [imageId], references: [id])
+  imageId     String?      @db.Uuid
   page        Page?        @relation(fields: [pageId], references: [id])
   pageId      String?      @db.Uuid
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
 }
 
 // ====================================================
