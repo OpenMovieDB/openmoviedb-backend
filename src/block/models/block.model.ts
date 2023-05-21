@@ -4,7 +4,7 @@ import { SliderModel } from '../../slider/models/slider.model';
 import { BaseModel } from '../../common/models/base.model';
 import { CollectionModel } from '../../collection/models/collection.model';
 
-enum BlockType {
+export enum BlockType {
   TEXT,
   IMAGE,
   VIDEO,
@@ -31,12 +31,12 @@ export class BlockModel extends BaseModel {
   @Field((type) => Int)
   order: number;
 
-  @Field((type) => [CollectionModel])
-  collections: CollectionModel[];
+  @Field((type) => [CollectionModel], { nullable: true })
+  collections?: CollectionModel[];
 
-  @Field((type) => [SliderModel])
-  sliders: SliderModel[];
+  @Field((type) => [SliderModel], { nullable: true })
+  sliders?: SliderModel[];
 
-  @Field((type) => ImageModel, { nullable: true })
-  image?: ImageModel;
+  @Field((type) => [ImageModel], { nullable: true })
+  images?: ImageModel[];
 }
