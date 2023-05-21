@@ -1,8 +1,7 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { BaseModel } from './base.model';
-import { ImageModel } from './image.model';
 
-enum ImageAssetFormat {
+export enum ImageAssetFormat {
   AVIF,
   GIF,
   JPEG,
@@ -10,7 +9,7 @@ enum ImageAssetFormat {
   WEBP,
 }
 
-enum ImageAssetWidth {
+export enum ImageAssetWidth {
   W375,
   W768,
   W1024,

@@ -2,7 +2,7 @@ import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { BaseModel } from './base.model';
 import { ImageAssetModel } from './image-asset.model';
 
-enum ImageType {
+export enum ImageType {
   POSTER,
   BACKDROP,
   LOGO,
