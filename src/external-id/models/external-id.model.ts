@@ -1,7 +1,8 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { BaseModel } from '../../common/models/base.model';
+import { BaseDateModel } from 'src/common/models/base-date.model';
 
-enum ExternalIDSource {
+export enum ExternalIDSource {
   IMDB,
   TMDB,
   WIKIPEDIA,
@@ -13,7 +14,7 @@ registerEnumType(ExternalIDSource, {
   description: 'Source of the external id',
 });
 
-enum ExternalIDType {
+export enum ExternalIDType {
   MOVIE,
   PERSON,
 }
@@ -24,7 +25,7 @@ registerEnumType(ExternalIDType, {
 });
 
 @ObjectType()
-export class ExternalIDModel extends BaseModel {
+export class ExternalIDModel extends BaseDateModel {
   @Field((type) => ExternalIDSource)
   source: ExternalIDSource;
 

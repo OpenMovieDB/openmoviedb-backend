@@ -13,15 +13,15 @@ type Auth {
 
 type BlockModel {
   blockType: BlockType!
-  collections: [CollectionModel!]!
+  collections: [CollectionModel!]
   content: String!
 
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  image: ImageModel
+  images: [ImageModel!]
   order: Int!
-  sliders: [SliderModel!]!
+  sliders: [SliderModel!]
   title: String!
 
   """Identifies the date and time when the object was last updated."""
@@ -86,7 +86,6 @@ type EpisodeModel {
 type ExternalIDModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
-  id: ID!
   movieId: String
   personId: String
   source: ExternalIDSource!
@@ -205,25 +204,10 @@ type ImageModel {
   createdAt: DateTime!
   height: Int!
   id: ID!
-  type: ImageType!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
   width: Int!
-}
-
-"""Type of the image"""
-enum ImageType {
-  BACKDROP
-  HERO
-  ICON
-  LOGO
-  PHOTO
-  POSTER
-  PROFILE
-  SEO
-  SHOOTING
-  STILL
 }
 
 """

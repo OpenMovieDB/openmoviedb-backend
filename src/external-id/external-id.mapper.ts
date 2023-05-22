@@ -1,15 +1,15 @@
 import { ExternalID } from '@prisma/client';
 import { IMapper } from '../common/interfaces/mapper.interface';
-import { ExternalIDModel } from './models/external-id.model';
+import { ExternalIDModel, ExternalIDSource, ExternalIDType } from './models/external-id.model';
 
 type ExternalIDEntity = ExternalID;
 
-export class ExternalIDMapper
-  implements IMapper<ExternalIDEntity, ExternalIDModel>
-{
+export class ExternalIDMapper implements IMapper<ExternalIDEntity, ExternalIDModel> {
   public mapEntityToModel(entity: ExternalIDEntity): ExternalIDModel {
     return {
       ...entity,
+      source: ExternalIDSource[entity.source],
+      type: ExternalIDType[entity.type],
     };
   }
 
