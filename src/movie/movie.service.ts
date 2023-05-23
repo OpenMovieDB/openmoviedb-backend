@@ -15,7 +15,6 @@ export class MovieService {
     const movie = await this.prismaService.movie.findUnique({
       where: { id },
       include: {
-        persons: true,
         genres: true,
         countries: true,
         releases: true,
@@ -38,7 +37,6 @@ export class MovieService {
             },
           },
           include: {
-            persons: true,
             genres: true,
             countries: true,
             releases: true,

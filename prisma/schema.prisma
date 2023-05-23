@@ -264,7 +264,7 @@ enum PersonRoleType {
 
 model Person {
   id          String             @id @default(uuid()) @db.Uuid
-  externalID  ExternalID[]
+  externalIDs ExternalID[]
   name        String
   images      ImageLink[]
   filmography FilmographyEntry[]

@@ -127,6 +127,7 @@ type FilmographyEntryMovieModel {
   createdAt: DateTime!
   description: String
   id: ID!
+  movieId: String!
   person: PersonModel!
   role: PersonRoleType!
 
@@ -140,6 +141,7 @@ type FilmographyEntryPersonModel {
   description: String
   id: ID!
   movie: MovieModel!
+  personId: String!
   role: PersonRoleType!
 
   """Identifies the date and time when the object was last updated."""
@@ -197,6 +199,18 @@ enum ImageAssetWidth {
   W2560
 }
 
+type ImageLinkModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  image: ImageModel!
+  movieId: String!
+  type: ImageType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
 type ImageModel {
   assets: [ImageAssetModel]
 
@@ -208,6 +222,20 @@ type ImageModel {
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
   width: Int!
+}
+
+"""Type of the image"""
+enum ImageType {
+  BACKDROP
+  HERO
+  ICON
+  LOGO
+  PHOTO
+  POSTER
+  PROFILE
+  SEO
+  SHOOTING
+  STILL
 }
 
 """
@@ -242,16 +270,27 @@ enum MediaFormat {
   WEBM
 }
 
+type MediaLinkModel {
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  media: MediaModel!
+  movieId: String!
+  type: MediaType!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
 type MediaModel {
   assets: [MediaAssetModel!]!
 
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  image: ImageModel
+  image: ImageLinkModel
   source: MediaSource!
   title: String!
-  type: MediaType!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
@@ -274,26 +313,26 @@ enum MediaType {
 }
 
 type MovieModel {
-  collection: [CollectionModel!]
-  countries: [CountryModel!]!
+  collection: [CollectionModel]
+  countries: [CountryModel]
 
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   description: String
-  externalIDs: [ExternalIDModel!]!
-  facts: [FactModel!]
-  genres: [GenreModel!]!
+  externalIDs: [ExternalIDModel]
+  facts: [FactModel]
+  genres: [GenreModel]
   id: ID!
-  images: [ImageModel!]!
-  medias: [MediaModel!]!
+  images: [ImageLinkModel]
+  medias: [MediaLinkModel]
   originalTitle: String
   pageInfo: PageInfoModel!
-  persons: [FilmographyEntryMovieModel!]!
+  persons: [FilmographyEntryMovieModel]
   rating: RatingModel!
-  releases: [ReleaseDateModel!]!
-  seasons: [SeasonModel!]!
+  releases: [ReleaseDateModel]
+  seasons: [SeasonModel]
   seo: [SeoModel!]!
-  slides: [SlideModel!]
+  slides: [SlideModel]
   slug: String!
   title: String!
   type: MovieType!
@@ -352,7 +391,7 @@ type PersonModel {
   externalID: [ExternalIDModel]
   filmography: [FilmographyEntryPersonModel]
   id: ID!
-  images: [ImageModel]
+  images: [ImageLinkModel]
   name: String!
 
   """Identifies the date and time when the object was last updated."""
@@ -372,6 +411,7 @@ enum PersonRoleType {
 
 type Query {
   me: User!
+  media(id: String!): MediaLinkModel!
   movie(id: String!): MovieModel!
   movies(data: FindMoviesInput!): MoviesModel!
 }

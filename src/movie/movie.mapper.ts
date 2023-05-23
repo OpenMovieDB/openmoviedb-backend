@@ -1,9 +1,8 @@
 import { IMapper } from 'src/common/interfaces/mapper.interface';
 import { MovieModel, MovieType } from './models/movie.model';
-import { Country, FilmographyEntry, Genre, Movie, PageInfo, Rating, ReleaseDate, Season } from '@prisma/client';
+import { Country, Genre, Movie, PageInfo, Rating, ReleaseDate, Season } from '@prisma/client';
 
-type MovieEntity = Movie & {
-  persons: FilmographyEntry[];
+export type MovieEntity = Movie & {
   genres: Genre[];
   countries: Country[];
   releases: ReleaseDate[];

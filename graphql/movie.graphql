@@ -55,20 +55,20 @@ fragment MovieFragment on MovieModel {
 #        createdAt
 #        updatedAt
 #    }
-#    persons {
-#        role
-#        description
-#        person {
-#            name
-#            images {
-#                ...ImageLinkFragment
-#            }
-#            createdAt
-#            updatedAt
-#        }
-#        createdAt
-#        updatedAt
-#    }
+    persons {
+        role
+        description
+        person {
+            name
+            images {
+                ...ImageLinkFragment
+            }
+            createdAt
+            updatedAt
+        }
+        createdAt
+        updatedAt
+    }
     images {
         ...ImageLinkFragment
     }
