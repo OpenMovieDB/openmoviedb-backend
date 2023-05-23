@@ -1,9 +1,9 @@
-import { Image, ImageAsset, ImageLink } from '@prisma/client';
+import { Image, ImageAsset } from '@prisma/client';
 import { IMapper } from '../../common/interfaces/mapper.interface';
-import { ImageModel } from '../../common/models/image.model';
+import { ImageModel } from '../models/image.model';
 import { ImageAssetMapper } from './image-asset.mapper';
 
-type ImageEntity = Image & { assets: ImageAsset[]; link: ImageLink };
+export type ImageEntity = Image & { assets: ImageAsset[] };
 
 export class ImageMapper implements IMapper<ImageEntity, ImageModel> {
   public mapEntityToModel(entity: ImageEntity): ImageModel {

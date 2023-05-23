@@ -1,5 +1,5 @@
 import { ImageAsset } from '@prisma/client';
-import { ImageAssetFormat, ImageAssetModel, ImageAssetWidth } from '../../common/models/image-asset.model';
+import { ImageAssetFormat, ImageAssetModel, ImageAssetWidth } from '../models/image-asset.model';
 import { IMapper } from '../../common/interfaces/mapper.interface';
 
 type ImageAssetEntity = ImageAsset;

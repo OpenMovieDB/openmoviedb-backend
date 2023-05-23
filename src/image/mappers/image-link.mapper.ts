@@ -1,9 +1,12 @@
-import { Image, ImageLink } from '@prisma/client';
+import { Image, ImageAsset, ImageLink } from '@prisma/client';
 import { IMapper } from 'src/common/interfaces/mapper.interface';
-import { ImageLinkModel, ImageType } from 'src/common/models/image-link.model';
+import { ImageLinkModel, ImageType } from 'src/image/models/image-link.model';
+import { ImageMapper } from './image.mapper';
 
-type ImageLinkEntity = ImageLink & {
-  image: Image;
+export type ImageLinkEntity = ImageLink & {
+  image: Image & {
+    assets: ImageAsset[];
+  };
 };
 
 export class ImageLinkMapper implements IMapper<ImageLinkEntity, ImageLinkModel> {
@@ -11,6 +14,7 @@ export class ImageLinkMapper implements IMapper<ImageLinkEntity, ImageLinkModel>
     return {
       ...entity,
       type: ImageType[entity.type],
+      image: new ImageMapper().mapEntityToModel(entity.image),
     };
   }
 

@@ -1,5 +1,5 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { BaseModel } from './base.model';
+import { Field, ObjectType } from '@nestjs/graphql';
+import { BaseModel } from '../../common/models/base.model';
 import { ImageAssetModel } from './image-asset.model';
 
 @ObjectType()

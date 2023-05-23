@@ -1,5 +1,5 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { BaseModel } from './base.model';
+import { BaseModel } from '../../common/models/base.model';
 
 export enum ImageAssetFormat {
   AVIF,

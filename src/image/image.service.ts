@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { ImageMapper } from './mappers/image.mapper';
-import { ImageModel } from '../common/models/image.model';
+import { ImageModel } from './models/image.model';
 
 @Injectable()
 export class ImageService {
