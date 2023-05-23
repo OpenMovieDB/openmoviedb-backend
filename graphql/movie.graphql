@@ -30,46 +30,50 @@ fragment MovieFragment on MovieModel {
         description
 
     }
-    seo {
-        title
-        description
-        image {
-            ...ImageFragment
-        }
+    externalIDs {
+        type
+        value
     }
-    title
-    originalTitle
-    description
-    slug
-    countries {
-        title
-        createdAt
-        updatedAt
-    }
-    genres {
-        title
-        createdAt
-        updatedAt
-    }
-    persons {
-        role
-        description
-        person {
-            name
-            images {
-                ...ImageFragment
-            }
-            createdAt
-            updatedAt
-        }
-        createdAt
-        updatedAt
-    }
+#    seo {
+#        title
+#        description
+#        image {
+#            ...ImageLinkFragment
+#        }
+#    }
+#    title
+#    originalTitle
+#    description
+#    slug
+#    countries {
+#        title
+#        createdAt
+#        updatedAt
+#    }
+#    genres {
+#        title
+#        createdAt
+#        updatedAt
+#    }
+#    persons {
+#        role
+#        description
+#        person {
+#            name
+#            images {
+#                ...ImageLinkFragment
+#            }
+#            createdAt
+#            updatedAt
+#        }
+#        createdAt
+#        updatedAt
+#    }
     images {
-        ...ImageFragment
+        ...ImageLinkFragment
     }
     medias {
-        ...MediaFragment
+        ...MediaLinkFragment
     }
     facts {
         content
@@ -84,28 +88,40 @@ fragment MovieFragment on MovieModel {
     updatedAt
 }
 
-fragment ImageFragment on ImageModel {
+fragment ImageLinkFragment on ImageLinkModel {
+    id
     type
-    height
-    width
-    assets {
-        url
+    image {
+        height
         width
-        createdAt
-        updatedAt
+        assets {
+            url
+            width
+            createdAt
+            updatedAt
+        }
     }
     createdAt
     updatedAt
 }
 
-fragment MediaFragment on MediaModel {
-    source
+fragment MediaLinkFragment on MediaLinkModel {
+    id
     type
-    title
-    assets {
-        url
-        createdAt
-        updatedAt
+    movieId
+    media {
+        id
+        title
+        source
+        assets {
+            id
+            url
+            format
+            duration
+        }
+        image {
+            ...ImageLinkFragment
+        }
     }
 
     createdAt

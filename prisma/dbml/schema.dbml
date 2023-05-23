@@ -260,9 +260,9 @@ Table ImageLink {
 Table Media {
   id String [pk]
   title String [not null]
-  images ImageLink
+  image ImageLink
   imageLinkId String [not null]
-  asset MediaAsset [not null]
+  assets MediaAsset [not null]
   source MediaSource [not null]
   mediaLink MediaLink
   createdAt DateTime [default: `now()`, not null]

@@ -434,9 +434,9 @@ enum MediaFormat {
 model Media {
   id          String       @id @default(uuid()) @db.Uuid
   title       String
-  images      ImageLink?   @relation(fields: [imageLinkId], references: [id])
+  image       ImageLink?   @relation(fields: [imageLinkId], references: [id])
   imageLinkId String       @db.Uuid
-  asset       MediaAsset[]
+  assets      MediaAsset[]
   source      MediaSource
   mediaLink   MediaLink?
   createdAt   DateTime     @default(now())

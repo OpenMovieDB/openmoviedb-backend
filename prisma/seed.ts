@@ -19,16 +19,14 @@ async function main() {
       {
         email: 'mdwit0r+1@gmail.com',
         name: 'mdwit0r',
-        password:
-          '$2b$10$bglMMvpZoSKDTqVbr9IWLuNoQb.WKYSe0IUlUPluKV.U7yx826Hq.',
+        password: '$2b$10$bglMMvpZoSKDTqVbr9IWLuNoQb.WKYSe0IUlUPluKV.U7yx826Hq.',
         role: 'USER',
       },
       {
         email: 'mdwit0r@gmail.com',
         name: 'mdwit',
         role: 'ADMIN',
-        password:
-          '$2b$10$bglMMvpZoSKDTqVbr9IWLuNoQb.WKYSe0IUlUPluKV.U7yx826Hq.',
+        password: '$2b$10$bglMMvpZoSKDTqVbr9IWLuNoQb.WKYSe0IUlUPluKV.U7yx826Hq.',
       },
     ],
   });
@@ -70,9 +68,9 @@ async function main() {
 
   const movie = await prisma.movie.create({
     data: {
-      slug: 'test-movie',
+      slug: 'test-movie_1',
       type: MovieType.MOVIE,
-      title: 'Test Movie',
+      title: 'Test Movie 2',
       year: 2023,
       pageInfo: {
         connect: {
@@ -83,7 +81,7 @@ async function main() {
         create: {
           source: ExternalIDSource.IMDB,
           type: ExternalIDType.MOVIE,
-          value: 'tt1234567',
+          value: 'tt1234564',
         },
       },
       genres: {
@@ -141,6 +139,63 @@ async function main() {
             create: {
               vendor: 'IMDB',
               value: 5,
+            },
+          },
+        },
+      },
+      medias: {
+        create: [
+          {
+            type: 'TRAILER',
+            media: {
+              create: {
+                title: 'Test Trailer',
+                source: 'YOUTUBE',
+                image: {
+                  create: {
+                    type: 'POSTER',
+                    image: {
+                      create: {
+                        height: 450,
+                        width: 300,
+                        assets: {
+                          create: {
+                            url: 'https//avatars.mds.yandex.net/get-kinopoisk-image/1898899/c5cabd6f-3a63-4711-9c58-13557a8acfbf/300x450',
+                            format: 'WEBP',
+                            width: 'W375',
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+                assets: {
+                  create: {
+                    url: 'https://www.youtube.com/watch?v=1234567890',
+                    source: 'YOUTUBE',
+                    format: 'MP4',
+                    duration: 4.31,
+                  },
+                },
+              },
+            },
+          },
+        ],
+      },
+      images: {
+        create: {
+          type: 'POSTER',
+          image: {
+            create: {
+              height: 450,
+              width: 300,
+              assets: {
+                create: {
+                  url: 'https//avatars.mds.yandex.net/get-kinopoisk-image/1898899/c5cabd6f-3a63-4711-9c58-13557a8acfbf/300x450',
+                  format: 'WEBP',
+                  width: 'W375',
+                },
+              },
             },
           },
         },
