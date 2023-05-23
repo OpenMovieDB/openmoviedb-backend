@@ -3,7 +3,7 @@ import { BaseModel } from '../../common/models/base.model';
 import { PersonModel } from './person.model';
 import { MovieModel } from '../../movie/models/movie.model';
 
-enum PersonRoleType {
+export enum PersonRoleType {
   ACTOR = 'ACTOR',
   DIRECTOR = 'DIRECTOR',
   WRITER = 'WRITER',
@@ -18,25 +18,28 @@ registerEnumType(PersonRoleType, {
   description: 'Role of the person',
 });
 
-@ObjectType()
-export class FilmographyEntryMovieModel extends BaseModel {
+@ObjectType({ isAbstract: true })
+export class FilmographyEntryModel extends BaseModel {
   @Field((type) => PersonRoleType)
   role: PersonRoleType;
 
   @Field({ nullable: true })
   description?: string;
+}
+
+@ObjectType()
+export class FilmographyEntryMovieModel extends FilmographyEntryModel {
+  @Field()
+  movieId: string;
 
   @Field((type) => PersonModel)
   person: PersonModel;
 }
 
 @ObjectType()
-export class FilmographyEntryPersonModel extends BaseModel {
-  @Field((type) => PersonRoleType)
-  role: PersonRoleType;
-
-  @Field({ nullable: true })
-  description?: string;
+export class FilmographyEntryPersonModel extends FilmographyEntryModel {
+  @Field()
+  personId: string;
 
   @Field((type) => MovieModel)
   movie: MovieModel;

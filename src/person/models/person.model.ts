@@ -2,7 +2,7 @@ import { Field, ObjectType } from '@nestjs/graphql';
 import { FilmographyEntryPersonModel } from './filmography-entry.model';
 import { BaseModel } from '../../common/models/base.model';
 import { ExternalIDModel } from '../../external-id/models/external-id.model';
-import { ImageModel } from '../../common/models/image.model';
+import { ImageLinkModel } from '../../image/models/image-link.model';
 
 @ObjectType()
 export class PersonModel extends BaseModel {
@@ -12,8 +12,8 @@ export class PersonModel extends BaseModel {
   @Field((type) => [ExternalIDModel], { nullable: 'itemsAndList' })
   externalID?: ExternalIDModel[];
 
-  @Field((type) => [ImageModel], { nullable: 'itemsAndList' })
-  images?: ImageModel[];
+  @Field((type) => [ImageLinkModel], { nullable: 'itemsAndList' })
+  images?: ImageLinkModel[];
 
   @Field((type) => [FilmographyEntryPersonModel], { nullable: 'itemsAndList' })
   filmography?: FilmographyEntryPersonModel[];
