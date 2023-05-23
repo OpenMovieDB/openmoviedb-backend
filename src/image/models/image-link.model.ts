@@ -22,6 +22,9 @@ registerEnumType(ImageType, {
 
 @ObjectType()
 export class ImageLinkModel extends BaseModel {
+  @Field()
+  movieId: string;
+
   @Field((type) => ImageType)
   type: ImageType;
 

@@ -31,8 +31,8 @@ export class MovieModel extends BasePageModel {
   @Field((type) => MovieType)
   type: MovieType;
 
-  @Field((type) => [ExternalIDModel])
-  externalIDs: ExternalIDModel[];
+  @Field((type) => [ExternalIDModel], { nullable: 'itemsAndList' })
+  externalIDs?: ExternalIDModel[];
 
   @Field()
   title: string;
@@ -46,36 +46,36 @@ export class MovieModel extends BasePageModel {
   @Field((type) => Int)
   year: number;
 
-  @Field((type) => [MediaLinkModel])
-  medias: MediaLinkModel[];
+  @Field((type) => [MediaLinkModel], { nullable: 'itemsAndList' })
+  medias?: MediaLinkModel[];
 
-  @Field((type) => [ImageLinkModel])
-  images: ImageLinkModel[];
+  @Field((type) => [ImageLinkModel], { nullable: 'itemsAndList' })
+  images?: ImageLinkModel[];
 
-  @Field((type) => [FilmographyEntryMovieModel])
-  persons: FilmographyEntryMovieModel[];
+  @Field((type) => [FilmographyEntryMovieModel], { nullable: 'itemsAndList' })
+  persons?: FilmographyEntryMovieModel[];
 
-  @Field((type) => [GenreModel])
-  genres: GenreModel[];
+  @Field((type) => [GenreModel], { nullable: 'itemsAndList' })
+  genres?: GenreModel[];
 
-  @Field((type) => [CountryModel])
-  countries: CountryModel[];
+  @Field((type) => [CountryModel], { nullable: 'itemsAndList' })
+  countries?: CountryModel[];
 
-  @Field((type) => [ReleaseDateModel])
+  @Field((type) => [ReleaseDateModel], { nullable: 'itemsAndList' })
   releases: ReleaseDateModel[];
 
-  @Field((type) => [SeasonModel])
+  @Field((type) => [SeasonModel], { nullable: 'itemsAndList' })
   seasons?: SeasonModel[];
 
   @Field((type) => RatingModel)
-  rating: RatingModel;
+  rating?: RatingModel;
 
-  @Field((type) => [CollectionModel], { nullable: true })
+  @Field((type) => [CollectionModel], { nullable: 'itemsAndList' })
   collection?: CollectionModel[];
 
-  @Field((type) => [SlideModel], { nullable: true })
+  @Field((type) => [SlideModel], { nullable: 'itemsAndList' })
   slides?: SlideModel[];
 
-  @Field((type) => [FactModel], { nullable: true })
+  @Field((type) => [FactModel], { nullable: 'itemsAndList' })
   facts?: FactModel[];
 }

@@ -4,10 +4,8 @@ import { MovieModel } from './models/movie.model';
 import { MovieMapper } from './movie.mapper';
 import { FindMoviesInput } from './dto/find-movies.input';
 import { PaginationArgs } from 'src/common/pagination/pagination.args';
-import { Edge, findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
+import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { MoviesModel } from './models/movies.model';
-import { ExternalIDModel } from 'src/external-id/models/external-id.model';
-import { ExternalIDMapper } from 'src/external-id/external-id.mapper';
 
 @Injectable()
 export class MovieService {
@@ -17,9 +15,6 @@ export class MovieService {
     const movie = await this.prismaService.movie.findUnique({
       where: { id },
       include: {
-        externalID: true,
-        medias: true,
-        images: true,
         persons: true,
         genres: true,
         countries: true,
@@ -43,9 +38,6 @@ export class MovieService {
             },
           },
           include: {
-            externalID: true,
-            medias: true,
-            images: true,
             persons: true,
             genres: true,
             countries: true,

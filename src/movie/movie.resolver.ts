@@ -7,6 +7,7 @@ import { MoviesModel } from './models/movies.model';
 import { ExternalIDModel } from 'src/external-id/models/external-id.model';
 import MoviesLoader from './movie.loader';
 import { MediaLinkModel } from 'src/media/models/media-link.model';
+import { ImageLinkModel } from '../image/models/image-link.model';
 
 @Resolver(() => MovieModel)
 export class MovieResolver {
@@ -42,5 +43,10 @@ export class MovieResolver {
   @ResolveField('medias', () => [MediaLinkModel], { nullable: true })
   async medias(@Parent() movie: MovieModel): Promise<MediaLinkModel[]> {
     return this.moviesLoader.batchMedias.load(movie.id);
+  }
+
+  @ResolveField('images', () => [ImageLinkModel], { nullable: true })
+  async images(@Parent() movie: MovieModel): Promise<ImageLinkModel[]> {
+    return this.moviesLoader.batchImages.load(movie.id);
   }
 }

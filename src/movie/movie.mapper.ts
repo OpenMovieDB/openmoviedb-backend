@@ -1,23 +1,8 @@
 import { IMapper } from 'src/common/interfaces/mapper.interface';
 import { MovieModel, MovieType } from './models/movie.model';
-import {
-  Country,
-  ExternalID,
-  FilmographyEntry,
-  Genre,
-  ImageLink,
-  MediaLink,
-  Movie,
-  PageInfo,
-  Rating,
-  ReleaseDate,
-  Season,
-} from '@prisma/client';
+import { Country, FilmographyEntry, Genre, Movie, PageInfo, Rating, ReleaseDate, Season } from '@prisma/client';
 
 type MovieEntity = Movie & {
-  externalID: ExternalID[];
-  medias: MediaLink[];
-  images: ImageLink[];
   persons: FilmographyEntry[];
   genres: Genre[];
   countries: Country[];
@@ -33,14 +18,12 @@ export class MovieMapper implements IMapper<MovieEntity, MovieModel> {
       ...entity,
       pageInfo: [] as any,
       seo: [] as any,
-      // slug: entity.slug,
+      slug: entity.slug,
       type: MovieType[entity.type] as MovieType,
-      externalIDs: [] as any,
       title: entity.title,
       originalTitle: entity.originalTitle,
       description: entity.description,
       year: entity.year,
-      medias: [] as any,
       images: [] as any,
       persons: [] as any,
       genres: [] as any,
