@@ -3,6 +3,7 @@ import { ExternalIdResolver } from './external-id.resolver';
 import { ExternalIdService } from './external-id.service';
 
 @Module({
-  providers: [ExternalIdResolver, ExternalIdService]
+  providers: [ExternalIdResolver, ExternalIdService],
+  exports: [ExternalIdService],
 })
 export class ExternalIdModule {}

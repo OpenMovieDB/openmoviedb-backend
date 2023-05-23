@@ -1,8 +1,12 @@
 import { Module } from '@nestjs/common';
 import { MovieResolver } from './movie.resolver';
 import { MovieService } from './movie.service';
+import MoviesLoader from './movie.loader';
+import { ExternalIdModule } from 'src/external-id/external-id.module';
+import { MediaModule } from 'src/media/media.module';
 
 @Module({
-  providers: [MovieResolver, MovieService]
+  imports: [ExternalIdModule, MediaModule],
+  providers: [MovieResolver, MovieService, MoviesLoader],
 })
 export class MovieModule {}

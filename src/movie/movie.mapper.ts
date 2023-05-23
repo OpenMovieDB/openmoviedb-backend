@@ -33,7 +33,7 @@ export class MovieMapper implements IMapper<MovieEntity, MovieModel> {
       ...entity,
       pageInfo: [] as any,
       seo: [] as any,
-      slug: entity.slug,
+      // slug: entity.slug,
       type: MovieType[entity.type] as MovieType,
       externalIDs: [] as any,
       title: entity.title,

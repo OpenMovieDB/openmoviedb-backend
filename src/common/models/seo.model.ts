@@ -1,6 +1,6 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { BaseModel } from './base.model';
-import { ImageModel } from './image.model';
+import { ImageModel } from '../../image/models/image.model';
 
 enum SeoType {
   OPEN_GRAPH,
