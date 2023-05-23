@@ -1,20 +1,12 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { BaseModel } from 'src/common/models/base.model';
-import { ImageModel } from 'src/common/models/image.model';
 import { MediaAssetModel } from './media-asset.model';
+import { ImageLinkModel } from '../../image/models/image-link.model';
 
-enum MediaSource {
+export enum MediaSource {
   YOUTUBE,
   VIMEO,
   S3,
-}
-
-enum MediaType {
-  TRAILER,
-  TEASER,
-  BACKDROP,
-  VIDEO,
-  AUDIO,
 }
 
 registerEnumType(MediaSource, {
@@ -22,21 +14,13 @@ registerEnumType(MediaSource, {
   description: 'Source of the media',
 });
 
-registerEnumType(MediaType, {
-  name: 'MediaType',
-  description: 'Type of the media',
-});
-
 @ObjectType()
 export class MediaModel extends BaseModel {
   @Field()
   title: string;
 
-  @Field((type) => MediaType)
-  type: MediaType;
-
-  @Field((type) => ImageModel, { nullable: true })
-  image?: ImageModel;
+  @Field((type) => ImageLinkModel, { nullable: true })
+  image?: ImageLinkModel;
 
   @Field((type) => MediaSource)
   source: MediaSource;

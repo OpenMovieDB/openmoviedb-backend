@@ -2,7 +2,7 @@ import { Field, ObjectType, registerEnumType, Float } from '@nestjs/graphql';
 import e from 'express';
 import { BaseModel } from 'src/common/models/base.model';
 
-enum MediaFormat {
+export enum MediaFormat {
   MP4,
   WEBM,
   OGG,

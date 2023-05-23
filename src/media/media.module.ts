@@ -3,6 +3,7 @@ import { MediaResolver } from './media.resolver';
 import { MediaService } from './media.service';
 
 @Module({
-  providers: [MediaResolver, MediaService]
+  providers: [MediaResolver, MediaService],
+  exports: [MediaService],
 })
 export class MediaModule {}
