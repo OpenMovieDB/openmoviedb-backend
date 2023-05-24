@@ -1,6 +1,6 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { BaseModel } from '../../common/models/base.model';
-import { ImageModel } from '../../common/models/image.model';
+import { ImageModel } from '../../image/models/image.model';
 import { MovieModel } from '../../movie/models/movie.model';
 
 @ObjectType()
