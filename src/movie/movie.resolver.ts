@@ -9,6 +9,7 @@ import MoviesLoader from './movie.loader';
 import { MediaLinkModel } from 'src/media/models/media-link.model';
 import { ImageLinkModel } from '../image/models/image-link.model';
 import { FilmographyEntryMovieModel } from '../person/models/filmography-entry.model';
+import { GenreModel } from 'src/genre/models/genre.model';
 
 @Resolver(() => MovieModel)
 export class MovieResolver {
@@ -28,8 +29,8 @@ export class MovieResolver {
   //  medias
   //  images
   //  persons
-  //  genres
-  //  countries
+  //  genres: GenreModel[]
+  //  countries: CountryModel[]
   //  releases
   //  seasons
   //  collection
@@ -53,6 +54,11 @@ export class MovieResolver {
 
   @ResolveField('persons', () => [FilmographyEntryMovieModel], { nullable: true })
   async persons(@Parent() movie: MovieModel): Promise<FilmographyEntryMovieModel[]> {
-    return this.moviesLoader.batchFilmographyEntryByMovieIds.load(movie.id);
+    return this.moviesLoader.batchFilmographyEntry.load(movie.id);
+  }
+
+  @ResolveField('genres', () => [GenreModel], { nullable: true })
+  async genres(@Parent() movie: MovieModel): Promise<GenreModel[]> {
+    return this.moviesLoader.batchGenres.load(movie.id);
   }
 }

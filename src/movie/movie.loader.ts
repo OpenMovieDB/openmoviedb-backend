@@ -4,6 +4,7 @@ import { ExternalIdService } from 'src/external-id/external-id.service';
 import { MediaService } from 'src/media/media.service';
 import { ImageService } from '../image/image.service';
 import { PersonService } from '../person/person.service';
+import { GenreService } from 'src/genre/genre.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class MoviesLoader {
@@ -12,6 +13,7 @@ export default class MoviesLoader {
     private readonly mediaService: MediaService,
     private readonly imageService: ImageService,
     private readonly personService: PersonService,
+    private readonly genreService: GenreService,
   ) {}
 
   public readonly batchExternalIds = new DataLoader(async (ids: string[]) => {
@@ -29,8 +31,13 @@ export default class MoviesLoader {
     return ids.map((id) => res.filter((externalId) => externalId.movieId === id));
   });
 
-  public readonly batchFilmographyEntryByMovieIds = new DataLoader(async (ids: string[]) => {
+  public readonly batchFilmographyEntry = new DataLoader(async (ids: string[]) => {
     const res = await this.personService.findManyFilmographyEntryByMovieIds(ids);
     return ids.map((id) => res.filter((person) => person.movieId === id));
+  });
+
+  public readonly batchGenres = new DataLoader(async (ids: string[]) => {
+    const res = await this.genreService.findManyByMoviesIds(ids);
+    return ids.map((id) => res.filter((genre) => genre.movieId === id).flatMap((genre) => genre.genres));
   });
 }
