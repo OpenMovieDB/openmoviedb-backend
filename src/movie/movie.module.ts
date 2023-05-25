@@ -7,9 +7,10 @@ import { MediaModule } from 'src/media/media.module';
 import { ImageModule } from '../image/image.module';
 import { PersonModule } from '../person/person.module';
 import { GenreModule } from 'src/genre/genre.module';
+import { CountryModule } from 'src/country/country.module';
 
 @Module({
-  imports: [ExternalIdModule, MediaModule, ImageModule, PersonModule, GenreModule],
+  imports: [ExternalIdModule, MediaModule, ImageModule, PersonModule, GenreModule, CountryModule],
   providers: [MovieResolver, MovieService, MoviesLoader],
 })
 export class MovieModule {}

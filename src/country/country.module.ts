@@ -3,6 +3,7 @@ import { CountryResolver } from './country.resolver';
 import { CountryService } from './country.service';
 
 @Module({
-  providers: [CountryResolver, CountryService]
+  providers: [CountryResolver, CountryService],
+  exports: [CountryService],
 })
 export class CountryModule {}
