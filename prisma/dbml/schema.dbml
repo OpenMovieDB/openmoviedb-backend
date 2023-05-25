@@ -144,6 +144,7 @@ Table ReleaseDate {
 
 Table Genre {
   id String [pk]
+  slug String [unique, not null]
   pageInfo PageInfo [not null]
   pageInfoId String [not null]
   title String [not null]
@@ -155,6 +156,7 @@ Table Genre {
 
 Table Country {
   id String [pk]
+  slug String [unique, not null]
   pageInfo PageInfo [not null]
   pageInfoId String [not null]
   title String [not null]
@@ -167,7 +169,8 @@ Table Country {
 
 Table Person {
   id String [pk]
-  externalID ExternalID [not null]
+  slug String [unique, not null]
+  externalIDs ExternalID [not null]
   name String [not null]
   images ImageLink [not null]
   filmography FilmographyEntry [not null]

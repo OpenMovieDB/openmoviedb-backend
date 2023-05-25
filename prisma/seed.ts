@@ -33,6 +33,7 @@ async function main() {
 
   const person = await prisma.person.create({
     data: {
+      slug: 'test-person',
       name: 'Test Person',
     },
   });
@@ -46,6 +47,7 @@ async function main() {
 
   const genre = await prisma.genre.create({
     data: {
+      slug: 'test-genre',
       pageInfo: {
         connect: {
           id: pageInfo.id,
@@ -57,6 +59,7 @@ async function main() {
 
   const country = await prisma.country.create({
     data: {
+      slug: 'test-country',
       pageInfo: {
         connect: {
           id: pageInfo.id,
@@ -87,6 +90,7 @@ async function main() {
       genres: {
         connectOrCreate: {
           create: {
+            slug: 'test-genre',
             title: 'Test Genre',
             pageInfo: {
               connect: {
@@ -100,6 +104,7 @@ async function main() {
       countries: {
         connectOrCreate: {
           create: {
+            slug: 'test-country',
             title: 'Test Country',
             pageInfo: {
               connect: {

@@ -223,6 +223,7 @@ model ReleaseDate {
 
 model Genre {
   id         String      @id @default(uuid()) @db.Uuid
+  slug       String      @unique
   pageInfo   PageInfo    @relation(fields: [pageInfoId], references: [id])
   pageInfoId String      @db.Uuid
   title      String
@@ -238,6 +239,7 @@ model Genre {
 
 model Country {
   id           String        @id @default(uuid()) @db.Uuid
+  slug         String        @unique
   pageInfo     PageInfo      @relation(fields: [pageInfoId], references: [id])
   pageInfoId   String        @db.Uuid
   title        String
@@ -264,6 +266,7 @@ enum PersonRoleType {
 
 model Person {
   id          String             @id @default(uuid()) @db.Uuid
+  slug        String             @unique
   externalIDs ExternalID[]
   name        String
   images      ImageLink[]
