@@ -11,6 +11,7 @@ import { ImageLinkModel } from '../image/models/image-link.model';
 import { FilmographyEntryMovieModel } from '../person/models/filmography-entry.model';
 import { GenreModel } from 'src/genre/models/genre.model';
 import { CountryModel } from 'src/country/models/country.model';
+import { ReleaseDateModel } from 'src/release-date/models/release-date.model';
 
 @Resolver(() => MovieModel)
 export class MovieResolver {
@@ -66,5 +67,10 @@ export class MovieResolver {
   @ResolveField('countries', () => [CountryModel], { nullable: true })
   async countries(@Parent() movie: MovieModel): Promise<CountryModel[]> {
     return this.moviesLoader.batchCountries.load(movie.id);
+  }
+
+  @ResolveField('releases', () => [ReleaseDateModel], { nullable: true })
+  async releases(@Parent() movie: MovieModel): Promise<ReleaseDateModel[]> {
+    return this.moviesLoader.batchReleases.load(movie.id);
   }
 }

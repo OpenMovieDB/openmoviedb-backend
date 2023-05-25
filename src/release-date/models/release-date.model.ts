@@ -1,7 +1,7 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
 import { BaseModel } from '../../common/models/base.model';
 
-enum ReleaseDateType {
+export enum ReleaseDateType {
   WORLDWIDE,
   THEATRICAL,
   DIGITAL,
@@ -16,6 +16,9 @@ registerEnumType(ReleaseDateType, {
 
 @ObjectType()
 export class ReleaseDateModel extends BaseModel {
+  @Field()
+  movieId: string;
+
   @Field((type) => ReleaseDateType)
   type: ReleaseDateType;
 

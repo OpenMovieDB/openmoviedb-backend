@@ -6,6 +6,8 @@ import { ImageService } from '../image/image.service';
 import { PersonService } from '../person/person.service';
 import { GenreService } from 'src/genre/genre.service';
 import { CountryService } from 'src/country/country.service';
+import { ReleaseDateService } from 'src/release-date/release-date.service';
+import { SeasonService } from 'src/season/season.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class MoviesLoader {
@@ -16,6 +18,8 @@ export default class MoviesLoader {
     private readonly personService: PersonService,
     private readonly genreService: GenreService,
     private readonly countryService: CountryService,
+    private readonly seasonService: SeasonService,
+    private readonly releaseDateService: ReleaseDateService,
   ) {}
 
   public readonly batchExternalIds = new DataLoader(async (ids: string[]) => {
@@ -39,12 +43,17 @@ export default class MoviesLoader {
   });
 
   public readonly batchGenres = new DataLoader(async (ids: string[]) => {
-    const res = await this.genreService.findManyByMoviesIds(ids);
+    const res = await this.genreService.findManyByMovieIds(ids);
     return ids.map((id) => res.filter((genre) => genre.movieId === id).flatMap((genre) => genre.genres));
   });
 
   public readonly batchCountries = new DataLoader(async (ids: string[]) => {
-    const res = await this.countryService.findManyByMoviesIds(ids);
+    const res = await this.countryService.findManyByMovieIds(ids);
     return ids.map((id) => res.filter((country) => country.movieId === id).flatMap((country) => country.countries));
   });
+
+  public readonly batchReleases = new DataLoader(async (ids: string[]) => {
+    const res = await this.releaseDateService.findManyByMovieIds(ids);
+    return ids.map((id) => res.filter((release) => release.movieId === id));
+  }
 }

@@ -7,7 +7,7 @@ import { GenreMapper } from './genre.mapper';
 export class GenreService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findManyByMoviesIds(ids: string[]): Promise<{ movieId: string; genres: GenreModel[] }[]> {
+  async findManyByMovieIds(ids: string[]): Promise<{ movieId: string; genres: GenreModel[] }[]> {
     const genresInMovies = await this.prismaService.movie.findMany({
       where: {
         id: {

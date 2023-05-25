@@ -7,7 +7,7 @@ import { CountryMapper } from './country.mapper';
 export class CountryService {
   constructor(private readonly prismaService: PrismaService) {}
 
-  async findManyByMoviesIds(ids: string[]): Promise<{ movieId: string; countries: CountryModel[] }[]> {
+  async findManyByMovieIds(ids: string[]): Promise<{ movieId: string; countries: CountryModel[] }[]> {
     const countriesInMovies = await this.prismaService.movie.findMany({
       where: {
         id: {
