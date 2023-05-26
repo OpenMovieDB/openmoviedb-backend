@@ -7,6 +7,9 @@ import { ImageLinkModel } from '../../image/models/image-link.model';
 @ObjectType()
 export class PersonModel extends BaseModel {
   @Field()
+  slug: string;
+
+  @Field()
   name: string;
 
   @Field((type) => [ExternalIDModel], { nullable: 'itemsAndList' })

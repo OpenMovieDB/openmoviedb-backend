@@ -17,7 +17,7 @@ export class PersonService {
       include: {
         person: {
           include: {
-            externalID: true,
+            externalIDs: true,
             images: {
               include: {
                 image: {

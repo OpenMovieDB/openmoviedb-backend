@@ -4,14 +4,14 @@ import { ImageLinkEntity, ImageLinkMapper } from '../../image/mappers/image-link
 import { PersonModel } from '../models/person.model';
 import { ExternalIDMapper } from '../../external-id/external-id.mapper';
 
-export type PersonEntity = Person & { images: ImageLinkEntity[]; externalID: ExternalID[] };
+export type PersonEntity = Person & { images: ImageLinkEntity[]; externalIDs: ExternalID[] };
 
 export class PersonMapper implements IMapper<PersonEntity, PersonModel> {
   public mapEntityToModel(entity: PersonEntity): PersonModel {
     return {
       ...entity,
       images: new ImageLinkMapper().mapEntitiesToModels(entity.images),
-      externalID: new ExternalIDMapper().mapEntitiesToModels(entity.externalID),
+      externalID: new ExternalIDMapper().mapEntitiesToModels(entity.externalIDs),
     };
   }
 
