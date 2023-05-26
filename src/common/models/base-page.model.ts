@@ -6,8 +6,8 @@ import { PageInfoModel } from './page-info.model';
 @ObjectType({ isAbstract: true })
 export abstract class BasePageModel extends BaseModel {
   @Field((type) => PageInfoModel)
-  pageInfo: PageInfoModel;
+  pageInfo?: PageInfoModel;
 
   @Field((type) => [SeoModel])
-  seo: SeoModel[];
+  seo?: SeoModel[];
 }
