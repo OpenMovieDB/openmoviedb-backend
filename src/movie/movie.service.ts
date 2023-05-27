@@ -14,13 +14,6 @@ export class MovieService {
   async findOne(id: string): Promise<MovieModel> {
     const movie = await this.prismaService.movie.findUnique({
       where: { id },
-      include: {
-        countries: true,
-        releases: true,
-        seasons: true,
-        rating: true,
-        pageInfo: true,
-      },
     });
 
     return new MovieMapper().mapEntityToModel(movie);
@@ -35,13 +28,6 @@ export class MovieService {
               contains: dto.title,
             },
           },
-          include: {
-            countries: true,
-            releases: true,
-            seasons: true,
-            rating: true,
-            pageInfo: true,
-          },
         }),
       () =>
         this.prismaService.movie.count({
@@ -54,22 +40,10 @@ export class MovieService {
       { after, before, first, last },
     );
 
-    console.log({
-      pageInfo: res.pageInfo,
-      totalCount: res.totalCount,
-
-      edges: res.edges.map((edge) => ({
-        cursor: edge.cursor,
-        node: new MovieMapper().mapEntityToModel(edge.node),
-      })),
-    });
-
     return {
-      pageInfo: res.pageInfo,
-      totalCount: res.totalCount,
-
+      ...res,
       edges: res.edges.map((edge) => ({
-        cursor: edge.cursor,
+        ...edge,
         node: new MovieMapper().mapEntityToModel(edge.node),
       })),
     };

@@ -51,7 +51,7 @@ type CollectionModel {
   images: [ImageModel!]!
   movies: [MovieModel!]!
   pageInfo: PageInfoModel!
-  seo: [SeoModel!]!
+  pageInfoId: String!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
@@ -64,7 +64,7 @@ type CountryModel {
   images: [ImageLinkModel]
   movies: [MovieModel]
   pageInfo: PageInfoModel!
-  seo: [SeoModel!]!
+  pageInfoId: String!
   slug: String!
   title: String!
 
@@ -166,7 +166,7 @@ type GenreModel {
   images: [ImageLinkModel]
   movies: [MovieModel]
   pageInfo: PageInfoModel!
-  seo: [SeoModel!]!
+  pageInfoId: String!
   slug: String!
   title: String!
 
@@ -335,12 +335,12 @@ type MovieModel {
   medias: [MediaLinkModel]
   originalTitle: String
   pageInfo: PageInfoModel!
+  pageInfoId: String!
   persons: [FilmographyEntryMovieModel]
   rating: RatingModel
   ratingId: String!
   releases: [ReleaseDateModel]
   seasons: [SeasonModel]
-  seo: [SeoModel!]!
   slides: [SlideModel]
   slug: String!
   title: String!
@@ -388,6 +388,7 @@ type PageInfoModel {
   createdAt: DateTime!
   description: String
   id: ID!
+  seo: [SeoModel]
   title: String
 
   """Identifies the date and time when the object was last updated."""
@@ -482,7 +483,7 @@ type SeoModel {
   createdAt: DateTime!
   description: String
   id: ID!
-  image: ImageModel
+  image: ImageLinkModel
   title: String
   type: SeoType!
 
