@@ -25,6 +25,9 @@ export class ImageLinkModel extends BaseModel {
   @Field()
   movieId: string;
 
+  @Field()
+  genreId: string;
+
   @Field((type) => ImageType)
   type: ImageType;
 

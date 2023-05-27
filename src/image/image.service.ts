@@ -40,4 +40,23 @@ export class ImageService {
 
     return new ImageLinkMapper().mapEntitiesToModels(images);
   }
+
+  async findManyByGenreIds(ids: string[]): Promise<ImageLinkModel[]> {
+    const images = await this.prismaService.imageLink.findMany({
+      where: {
+        genreId: {
+          in: ids,
+        },
+      },
+      include: {
+        image: {
+          include: {
+            assets: true,
+          },
+        },
+      },
+    });
+
+    return new ImageLinkMapper().mapEntitiesToModels(images);
+  }
 }
