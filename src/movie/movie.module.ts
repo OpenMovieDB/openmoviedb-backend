@@ -11,6 +11,7 @@ import { CountryModule } from 'src/country/country.module';
 import { FactModule } from 'src/fact/fact.module';
 import { SeasonModule } from 'src/season/season.module';
 import { ReleaseDateModule } from 'src/release-date/release-date.module';
+import { RatingModule } from 'src/rating/rating.module';
 @Module({
   imports: [
     ExternalIdModule,
@@ -22,6 +23,7 @@ import { ReleaseDateModule } from 'src/release-date/release-date.module';
     FactModule,
     SeasonModule,
     ReleaseDateModule,
+    RatingModule,
   ],
   providers: [MovieResolver, MovieService, MoviesLoader],
 })

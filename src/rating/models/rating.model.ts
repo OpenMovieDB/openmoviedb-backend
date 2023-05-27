@@ -5,6 +5,7 @@ import { BaseModel } from '../../common/models/base.model';
 
 @ObjectType()
 export class RatingModel extends BaseModel {
+  @Field()
   value: number;
 
   @Field((type) => [VendorRatingModel], { nullable: 'itemsAndList' })

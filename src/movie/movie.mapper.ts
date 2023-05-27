@@ -3,8 +3,6 @@ import { MovieModel, MovieType } from './models/movie.model';
 import { Country, Genre, Movie, PageInfo, Rating, ReleaseDate, Season } from '@prisma/client';
 
 export type MovieEntity = Movie & {
-  releases: ReleaseDate[];
-  seasons: Season[];
   rating: Rating;
   pageInfo: PageInfo;
 };
@@ -23,10 +21,7 @@ export class MovieMapper implements IMapper<MovieEntity, MovieModel> {
       year: entity.year,
       images: [] as any,
       persons: [] as any,
-      releases: [] as any,
-      seasons: [] as any,
       rating: entity.rating,
-      facts: [] as any,
     };
   }
 

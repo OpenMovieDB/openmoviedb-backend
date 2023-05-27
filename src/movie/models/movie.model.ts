@@ -62,12 +62,15 @@ export class MovieModel extends BasePageModel {
   countries?: CountryModel[];
 
   @Field((type) => [ReleaseDateModel], { nullable: 'itemsAndList' })
-  releases: ReleaseDateModel[];
+  releases?: ReleaseDateModel[];
 
   @Field((type) => [SeasonModel], { nullable: 'itemsAndList' })
   seasons?: SeasonModel[];
 
-  @Field((type) => RatingModel)
+  @Field()
+  ratingId: string;
+
+  @Field((type) => RatingModel, { nullable: true })
   rating?: RatingModel;
 
   @Field((type) => [CollectionModel], { nullable: 'itemsAndList' })

@@ -14,6 +14,8 @@ import { CountryModel } from 'src/country/models/country.model';
 import { ReleaseDateModel } from 'src/release-date/models/release-date.model';
 import { FactModel } from 'src/fact/models/fact.model';
 import { SeasonModel } from 'src/season/models/season.model';
+import { RatingModel } from 'src/rating/models/rating.model';
+import { log } from 'console';
 
 @Resolver(() => MovieModel)
 export class MovieResolver {
@@ -72,5 +74,10 @@ export class MovieResolver {
   @ResolveField('seasons', () => [SeasonModel], { nullable: true })
   async seasons(@Parent() movie: MovieModel): Promise<SeasonModel[]> {
     return this.moviesLoader.batchSeasons.load(movie.id);
+  }
+
+  @ResolveField('rating', () => RatingModel, { nullable: true })
+  async rating(@Parent() movie: MovieModel): Promise<RatingModel> {
+    return this.moviesLoader.batchRating.load(movie.ratingId);
   }
 }

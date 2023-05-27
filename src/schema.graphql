@@ -61,10 +61,11 @@ type CountryModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  images: [ImageModel!]!
-  movies: [MovieModel!]!
+  images: [ImageLinkModel]
+  movies: [MovieModel]
   pageInfo: PageInfoModel!
   seo: [SeoModel!]!
+  slug: String!
   title: String!
 
   """Identifies the date and time when the object was last updated."""
@@ -77,10 +78,15 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 scalar DateTime
 
 type EpisodeModel {
-  id: String!
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
   image: ImageModel
   number: Int!
   title: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
 }
 
 type ExternalIDModel {
@@ -117,6 +123,7 @@ type FactModel {
   createdAt: DateTime!
   id: ID!
   isSpoiler: Boolean!
+  movieId: String!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
@@ -156,10 +163,11 @@ type GenreModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  images: [ImageModel!]!
-  movies: [MovieModel!]!
+  images: [ImageLinkModel]
+  movies: [MovieModel]
   pageInfo: PageInfoModel!
   seo: [SeoModel!]!
+  slug: String!
   title: String!
 
   """Identifies the date and time when the object was last updated."""
@@ -328,7 +336,8 @@ type MovieModel {
   originalTitle: String
   pageInfo: PageInfoModel!
   persons: [FilmographyEntryMovieModel]
-  rating: RatingModel!
+  rating: RatingModel
+  ratingId: String!
   releases: [ReleaseDateModel]
   seasons: [SeasonModel]
   seo: [SeoModel!]!
@@ -393,6 +402,7 @@ type PersonModel {
   id: ID!
   images: [ImageLinkModel]
   name: String!
+  slug: String!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
@@ -423,6 +433,7 @@ type RatingModel {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+  value: Int!
   vendorRatings: [VendorRatingModel]
 }
 
@@ -431,6 +442,7 @@ type ReleaseDateModel {
   createdAt: DateTime!
   date: DateTime!
   id: ID!
+  movieId: String!
   type: ReleaseDateType!
 
   """Identifies the date and time when the object was last updated."""
@@ -453,9 +465,16 @@ enum Role {
 }
 
 type SeasonModel {
-  episodes: [EpisodeModel!]!
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  episodes: [EpisodeModel]
+  id: ID!
+  movieId: String!
   number: Int!
-  releaseDate: ReleaseDateModel!
+  releaseDate: ReleaseDateModel
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
 }
 
 type SeoModel {
@@ -544,5 +563,13 @@ type VendorRatingModel {
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
   value: Float!
-  vendor: String!
+  vendor: VendorType!
+}
+
+"""Vendor rating"""
+enum VendorType {
+  IMDB
+  KINOPOISK
+  ROTTEN_TOMATOES
+  TMDB
 }
