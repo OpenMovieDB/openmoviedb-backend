@@ -208,7 +208,7 @@ Table Seo {
   id String [pk]
   title String
   description String
-  imageLink ImageLink
+  image ImageLink
   imageLinkId String
   type SeoType [not null]
   pageInfo PageInfo

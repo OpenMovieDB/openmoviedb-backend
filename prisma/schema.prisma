@@ -322,7 +322,7 @@ model Seo {
   id          String     @id @default(uuid()) @db.Uuid
   title       String?
   description String?
-  imageLink   ImageLink? @relation(fields: [imageLinkId], references: [id])
+  image       ImageLink? @relation(fields: [imageLinkId], references: [id])
   imageLinkId String?    @db.Uuid
   type        SeoType
   pageInfo    PageInfo?  @relation(fields: [pageInfoId], references: [id])
