@@ -155,6 +155,10 @@ type FilmographyEntryPersonModel {
   updatedAt: DateTime!
 }
 
+input FindGenresInput {
+  title: String
+}
+
 input FindMoviesInput {
   title: String
 }
@@ -172,6 +176,17 @@ type GenreModel {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+type GenreModelEdge {
+  cursor: String!
+  node: GenreModel!
+}
+
+type GenresModel {
+  edges: [GenreModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 """Format of the image asset"""
@@ -210,6 +225,7 @@ enum ImageAssetWidth {
 type ImageLinkModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
+  genreId: String!
   id: ID!
   image: ImageModel!
   movieId: String!
@@ -421,6 +437,8 @@ enum PersonRoleType {
 }
 
 type Query {
+  genre(id: String!): GenreModel!
+  genres(data: FindGenresInput!): GenresModel!
   me: User!
   media(id: String!): MediaLinkModel!
   movie(id: String!): MovieModel!

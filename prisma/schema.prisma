@@ -398,7 +398,8 @@ model ImageLink {
   medias       Media[]
   episode      Episode[]
   person       Person[]
-  genre        Genre[]
+  genre        Genre?      @relation(fields: [genreId], references: [id])
+  genreId      String?     @db.Uuid
   country      Country[]
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
