@@ -63,4 +63,9 @@ export default class MoviesLoader {
     const res = await this.factService.findManyByMovieIds(ids);
     return ids.map((id) => res.filter((fact) => fact.movieId === id));
   });
+
+  public readonly batchSeasons = new DataLoader(async (ids: string[]) => {
+    const res = await this.seasonService.findManyByMovieIds(ids);
+    return ids.map((id) => res.filter((season) => season.movieId === id));
+  });
 }
