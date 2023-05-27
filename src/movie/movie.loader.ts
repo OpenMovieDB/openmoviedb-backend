@@ -10,6 +10,7 @@ import { ReleaseDateService } from 'src/release-date/release-date.service';
 import { SeasonService } from 'src/season/season.service';
 import { FactService } from 'src/fact/fact.service';
 import { RatingService } from 'src/rating/rating.service';
+import { PageInfoService } from 'src/page-info/page-info.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class MoviesLoader {
@@ -24,6 +25,7 @@ export default class MoviesLoader {
     private readonly releaseDateService: ReleaseDateService,
     private readonly factService: FactService,
     private readonly ratingService: RatingService,
+    private readonly pageInfoService: PageInfoService,
   ) {}
 
   public readonly batchExternalIds = new DataLoader(async (ids: string[]) => {
@@ -74,5 +76,10 @@ export default class MoviesLoader {
   public readonly batchRating = new DataLoader(async (ids: string[]) => {
     const res = await this.ratingService.findManyByIds(ids);
     return ids.map((id) => res.find((rating) => rating.id === id));
+  });
+
+  public readonly batchPageInfo = new DataLoader(async (ids: string[]) => {
+    const res = await this.pageInfoService.findManyByIds(ids);
+    return ids.map((id) => res.find((pageInfo) => pageInfo.id === id));
   });
 }

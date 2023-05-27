@@ -6,8 +6,6 @@ import { FindMoviesInput } from './dto/find-movies.input';
 import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { MoviesModel } from './models/movies.model';
-import { GenreModel } from 'src/genre/models/genre.model';
-import { GenreMapper } from 'src/genre/genre.mapper';
 
 @Injectable()
 export class MovieService {

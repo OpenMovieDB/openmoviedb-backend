@@ -16,6 +16,7 @@ import { FactModel } from 'src/fact/models/fact.model';
 import { SeasonModel } from 'src/season/models/season.model';
 import { RatingModel } from 'src/rating/models/rating.model';
 import { log } from 'console';
+import { PageInfoModel } from 'src/page-info/page-info.model';
 
 @Resolver(() => MovieModel)
 export class MovieResolver {
@@ -79,5 +80,10 @@ export class MovieResolver {
   @ResolveField('rating', () => RatingModel, { nullable: true })
   async rating(@Parent() movie: MovieModel): Promise<RatingModel> {
     return this.moviesLoader.batchRating.load(movie.ratingId);
+  }
+
+  @ResolveField('pageInfo', () => PageInfoModel, { nullable: true })
+  async pageInfo(@Parent() movie: MovieModel): Promise<PageInfoModel> {
+    return this.moviesLoader.batchPageInfo.load(movie.pageInfoId);
   }
 }

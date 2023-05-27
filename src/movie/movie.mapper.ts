@@ -2,26 +2,13 @@ import { IMapper } from 'src/common/interfaces/mapper.interface';
 import { MovieModel, MovieType } from './models/movie.model';
 import { Country, Genre, Movie, PageInfo, Rating, ReleaseDate, Season } from '@prisma/client';
 
-export type MovieEntity = Movie & {
-  rating: Rating;
-  pageInfo: PageInfo;
-};
+export type MovieEntity = Movie;
 
 export class MovieMapper implements IMapper<MovieEntity, MovieModel> {
   public mapEntityToModel(entity: MovieEntity): MovieModel {
     return {
       ...entity,
-      pageInfo: [] as any,
-      seo: [] as any,
-      slug: entity.slug,
       type: MovieType[entity.type] as MovieType,
-      title: entity.title,
-      originalTitle: entity.originalTitle,
-      description: entity.description,
-      year: entity.year,
-      images: [] as any,
-      persons: [] as any,
-      rating: entity.rating,
     };
   }
 
