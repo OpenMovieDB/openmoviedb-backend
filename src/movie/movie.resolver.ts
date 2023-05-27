@@ -15,7 +15,6 @@ import { ReleaseDateModel } from 'src/release-date/models/release-date.model';
 import { FactModel } from 'src/fact/models/fact.model';
 import { SeasonModel } from 'src/season/models/season.model';
 import { RatingModel } from 'src/rating/models/rating.model';
-import { log } from 'console';
 import { PageInfoModel } from 'src/page-info/page-info.model';
 
 @Resolver(() => MovieModel)

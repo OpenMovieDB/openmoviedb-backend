@@ -35,12 +35,12 @@ export default class MoviesLoader {
 
   public readonly batchMedias = new DataLoader(async (ids: string[]) => {
     const res = await this.mediaService.findManyByMovieIds(ids);
-    return ids.map((id) => res.filter((externalId) => externalId.movieId === id));
+    return ids.map((id) => res.filter((media) => media.movieId === id));
   });
 
   public readonly batchImages = new DataLoader(async (ids: string[]) => {
     const res = await this.imageService.findManyByMovieIds(ids);
-    return ids.map((id) => res.filter((externalId) => externalId.movieId === id));
+    return ids.map((id) => res.filter((image) => image.movieId === id));
   });
 
   public readonly batchFilmographyEntry = new DataLoader(async (ids: string[]) => {
