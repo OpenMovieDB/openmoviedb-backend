@@ -12,6 +12,7 @@ import { FilmographyEntryMovieModel } from '../person/models/filmography-entry.m
 import { GenreModel } from 'src/genre/models/genre.model';
 import { CountryModel } from 'src/country/models/country.model';
 import { ReleaseDateModel } from 'src/release-date/models/release-date.model';
+import { FactModel } from 'src/fact/models/fact.model';
 
 @Resolver(() => MovieModel)
 export class MovieResolver {
@@ -72,5 +73,10 @@ export class MovieResolver {
   @ResolveField('releases', () => [ReleaseDateModel], { nullable: true })
   async releases(@Parent() movie: MovieModel): Promise<ReleaseDateModel[]> {
     return this.moviesLoader.batchReleases.load(movie.id);
+  }
+
+  @ResolveField('facts', () => [FactModel], { nullable: true })
+  async facts(@Parent() movie: MovieModel): Promise<FactModel[]> {
+    return this.moviesLoader.batchFacts.load(movie.id);
   }
 }
