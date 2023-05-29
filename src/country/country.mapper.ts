@@ -9,11 +9,10 @@ type CountryEntity = Country & { images?: ImageLinkEntity[]; movies?: MovieEntit
 export class CountryMapper implements IMapper<CountryEntity, CountryModel> {
   public mapEntityToModel(entity: CountryEntity): CountryModel {
     const images = entity.images ? new ImageLinkMapper().mapEntitiesToModels(entity.images) : undefined;
-    const movies = entity.movies ? new MovieMapper().mapEntitiesToModels(entity.movies) : undefined;
+
     return {
       ...entity,
       images,
-      movies,
     };
   }
 
