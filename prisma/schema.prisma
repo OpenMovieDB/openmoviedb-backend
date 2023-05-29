@@ -400,7 +400,8 @@ model ImageLink {
   person       Person[]
   genre        Genre?      @relation(fields: [genreId], references: [id])
   genreId      String?     @db.Uuid
-  country      Country[]
+  country      Country?    @relation(fields: [countryId], references: [id])
+  countryId    String?     @db.Uuid
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   collection   Collection? @relation(fields: [collectionId], references: [id])

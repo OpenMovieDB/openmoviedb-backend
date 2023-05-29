@@ -249,9 +249,10 @@ Table ImageLink {
   medias Media [not null]
   episode Episode [not null]
   person Person [not null]
-  Genre Genre
+  genre Genre
   genreId String
-  country Country [not null]
+  country Country
+  countryId String
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
   collection Collection
@@ -524,6 +525,8 @@ Ref: ImageLink.imageId - Image.id
 Ref: ImageLink.movieId > Movie.id
 
 Ref: ImageLink.genreId > Genre.id
+
+Ref: ImageLink.countryId > Country.id
 
 Ref: ImageLink.collectionId > Collection.id
 
