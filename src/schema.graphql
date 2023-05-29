@@ -57,12 +57,17 @@ type CollectionModel {
   updatedAt: DateTime!
 }
 
+type CountriesModel {
+  edges: [CountryModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 type CountryModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
   images: [ImageLinkModel]
-  movies: [MovieModel]
   pageInfo: PageInfoModel!
   pageInfoId: String!
   slug: String!
@@ -70,6 +75,11 @@ type CountryModel {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+type CountryModelEdge {
+  cursor: String!
+  node: CountryModel!
 }
 
 """
@@ -155,7 +165,7 @@ type FilmographyEntryPersonModel {
   updatedAt: DateTime!
 }
 
-input FindGenresInput {
+input FindCountriesInput {
   title: String
 }
 
@@ -168,7 +178,6 @@ type GenreModel {
   createdAt: DateTime!
   id: ID!
   images: [ImageLinkModel]
-  movies: [MovieModel]
   pageInfo: PageInfoModel!
   pageInfoId: String!
   slug: String!
@@ -223,12 +232,14 @@ enum ImageAssetWidth {
 }
 
 type ImageLinkModel {
+  countryId: String
+
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
-  genreId: String!
+  genreId: String
   id: ID!
   image: ImageModel!
-  movieId: String!
+  movieId: String
   type: ImageType!
 
   """Identifies the date and time when the object was last updated."""
@@ -437,8 +448,9 @@ enum PersonRoleType {
 }
 
 type Query {
+  country(id: String!): CountryModel!
   genre(id: String!): GenreModel!
-  genres(data: FindGenresInput!): GenresModel!
+  genres(data: FindCountriesInput!): CountriesModel!
   me: User!
   media(id: String!): MediaLinkModel!
   movie(id: String!): MovieModel!

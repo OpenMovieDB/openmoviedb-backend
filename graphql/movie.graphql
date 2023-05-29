@@ -1,5 +1,19 @@
+query Genres {
+  genres(data: {}) {
+    edges {
+      node {
+        id
+      	title
+        images {
+          ...ImageLinkFragment
+        }
+      }
+    }
+  }
+}
+
 query Movie {
-    movie(id: "ab2a7593-ef83-4349-8ed8-5a5c669cd756") {
+    movie(id: "28589b03-6ca5-4ee8-851b-b70a8505b0ba") {
         ...MovieFragment
     }
 }
@@ -28,33 +42,39 @@ fragment MovieFragment on MovieModel {
     pageInfo {
         title
         description
-
+				seo {
+          type
+        }
     }
     externalIDs {
         type
         value
     }
-#    seo {
-#        title
-#        description
-#        image {
-#            ...ImageLinkFragment
-#        }
-#    }
-#    title
-#    originalTitle
-#    description
-#    slug
-#    countries {
-#        title
-#        createdAt
-#        updatedAt
-#    }
-#    genres {
-#        title
-#        createdAt
-#        updatedAt
-#    }
+    rating {
+        value
+        vendorRatings {
+        value
+        vendor
+        }
+    }
+   title
+   originalTitle
+   description
+   slug
+   countries {
+       title
+       createdAt
+       updatedAt
+   }
+   genres {
+       title
+    images {
+              ...ImageLinkFragment
+
+    }
+       createdAt
+       updatedAt
+   }
     persons {
         role
         description
