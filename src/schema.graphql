@@ -170,7 +170,9 @@ input FindCountriesInput {
 }
 
 input FindMoviesInput {
-  title: String
+  id: UuidFilterInput
+  slug: StringFilterInput
+  title: StringFilterInput
 }
 
 type GenreModel {
@@ -561,6 +563,14 @@ type SliderModel {
   updatedAt: DateTime!
 }
 
+input StringFilterInput {
+  contains: String
+  equals: String
+  in: [String!]
+  not: StringFilterInput
+  notIn: [String!]
+}
+
 type Token {
   """JWT access token"""
   accessToken: JWT!
@@ -583,6 +593,12 @@ type User {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+input UuidFilterInput {
+  equals: String
+  in: [String!]
+  notIn: [String!]
 }
 
 type VendorRatingModel {
