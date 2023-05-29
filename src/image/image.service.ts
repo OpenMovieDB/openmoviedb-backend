@@ -7,6 +7,15 @@ import { ImageLinkMapper } from './mappers/image-link.mapper';
 
 @Injectable()
 export class ImageService {
+  private readonly defaultInclude = {
+    include: {
+      image: {
+        include: {
+          assets: true,
+        },
+      },
+    },
+  };
   constructor(private readonly prismaService: PrismaService) {}
 
   async findOne(id: string): Promise<ImageModel> {
@@ -29,13 +38,7 @@ export class ImageService {
           in: ids,
         },
       },
-      include: {
-        image: {
-          include: {
-            assets: true,
-          },
-        },
-      },
+      ...this.defaultInclude,
     });
 
     return new ImageLinkMapper().mapEntitiesToModels(images);
@@ -48,13 +51,20 @@ export class ImageService {
           in: ids,
         },
       },
-      include: {
-        image: {
-          include: {
-            assets: true,
-          },
+      ...this.defaultInclude,
+    });
+
+    return new ImageLinkMapper().mapEntitiesToModels(images);
+  }
+
+  async findManyByCountryIds(ids: string[]): Promise<ImageLinkModel[]> {
+    const images = await this.prismaService.imageLink.findMany({
+      where: {
+        countryId: {
+          in: ids,
         },
       },
+      ...this.defaultInclude,
     });
 
     return new ImageLinkMapper().mapEntitiesToModels(images);

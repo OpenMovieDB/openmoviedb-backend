@@ -6,8 +6,8 @@ import { ImageLinkMapper } from 'src/image/mappers/image-link.mapper';
 import { ImageLinkModel } from 'src/image/models/image-link.model';
 import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { PaginationArgs } from 'src/common/pagination/pagination.args';
-import { FindGenresInput } from 'src/image/dto/find-genres.input';
-import { GenresModel } from './models/movies.model';
+import { FindGenresInput } from 'src/genre/dto/find-genres.input';
+import { GenresModel } from './models/genres.model';
 
 @Injectable()
 export class GenreService {

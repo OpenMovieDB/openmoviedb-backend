@@ -13,7 +13,4 @@ export class GenreModel extends BasePageModel {
 
   @Field((type) => [ImageLinkModel], { nullable: 'itemsAndList' })
   images?: ImageLinkModel[];
-
-  @Field((type) => [MovieModel], { nullable: 'itemsAndList' })
-  movies?: MovieModel[];
 }

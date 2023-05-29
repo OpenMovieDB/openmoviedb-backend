@@ -22,11 +22,14 @@ registerEnumType(ImageType, {
 
 @ObjectType()
 export class ImageLinkModel extends BaseModel {
-  @Field()
-  movieId: string;
+  @Field({ nullable: true })
+  movieId?: string;
 
-  @Field()
-  genreId: string;
+  @Field({ nullable: true })
+  genreId?: string;
+
+  @Field({ nullable: true })
+  countryId?: string;
 
   @Field((type) => ImageType)
   type: ImageType;

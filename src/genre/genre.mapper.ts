@@ -9,11 +9,10 @@ type GenreEntity = Genre & { images?: ImageLinkEntity[]; movies?: MovieEntity[] 
 export class GenreMapper implements IMapper<GenreEntity, GenreModel> {
   public mapEntityToModel(entity: GenreEntity): GenreModel {
     const images = entity.images ? new ImageLinkMapper().mapEntitiesToModels(entity.images) : undefined;
-    const movies = entity.movies ? new MovieMapper().mapEntitiesToModels(entity.movies) : undefined;
+
     return {
       ...entity,
       images,
-      movies,
     };
   }
 
