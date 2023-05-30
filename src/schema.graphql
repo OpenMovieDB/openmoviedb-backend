@@ -171,8 +171,10 @@ input FindCountriesInput {
 
 input FindMoviesInput {
   id: UuidFilterInput
+  rating: RatingRelationInput
   slug: StringFilterInput
   title: StringFilterInput
+  year: NumberFilterInput
 }
 
 type GenreModel {
@@ -405,6 +407,18 @@ type Mutation {
   updateUser(data: UpdateUserInput!): User!
 }
 
+input NumberFilterInput {
+  contains: Int
+  equals: Int
+  gt: Int
+  gte: Int
+  in: [Int!]
+  lt: Int
+  lte: Int
+  not: NumberFilterInput
+  notIn: [Int!]
+}
+
 type PageInfo {
   endCursor: String
   hasNextPage: Boolean!
@@ -468,6 +482,23 @@ type RatingModel {
   updatedAt: DateTime!
   value: Int!
   vendorRatings: [VendorRatingModel]
+}
+
+input RatingRelationInput {
+  every: RatingWhereInput
+  none: RatingWhereInput
+  some: RatingWhereInput
+}
+
+input RatingVendorEnumInput {
+  equals: VendorType
+  in: [VendorType!]
+  notIn: [VendorType!]
+}
+
+input RatingWhereInput {
+  value: NumberFilterInput
+  vendorRating: VendorRatingInput
 }
 
 type ReleaseDateModel {
@@ -601,6 +632,12 @@ input UuidFilterInput {
   notIn: [String!]
 }
 
+input VendorRatingInput {
+  every: VendorRatingWhereInput
+  none: VendorRatingWhereInput
+  some: VendorRatingWhereInput
+}
+
 type VendorRatingModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
@@ -610,7 +647,12 @@ type VendorRatingModel {
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
   value: Float!
-  vendor: VendorType!
+  vendor: VendorType
+}
+
+input VendorRatingWhereInput {
+  value: NumberFilterInput
+  vendor: RatingVendorEnumInput
 }
 
 """Vendor rating"""

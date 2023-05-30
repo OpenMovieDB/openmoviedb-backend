@@ -19,7 +19,7 @@ query Movie {
 }
 
 query Movies {
-    movies(data: {title: "Test"}) {
+    movies(data: {title: {contains: "Test"}}) {
         totalCount
         pageInfo {
             hasNextPage

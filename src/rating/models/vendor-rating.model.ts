@@ -15,7 +15,7 @@ registerEnumType(VendorType, {
 
 @ObjectType()
 export class VendorRatingModel extends BaseModel {
-  @Field((type) => VendorType)
+  @Field((type) => VendorType, { nullable: true })
   vendor: VendorType;
 
   @Field((type) => Float)
