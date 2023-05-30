@@ -9,20 +9,20 @@ import CountryLoader from './country.loader';
 
 @Resolver(() => CountryModel)
 export class CountryResolver {
-  constructor(private readonly genreService: CountryService, private readonly genreLoader: CountryLoader) {}
+  constructor(private readonly countryService: CountryService, private readonly countryLoader: CountryLoader) {}
 
   @Query(() => CountryModel)
   async country(@Args('id') id: string): Promise<CountryModel> {
-    return this.genreService.findOne(id);
+    return this.countryService.findOne(id);
   }
 
   @Query(() => CountriesModel)
-  async genres(@Args() pagination: PaginationArgs, @Args('data') dto: FindCountriesInput): Promise<CountriesModel> {
-    return this.genreService.findMany(pagination, dto);
+  async countries(@Args() pagination: PaginationArgs, @Args('data') dto: FindCountriesInput): Promise<CountriesModel> {
+    return this.countryService.findMany(pagination, dto);
   }
 
   @ResolveField('images', () => [ImageLinkModel], { nullable: true })
   async images(@Parent() country: CountryModel): Promise<ImageLinkModel[]> {
-    return this.genreLoader.batchImages.load(country.id);
+    return this.countryLoader.batchImages.load(country.id);
   }
 }

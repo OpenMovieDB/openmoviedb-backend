@@ -217,6 +217,10 @@ input FindCountriesInput {
   title: String
 }
 
+input FindGenresInput {
+  title: String
+}
+
 input FindMoviesInput {
   countries: CountryRelationInput
   createdAt: DateFilterInput
@@ -536,9 +540,10 @@ enum PersonRoleType {
 }
 
 type Query {
+  countries(data: FindCountriesInput!): CountriesModel!
   country(id: String!): CountryModel!
   genre(id: String!): GenreModel!
-  genres(data: FindCountriesInput!): CountriesModel!
+  genres(data: FindGenresInput!): GenresModel!
   me: User!
   media(id: String!): MediaLinkModel!
   movie(id: String!): MovieModel!
