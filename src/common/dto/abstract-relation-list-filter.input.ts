@@ -1,13 +1,16 @@
 import { InputType, Field } from '@nestjs/graphql';
 
-export function AbstractRelationFilterInput<T>(TClass: new () => T) {
+export function AbstractRelationListFilterInput<T>(TClass: new () => T): any {
   @InputType({ isAbstract: true })
   abstract class AbstractRelationInput {
     @Field(() => TClass, { nullable: true })
-    abstract is?: T;
+    abstract every?: T;
 
     @Field(() => TClass, { nullable: true })
-    abstract isNot?: T;
+    abstract some?: T;
+
+    @Field(() => TClass, { nullable: true })
+    abstract none?: T;
   }
 
   return AbstractRelationInput;

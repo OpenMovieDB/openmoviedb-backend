@@ -2,7 +2,6 @@ import { InputType, Field } from '@nestjs/graphql';
 import { NumberFilterInput } from 'src/common/dto/number-filter.input';
 import { AbstractRelationFilterInput } from 'src/common/dto/abstract-relation-filter.input';
 import { AbstractEntityFilterInput } from 'src/common/dto/abstract-entity-filter.input';
-import { AbstractEnumFilterInput } from 'src/common/dto/abstract-enum-filter.input';
 import { RatingVendorEnumInput } from 'src/rating/models/vendor-rating.enum';
 
 @InputType()

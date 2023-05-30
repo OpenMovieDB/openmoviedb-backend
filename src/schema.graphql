@@ -82,6 +82,18 @@ type CountryModelEdge {
   node: CountryModel!
 }
 
+input DateFilterInput {
+  contains: DateTime
+  equals: DateTime
+  gt: DateTime
+  gte: DateTime
+  in: [DateTime!]
+  lt: DateTime
+  lte: DateTime
+  not: DateFilterInput
+  notIn: [DateTime!]
+}
+
 """
 A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
 """
@@ -120,10 +132,34 @@ enum ExternalIDSource {
   WIKIPEDIA
 }
 
+input ExternalIDSourceEnumInput {
+  equals: ExternalIDSource
+  in: [ExternalIDSource!]
+  notIn: [ExternalIDSource!]
+}
+
 """Type of the external id"""
 enum ExternalIDType {
   MOVIE
   PERSON
+}
+
+input ExternalIDTypeEnumInput {
+  equals: ExternalIDType
+  in: [ExternalIDType!]
+  notIn: [ExternalIDType!]
+}
+
+input ExternalIdRelationInput {
+  every: ExternalIdWhereInput
+  none: ExternalIdWhereInput
+  some: ExternalIdWhereInput
+}
+
+input ExternalIdWhereInput {
+  source: ExternalIDSourceEnumInput
+  type: ExternalIDTypeEnumInput
+  value: StringFilterInput
 }
 
 type FactModel {
@@ -170,11 +206,14 @@ input FindCountriesInput {
 }
 
 input FindMoviesInput {
+  createdAt: DateFilterInput
+  externalID: ExternalIdRelationInput
   id: UuidFilterInput
   rating: RatingRelationInput
   slug: StringFilterInput
   title: StringFilterInput
   type: MovieTypeEnumInput
+  updatedAt: DateFilterInput
   year: NumberFilterInput
 }
 
@@ -492,9 +531,8 @@ type RatingModel {
 }
 
 input RatingRelationInput {
-  every: RatingWhereInput
-  none: RatingWhereInput
-  some: RatingWhereInput
+  is: RatingWhereInput
+  isNot: RatingWhereInput
 }
 
 input RatingVendorEnumInput {

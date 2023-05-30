@@ -1,6 +1,7 @@
 import { ExternalID } from '@prisma/client';
 import { IMapper } from '../common/interfaces/mapper.interface';
-import { ExternalIDModel, ExternalIDSource, ExternalIDType } from './models/external-id.model';
+import { ExternalIDModel } from './models/external-id.model';
+import { ExternalIDSource, ExternalIDType } from './models/external-id-type.enum';
 
 type ExternalIDEntity = ExternalID;
 

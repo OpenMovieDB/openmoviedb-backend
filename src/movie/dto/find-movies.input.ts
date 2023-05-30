@@ -4,6 +4,8 @@ import { StringFilterInput } from 'src/common/dto/string-filter.input';
 import { UuidFilterInput } from 'src/common/dto/uuid-filter.input';
 import { RatingRelationInput } from './rating.input';
 import { MovieTypeEnumInput } from '../models/movie-type.enum';
+import { DateFilterInput } from 'src/common/dto/date-filter.input';
+import { ExternalIdRelationInput } from './external-id.input';
 
 @InputType()
 export class FindMoviesInput {
@@ -24,4 +26,13 @@ export class FindMoviesInput {
 
   @Field({ nullable: true })
   rating?: RatingRelationInput;
+
+  @Field({ nullable: true })
+  externalID?: ExternalIdRelationInput;
+
+  @Field({ nullable: true })
+  createdAt?: DateFilterInput;
+
+  @Field({ nullable: true })
+  updatedAt?: DateFilterInput;
 }
