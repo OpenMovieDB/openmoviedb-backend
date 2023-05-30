@@ -82,6 +82,18 @@ type CountryModelEdge {
   node: CountryModel!
 }
 
+input CountryRelationInput {
+  every: CountryWhereInput
+  none: CountryWhereInput
+  some: CountryWhereInput
+}
+
+input CountryWhereInput {
+  id: UuidFilterInput
+  slug: StringFilterInput
+  title: StringFilterInput
+}
+
 input DateFilterInput {
   contains: DateTime
   equals: DateTime
@@ -206,6 +218,7 @@ input FindCountriesInput {
 }
 
 input FindMoviesInput {
+  countries: CountryRelationInput
   createdAt: DateFilterInput
   externalID: ExternalIdRelationInput
   genres: GenreRelationInput

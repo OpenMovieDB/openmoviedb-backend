@@ -7,6 +7,8 @@ import { MovieTypeEnumInput } from '../models/movie-type.enum';
 import { DateFilterInput } from 'src/common/dto/date-filter.input';
 import { ExternalIdRelationInput } from './external-id.input';
 import { GenreRelationInput } from './genre.input';
+import { Country } from '@prisma/client';
+import { CountryRelationInput } from './country.input';
 
 @InputType()
 export class FindMoviesInput {
@@ -33,6 +35,9 @@ export class FindMoviesInput {
 
   @Field({ nullable: true })
   genres?: GenreRelationInput;
+
+  @Field({ nullable: true })
+  countries?: CountryRelationInput;
 
   @Field({ nullable: true })
   createdAt?: DateFilterInput;
