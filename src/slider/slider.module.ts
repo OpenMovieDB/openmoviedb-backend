@@ -3,6 +3,7 @@ import { SliderResolver } from './slider.resolver';
 import { SliderService } from './slider.service';
 
 @Module({
-  providers: [SliderResolver, SliderService]
+  providers: [SliderResolver, SliderService],
+  exports: [SliderService],
 })
 export class SliderModule {}

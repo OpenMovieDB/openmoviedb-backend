@@ -19,24 +19,10 @@ export class MovieService {
     return new MovieMapper().mapEntityToModel(movie);
   }
 
-  async findMany({ after, before, first, last }: PaginationArgs, dto: FindMoviesInput): Promise<MoviesModel> {
+  async findMany({ after, before, first, last }: PaginationArgs, where: FindMoviesInput): Promise<MoviesModel> {
     const res = await findManyCursorConnection(
-      (args) =>
-        this.prismaService.movie.findMany({
-          where: {
-            title: {
-              contains: dto.title,
-            },
-          },
-        }),
-      () =>
-        this.prismaService.movie.count({
-          where: {
-            title: {
-              contains: dto.title,
-            },
-          },
-        }),
+      (args) => this.prismaService.movie.findMany({ where }),
+      () => this.prismaService.movie.count({ where }),
       { after, before, first, last },
     );
 

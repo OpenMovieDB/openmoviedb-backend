@@ -12,16 +12,7 @@ import { SlideModel } from '../../slider/models/slide.model';
 import { ExternalIDModel } from '../../external-id/models/external-id.model';
 import { ImageLinkModel } from '../../image/models/image-link.model';
 import { MediaLinkModel } from '../../media/models/media-link.model';
-
-export enum MovieType {
-  MOVIE,
-  TV_SERIES,
-}
-
-registerEnumType(MovieType, {
-  name: 'MovieType',
-  description: 'Type of the movie',
-});
+import { MovieType } from './movie-type.enum';
 
 @ObjectType()
 export class MovieModel extends BasePageModel {

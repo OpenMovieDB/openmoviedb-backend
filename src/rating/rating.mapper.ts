@@ -1,7 +1,7 @@
 import { Rating, VendorRating } from '@prisma/client';
 import { RatingModel } from './models/rating.model';
 import { IMapper } from '../common/interfaces/mapper.interface';
-import { VendorType } from './models/vendor-rating.model';
+import { VendorType } from './models/vendor-rating.enum';
 
 type RatingEntity = Rating & {
   vendorRatings: VendorRating[];

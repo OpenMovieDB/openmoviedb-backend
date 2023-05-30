@@ -1,5 +1,5 @@
-import { Field, ObjectType, Int, registerEnumType } from '@nestjs/graphql';
-import { ImageModel } from '../../common/models/image.model';
+import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { ImageModel } from '../../image/models/image.model';
 import { SliderModel } from '../../slider/models/slider.model';
 import { BaseModel } from '../../common/models/base.model';
 import { CollectionModel } from '../../collection/models/collection.model';

@@ -4,14 +4,14 @@ import { SliderModel } from './models/slider.model';
 
 type SliderEntity = Slider;
 
-export class SliderMapper implements IMapper<SliderEntity, SliderModel> {
-  public mapEntityToModel(entity: SliderEntity): SliderModel {
-    return {
-      ...entity,
-    };
-  }
+// export class SliderMapper implements IMapper<SliderEntity, SliderModel> {
+//   public mapEntityToModel(entity: SliderEntity): SliderModel {
+//     return {
+//       ...entity,
+//     };
+//   }
 
-  public mapEntitiesToModels(entities: SliderEntity[]): SliderModel[] {
-    return entities.map((entity) => this.mapEntityToModel(entity));
-  }
-}
+//   public mapEntitiesToModels(entities: SliderEntity[]): SliderModel[] {
+//     return entities.map((entity) => this.mapEntityToModel(entity));
+//   }
+// }
