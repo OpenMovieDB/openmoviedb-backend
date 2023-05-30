@@ -208,6 +208,7 @@ input FindCountriesInput {
 input FindMoviesInput {
   createdAt: DateFilterInput
   externalID: ExternalIdRelationInput
+  genres: GenreRelationInput
   id: UuidFilterInput
   rating: RatingRelationInput
   slug: StringFilterInput
@@ -234,6 +235,18 @@ type GenreModel {
 type GenreModelEdge {
   cursor: String!
   node: GenreModel!
+}
+
+input GenreRelationInput {
+  every: GenreWhereInput
+  none: GenreWhereInput
+  some: GenreWhereInput
+}
+
+input GenreWhereInput {
+  id: UuidFilterInput
+  slug: StringFilterInput
+  title: StringFilterInput
 }
 
 type GenresModel {

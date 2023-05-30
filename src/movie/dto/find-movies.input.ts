@@ -6,6 +6,7 @@ import { RatingRelationInput } from './rating.input';
 import { MovieTypeEnumInput } from '../models/movie-type.enum';
 import { DateFilterInput } from 'src/common/dto/date-filter.input';
 import { ExternalIdRelationInput } from './external-id.input';
+import { GenreRelationInput } from './genre.input';
 
 @InputType()
 export class FindMoviesInput {
@@ -29,6 +30,9 @@ export class FindMoviesInput {
 
   @Field({ nullable: true })
   externalID?: ExternalIdRelationInput;
+
+  @Field({ nullable: true })
+  genres?: GenreRelationInput;
 
   @Field({ nullable: true })
   createdAt?: DateFilterInput;
