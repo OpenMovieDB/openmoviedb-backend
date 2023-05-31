@@ -59,7 +59,7 @@ export class MovieModel extends BasePageModel {
   seasons?: SeasonModel[];
 
   @Field()
-  ratingId: string;
+  ratingId?: string;
 
   @Field((type) => RatingModel, { nullable: true })
   rating?: RatingModel;

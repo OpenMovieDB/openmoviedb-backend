@@ -94,6 +94,15 @@ input CountryWhereInput {
   title: StringFilterInput
 }
 
+input CreateMovieInput {
+  description: String
+  originalTitle: String
+  slug: String!
+  title: String!
+  type: String!
+  year: Int!
+}
+
 input DateFilterInput {
   contains: DateTime
   equals: DateTime
@@ -477,6 +486,7 @@ type MoviesModel {
 
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
+  createMovie(data: CreateMovieInput!): MovieModel!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!

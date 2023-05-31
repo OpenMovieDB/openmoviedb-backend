@@ -1,4 +1,4 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { MovieService } from './movie.service';
 import { MovieModel } from './models/movie.model';
 import { FindMoviesInput } from './dto/find-movies.input';
@@ -16,6 +16,7 @@ import { FactModel } from 'src/fact/models/fact.model';
 import { SeasonModel } from 'src/season/models/season.model';
 import { RatingModel } from 'src/rating/models/rating.model';
 import { PageInfoModel } from 'src/page-info/page-info.model';
+import { CreateMovieInput } from './dto/create-movie.input';
 
 @Resolver(() => MovieModel)
 export class MovieResolver {
@@ -84,5 +85,10 @@ export class MovieResolver {
   @ResolveField('pageInfo', () => PageInfoModel, { nullable: true })
   async pageInfo(@Parent() movie: MovieModel): Promise<PageInfoModel> {
     return this.moviesLoader.batchPageInfo.load(movie.pageInfoId);
+  }
+
+  @Mutation(() => MovieModel)
+  async createMovie(@Args('data') dto: CreateMovieInput): Promise<MovieModel> {
+    return this.movieService.create(dto);
   }
 }
