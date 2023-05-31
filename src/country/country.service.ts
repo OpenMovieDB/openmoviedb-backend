@@ -6,6 +6,7 @@ import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection
 import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { FindCountriesInput } from './dto/find-countries.input';
 import { CountriesModel } from './models/countries.model';
+import { CreateCountriesInput } from './dto/create-countries.input';
 
 @Injectable()
 export class CountryService {
@@ -65,5 +66,25 @@ export class CountryService {
       movieId: movie.id,
       countries: new CountryMapper().mapEntitiesToModels(movie.countries),
     }));
+  }
+
+  async createMany({ items }: CreateCountriesInput): Promise<CountryModel[]> {
+    const countries = await this.prismaService.$transaction(
+      items.map((item) =>
+        this.prismaService.country.create({
+          data: {
+            ...item,
+            pageInfo: {
+              create: {
+                description: null,
+                title: null,
+              },
+            },
+          },
+        }),
+      ),
+    );
+
+    return new CountryMapper().mapEntitiesToModels(countries);
   }
 }

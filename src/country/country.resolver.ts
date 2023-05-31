@@ -1,4 +1,4 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { ImageLinkModel } from 'src/image/models/image-link.model';
 import { CountryService } from './country.service';
@@ -6,6 +6,8 @@ import { CountriesModel } from './models/countries.model';
 import { CountryModel } from './models/country.model';
 import { FindCountriesInput } from './dto/find-countries.input';
 import CountryLoader from './country.loader';
+import { CreateCountryInput } from './dto/create-country.input';
+import { CreateCountriesInput } from './dto/create-countries.input';
 
 @Resolver(() => CountryModel)
 export class CountryResolver {
@@ -24,5 +26,10 @@ export class CountryResolver {
   @ResolveField('images', () => [ImageLinkModel], { nullable: true })
   async images(@Parent() country: CountryModel): Promise<ImageLinkModel[]> {
     return this.countryLoader.batchImages.load(country.id);
+  }
+
+  @Mutation(() => [CountryModel])
+  async createMany(@Args('data') data: CreateCountriesInput): Promise<CountryModel[]> {
+    return this.countryService.createMany(data);
   }
 }
