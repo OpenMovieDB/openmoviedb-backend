@@ -8,6 +8,7 @@ import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection
 import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { FindGenresInput } from 'src/genre/dto/find-genres.input';
 import { GenresModel } from './models/genres.model';
+import { CreateGenresInput } from './dto/create-genres.input';
 
 @Injectable()
 export class GenreService {
@@ -67,5 +68,25 @@ export class GenreService {
       movieId: movie.id,
       genres: new GenreMapper().mapEntitiesToModels(movie.genres),
     }));
+  }
+
+  async createMany({ items }: CreateGenresInput): Promise<GenreModel[]> {
+    const countries = await this.prismaService.$transaction(
+      items.map((item) =>
+        this.prismaService.genre.create({
+          data: {
+            ...item,
+            pageInfo: {
+              create: {
+                description: null,
+                title: null,
+              },
+            },
+          },
+        }),
+      ),
+    );
+
+    return new GenreMapper().mapEntitiesToModels(countries);
   }
 }
