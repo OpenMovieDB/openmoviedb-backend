@@ -1,7 +1,8 @@
-import { Field } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { CreateFactInput } from './create-fact.input';
 
+@InputType()
 export class CreateFactsInput {
-  @Field()
+  @Field(() => [CreateFactInput])
   items: CreateFactInput[];
 }
