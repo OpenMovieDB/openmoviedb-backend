@@ -94,12 +94,24 @@ input CountryWhereInput {
   title: StringFilterInput
 }
 
+input CreateExternalIdInput {
+  movieId: String
+  personId: String
+  source: ExternalIDSource!
+  type: ExternalIDType!
+  value: String!
+}
+
+input CreateExternalIdsInput {
+  ids: [CreateExternalIdInput!]!
+}
+
 input CreateMovieInput {
   description: String
   originalTitle: String
   slug: String!
   title: String!
-  type: String!
+  type: MovieType!
   year: Int!
 }
 
@@ -486,6 +498,7 @@ type MoviesModel {
 
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
+  createMany(data: CreateExternalIdsInput!): [ExternalIDModel!]!
   createMovie(data: CreateMovieInput!): MovieModel!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!

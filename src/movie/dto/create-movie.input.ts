@@ -1,11 +1,5 @@
-import { InputType, Field, PickType, Int } from '@nestjs/graphql';
-import { NumberFilterInput } from 'src/common/dto/number-filter.input';
-import { AbstractRelationFilterInput } from 'src/common/dto/abstract-relation-filter.input';
-import { AbstractEntityFilterInput } from 'src/common/dto/abstract-entity-filter.input';
-import { RatingVendorEnumInput } from 'src/rating/models/vendor-rating.enum';
-import { MovieModel } from '../models/movie.model';
-import { type } from 'os';
-import { MovieType } from '@prisma/client';
+import { InputType, Field, Int } from '@nestjs/graphql';
+import { MovieType } from '../models/movie-type.enum';
 
 @InputType()
 export class CreateMovieInput {
@@ -13,6 +7,7 @@ export class CreateMovieInput {
   slug: string;
 
   @Field()
+  @Field((type) => MovieType)
   type: MovieType;
 
   @Field()
