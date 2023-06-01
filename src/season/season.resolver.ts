@@ -11,12 +11,12 @@ export class SeasonResolver {
   constructor(private readonly seasonService: SeasonService) {}
 
   @Mutation(() => [SeasonModel])
-  async createMany(@Args('data') data: CreateSeasonsInput): Promise<SeasonModel[]> {
+  async createSeasons(@Args('data') data: CreateSeasonsInput): Promise<SeasonModel[]> {
     return this.seasonService.createMany(data);
   }
 
   @Mutation(() => SeasonModel)
-  async update(@Args('data') data: UpdateSeasonInput): Promise<SeasonModel> {
+  async updateSeasons(@Args('data') data: UpdateSeasonInput): Promise<SeasonModel> {
     return this.seasonService.update(data);
   }
 

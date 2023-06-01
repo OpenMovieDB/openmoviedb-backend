@@ -9,12 +9,12 @@ export class PersonResolver {
   constructor(private readonly personService: PersonService) {}
 
   @Mutation(() => PersonModel)
-  async create(@Args('data') data: CreatePersonInput): Promise<PersonModel> {
+  async createPerson(@Args('data') data: CreatePersonInput): Promise<PersonModel> {
     return this.personService.create(data);
   }
 
   @Mutation(() => PersonModel)
-  async update(@Args('data') data: UpdatePersonInput): Promise<PersonModel> {
+  async updatePerson(@Args('data') data: UpdatePersonInput): Promise<PersonModel> {
     return this.personService.update(data);
   }
 }

@@ -8,7 +8,7 @@ export class PageInfoResolver {
   constructor(private readonly pageInfoService: PageInfoService) {}
 
   @Mutation(() => PageInfoModel)
-  async update(@Args('data') data: UpdatePageInfoInput): Promise<PageInfoModel> {
+  async updatePageInfo(@Args('data') data: UpdatePageInfoInput): Promise<PageInfoModel> {
     return this.pageInfoService.update(data);
   }
 }

@@ -9,12 +9,12 @@ export class SeoResolver {
   constructor(private readonly seoService: SeoService) {}
 
   @Mutation(() => [SeoModel])
-  async createMany(@Args('data') data: CreateManySeoInput): Promise<SeoModel[]> {
+  async createSeos(@Args('data') data: CreateManySeoInput): Promise<SeoModel[]> {
     return this.seoService.createMany(data);
   }
 
   @Mutation(() => [SeoModel])
-  async updateMany(@Args('data') data: UpdateManySeoInput): Promise<SeoModel[]> {
+  async updateSeos(@Args('data') data: UpdateManySeoInput): Promise<SeoModel[]> {
     return this.seoService.updateMany(data);
   }
 }

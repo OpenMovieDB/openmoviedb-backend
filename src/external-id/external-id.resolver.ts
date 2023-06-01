@@ -8,7 +8,7 @@ export class ExternalIdResolver {
   constructor(private readonly externalIdService: ExternalIdService) {}
 
   @Mutation(() => [ExternalIDModel])
-  async createMany(@Args('data') data: CreateExternalIdsInput): Promise<ExternalIDModel[]> {
+  async createExternalIds(@Args('data') data: CreateExternalIdsInput): Promise<ExternalIDModel[]> {
     return this.externalIdService.createMany(data);
   }
 }

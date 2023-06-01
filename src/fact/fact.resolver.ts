@@ -8,7 +8,7 @@ export class FactResolver {
   constructor(private readonly factService: FactService) {}
 
   @Mutation(() => [FactModel])
-  async createMany(@Args('data') data: CreateFactsInput): Promise<FactModel[]> {
+  async createFacts(@Args('data') data: CreateFactsInput): Promise<FactModel[]> {
     return this.factService.createMany(data);
   }
 }

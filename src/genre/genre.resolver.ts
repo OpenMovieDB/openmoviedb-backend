@@ -23,12 +23,12 @@ export class GenreResolver {
   }
 
   @ResolveField('images', () => [ImageLinkModel], { nullable: true })
-  async images(@Parent() genre: GenreModel): Promise<ImageLinkModel[]> {
+  async genreImages(@Parent() genre: GenreModel): Promise<ImageLinkModel[]> {
     return this.genreLoader.batchImages.load(genre.id);
   }
 
   @Mutation(() => [GenreModel])
-  async createMany(@Args('data') data: CreateGenresInput): Promise<GenreModel[]> {
+  async createGenres(@Args('data') data: CreateGenresInput): Promise<GenreModel[]> {
     return this.genreService.createMany(data);
   }
 }

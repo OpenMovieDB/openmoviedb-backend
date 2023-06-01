@@ -15,7 +15,7 @@ import { ReleaseDateModel } from 'src/release-date/models/release-date.model';
 import { FactModel } from 'src/fact/models/fact.model';
 import { SeasonModel } from 'src/season/models/season.model';
 import { RatingModel } from 'src/rating/models/rating.model';
-import { PageInfoModel } from 'src/page-info/page-info.model';
+import { PageInfoModel } from 'src/page-info/models/page-info.model';
 import { CreateMovieInput } from './dto/create-movie.input';
 
 @Resolver(() => MovieModel)

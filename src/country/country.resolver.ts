@@ -24,12 +24,12 @@ export class CountryResolver {
   }
 
   @ResolveField('images', () => [ImageLinkModel], { nullable: true })
-  async images(@Parent() country: CountryModel): Promise<ImageLinkModel[]> {
+  async countryImages(@Parent() country: CountryModel): Promise<ImageLinkModel[]> {
     return this.countryLoader.batchImages.load(country.id);
   }
 
   @Mutation(() => [CountryModel])
-  async createMany(@Args('data') data: CreateCountriesInput): Promise<CountryModel[]> {
+  async createCountries(@Args('data') data: CreateCountriesInput): Promise<CountryModel[]> {
     return this.countryService.createMany(data);
   }
 }

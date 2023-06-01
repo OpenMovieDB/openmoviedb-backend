@@ -18,7 +18,7 @@ registerEnumType(MediaType, {
 @ObjectType()
 export class MediaLinkModel extends BaseModel {
   @Field()
-  movieId: string;
+  movieId?: string;
 
   @Field((type) => MediaType)
   type: MediaType;

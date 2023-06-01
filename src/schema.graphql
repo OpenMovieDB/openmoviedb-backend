@@ -67,7 +67,7 @@ type CountryModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  images: [ImageLinkModel]
+  images: [ImageLinkModel!]
   pageInfo: PageInfoModel!
   pageInfoId: String!
   slug: String!
@@ -94,6 +94,15 @@ input CountryWhereInput {
   title: StringFilterInput
 }
 
+input CreateCountriesInput {
+  items: [CreateCountryInput!]!
+}
+
+input CreateCountryInput {
+  slug: String!
+  title: String!
+}
+
 input CreateEpisodeInput {
   number: Int!
   title: String!
@@ -104,6 +113,37 @@ input CreateEpisodesInput {
 
   """Season ID"""
   seasonId: String!
+}
+
+input CreateExternalIdInput {
+  movieId: String
+  personId: String
+  source: ExternalIDSource!
+  type: ExternalIDType!
+  value: String!
+}
+
+input CreateExternalIdsInput {
+  ids: [CreateExternalIdInput!]!
+}
+
+input CreateFactInput {
+  content: String!
+  isSpoiler: Boolean!
+  movieId: String!
+}
+
+input CreateFactsInput {
+  items: [CreateFactInput!]!
+}
+
+input CreateGenreInput {
+  slug: String!
+  title: String!
+}
+
+input CreateGenresInput {
+  items: [CreateGenreInput!]!
 }
 
 input CreateManySeoInput {
@@ -122,6 +162,15 @@ input CreateMovieInput {
 input CreatePersonInput {
   name: String!
   slug: String!
+}
+
+input CreateSeasonInput {
+  movieId: String!
+  number: Int!
+}
+
+input CreateSeasonsInput {
+  items: [CreateSeasonInput!]!
 }
 
 input CreateSeoInput {
@@ -276,7 +325,7 @@ type GenreModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  images: [ImageLinkModel]
+  images: [ImageLinkModel!]
   pageInfo: PageInfoModel!
   pageInfoId: String!
   slug: String!
@@ -515,15 +564,22 @@ type MoviesModel {
 type Mutation {
   addEpisodes(data: CreateEpisodesInput!): SeasonModel!
   changePassword(data: ChangePasswordInput!): User!
-  create(data: CreatePersonInput!): PersonModel!
-  createMany(data: CreateManySeoInput!): [SeoModel!]!
+  createCountries(data: CreateCountriesInput!): [CountryModel!]!
+  createExternalIds(data: CreateExternalIdsInput!): [ExternalIDModel!]!
+  createFacts(data: CreateFactsInput!): [FactModel!]!
+  createGenres(data: CreateGenresInput!): [GenreModel!]!
   createMovie(data: CreateMovieInput!): MovieModel!
+  createPerson(data: CreatePersonInput!): PersonModel!
+  createSeasons(data: CreateSeasonsInput!): [SeasonModel!]!
+  createSeos(data: CreateManySeoInput!): [SeoModel!]!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
-  update(data: UpdatePageInfoInput!): PageInfoModel!
   updateEpisodes(data: UpdateEpisodeInput!): SeasonModel!
-  updateMany(data: UpdateManySeoInput!): [SeoModel!]!
+  updatePageInfo(data: UpdatePageInfoInput!): PageInfoModel!
+  updatePerson(data: UpdatePersonInput!): PersonModel!
+  updateSeasons(data: UpdateSeasonInput!): SeasonModel!
+  updateSeos(data: UpdateManySeoInput!): [SeoModel!]!
   updateUser(data: UpdateUserInput!): User!
 }
 
@@ -745,6 +801,17 @@ input UpdatePageInfoInput {
   description: String
   id: String!
   title: String
+}
+
+input UpdatePersonInput {
+  id: String!
+  name: String!
+  slug: String!
+}
+
+input UpdateSeasonInput {
+  id: String!
+  number: Int
 }
 
 input UpdateSeoInput {
