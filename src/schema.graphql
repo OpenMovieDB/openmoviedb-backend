@@ -94,13 +94,14 @@ input CountryWhereInput {
   title: StringFilterInput
 }
 
-input CreateCountriesInput {
-  items: [CreateCountryInput!]!
+input CreateFactInput {
+  content: String!
+  isSpoiler: Boolean!
+  movieId: String!
 }
 
-input CreateCountryInput {
-  slug: String!
-  title: String!
+input CreateFactsInput {
+  items: [CreateFactInput!]!
 }
 
 input CreateMovieInput {
@@ -110,6 +111,11 @@ input CreateMovieInput {
   title: String!
   type: MovieType!
   year: Int!
+}
+
+input CreatePersonInput {
+  name: String!
+  slug: String!
 }
 
 input DateFilterInput {
@@ -495,11 +501,13 @@ type MoviesModel {
 
 type Mutation {
   changePassword(data: ChangePasswordInput!): User!
-  createMany(data: CreateCountriesInput!): [CountryModel!]!
+  create(data: CreatePersonInput!): PersonModel!
+  createMany(data: CreateFactsInput!): [FactModel!]!
   createMovie(data: CreateMovieInput!): MovieModel!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
+  update(data: UpdatePageInfoInput!): PageInfoModel!
   updateUser(data: UpdateUserInput!): User!
 }
 
@@ -704,6 +712,12 @@ type Token {
 
   """JWT refresh token"""
   refreshToken: JWT!
+}
+
+input UpdatePageInfoInput {
+  description: String
+  id: String!
+  title: String
 }
 
 input UpdateUserInput {
