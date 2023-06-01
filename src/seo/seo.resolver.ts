@@ -1,4 +1,20 @@
-import { Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { SeoModel } from './models/seo.model';
+import { SeoService } from './seo.service';
+import { CreateManySeoInput } from './dto/create-many-seo-input';
+import { UpdateManySeoInput } from './dto/update-many-seo-input';
 
-@Resolver()
-export class SeoResolver {}
+@Resolver(() => SeoModel)
+export class SeoResolver {
+  constructor(private readonly seoService: SeoService) {}
+
+  @Mutation(() => [SeoModel])
+  async createMany(@Args('data') data: CreateManySeoInput): Promise<SeoModel[]> {
+    return this.seoService.createMany(data);
+  }
+
+  @Mutation(() => [SeoModel])
+  async updateMany(@Args('data') data: UpdateManySeoInput): Promise<SeoModel[]> {
+    return this.seoService.updateMany(data);
+  }
+}

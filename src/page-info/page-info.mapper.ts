@@ -1,6 +1,6 @@
 import { PageInfo, Seo } from '@prisma/client';
 import { IMapper } from '../common/interfaces/mapper.interface';
-import { PageInfoModel } from 'src/page-info/page-info.model';
+import { PageInfoModel } from 'src/page-info/models/page-info.model';
 import { SeoEntity, SeoMapper } from 'src/seo/seo.mapper';
 
 type PageInfoEntity = PageInfo & { seo: SeoEntity[] };

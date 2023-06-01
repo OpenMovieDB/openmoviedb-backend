@@ -1,5 +1,5 @@
 import { Args, Mutation, Resolver } from '@nestjs/graphql';
-import { PageInfoModel } from './page-info.model';
+import { PageInfoModel } from './models/page-info.model';
 import { UpdatePageInfoInput } from './dto/update-page-info.input';
 import { PageInfoService } from './page-info.service';
 

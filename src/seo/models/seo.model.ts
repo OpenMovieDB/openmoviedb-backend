@@ -1,22 +1,13 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { BaseModel } from '../common/models/base.model';
-import { ImageModel } from '../image/models/image.model';
+import { BaseModel } from '../../common/models/base.model';
 import { ImageLinkModel } from 'src/image/models/image-link.model';
-
-export enum SeoType {
-  OPEN_GRAPH,
-  TWITTER_CARD,
-  JSONLD,
-  BASIC,
-}
-
-registerEnumType(SeoType, {
-  name: 'SeoType',
-  description: 'Type of SEO',
-});
+import { SeoType } from './seo-type.enum';
 
 @ObjectType()
 export class SeoModel extends BaseModel {
+  @Field()
+  pageInfoId: string;
+
   @Field({ nullable: true })
   title?: string | null;
 

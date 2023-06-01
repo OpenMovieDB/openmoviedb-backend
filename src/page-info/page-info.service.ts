@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { PageInfoModel } from './page-info.model';
+import { PageInfoModel } from './models/page-info.model';
 import { PageInfoMapper } from './page-info.mapper';
 import { UpdatePageInfoInput } from './dto/update-page-info.input';
 
