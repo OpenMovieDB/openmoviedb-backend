@@ -325,8 +325,8 @@ model Seo {
   image       ImageLink? @relation(fields: [imageLinkId], references: [id])
   imageLinkId String?    @db.Uuid
   type        SeoType
-  pageInfo    PageInfo?  @relation(fields: [pageInfoId], references: [id])
-  pageInfoId  String?    @db.Uuid
+  pageInfo    PageInfo   @relation(fields: [pageInfoId], references: [id])
+  pageInfoId  String     @db.Uuid
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
