@@ -329,6 +329,8 @@ model Seo {
   pageInfoId  String?    @db.Uuid
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
+
+  @@unique([pageInfoId, type])
 }
 
 // ====================================================

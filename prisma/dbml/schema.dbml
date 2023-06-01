@@ -215,6 +215,10 @@ Table Seo {
   pageInfoId String
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+
+  indexes {
+    (pageInfoId, type) [unique]
+  }
 }
 
 Table Image {
