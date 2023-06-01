@@ -175,6 +175,8 @@ model Season {
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@unique([movieId, number])
 }
 
 // ====================================================
@@ -182,15 +184,19 @@ model Season {
 // ====================================================
 
 model Episode {
-  id          String     @id @default(uuid()) @db.Uuid
-  image       ImageLink? @relation(fields: [imageLinkId], references: [id])
-  imageLinkId String?    @db.Uuid
-  number      Int
-  title       String
-  season      Season     @relation(fields: [seasonId], references: [id])
-  seasonId    String     @db.Uuid
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
+  id            String      @id @default(uuid()) @db.Uuid
+  image         ImageLink?  @relation(fields: [imageLinkId], references: [id])
+  imageLinkId   String?     @db.Uuid
+  number        Int
+  title         String
+  season        Season      @relation(fields: [seasonId], references: [id])
+  seasonId      String      @db.Uuid
+  releaseDate   ReleaseDate @relation(fields: [releaseDateId], references: [id])
+  releaseDateId String      @db.Uuid
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+
+  @@unique([seasonId, number])
 }
 
 // ====================================================
@@ -215,8 +221,9 @@ model ReleaseDate {
   movieId   String          @db.Uuid
   Season    Season[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  Episode   Episode[]
 }
 
 // ====================================================

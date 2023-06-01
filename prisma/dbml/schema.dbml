@@ -115,6 +115,10 @@ Table Season {
   releaseDateId String [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+
+  indexes {
+    (movieId, number) [unique]
+  }
 }
 
 Table Episode {
@@ -125,8 +129,14 @@ Table Episode {
   title String [not null]
   season Season [not null]
   seasonId String [not null]
+  releaseDate ReleaseDate [not null]
+  releaseDateId String [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+
+  indexes {
+    (seasonId, number) [unique]
+  }
 }
 
 Table ReleaseDate {
@@ -140,6 +150,7 @@ Table ReleaseDate {
   Season Season [not null]
   createdAt DateTime [default: `now()`, not null]
   updatedAt DateTime [not null]
+  Episode Episode [not null]
 }
 
 Table Genre {
@@ -505,6 +516,8 @@ Ref: Season.releaseDateId > ReleaseDate.id
 Ref: Episode.imageLinkId > ImageLink.id
 
 Ref: Episode.seasonId > Season.id
+
+Ref: Episode.releaseDateId > ReleaseDate.id
 
 Ref: ReleaseDate.countryId > Country.id
 
