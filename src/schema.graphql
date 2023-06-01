@@ -94,6 +94,18 @@ input CountryWhereInput {
   title: StringFilterInput
 }
 
+input CreateEpisodeInput {
+  number: Int!
+  title: String!
+}
+
+input CreateEpisodesInput {
+  items: [CreateEpisodeInput!]!
+
+  """Season ID"""
+  seasonId: String!
+}
+
 input CreateManySeoInput {
   items: [CreateSeoInput!]!
 }
@@ -501,6 +513,7 @@ type MoviesModel {
 }
 
 type Mutation {
+  addEpisodes(data: CreateEpisodesInput!): SeasonModel!
   changePassword(data: ChangePasswordInput!): User!
   create(data: CreatePersonInput!): PersonModel!
   createMany(data: CreateManySeoInput!): [SeoModel!]!
@@ -509,6 +522,7 @@ type Mutation {
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   update(data: UpdatePageInfoInput!): PageInfoModel!
+  updateEpisodes(data: UpdateEpisodeInput!): SeasonModel!
   updateMany(data: UpdateManySeoInput!): [SeoModel!]!
   updateUser(data: UpdateUserInput!): User!
 }
@@ -715,6 +729,12 @@ type Token {
 
   """JWT refresh token"""
   refreshToken: JWT!
+}
+
+input UpdateEpisodeInput {
+  id: String!
+  number: Int
+  title: String
 }
 
 input UpdateManySeoInput {

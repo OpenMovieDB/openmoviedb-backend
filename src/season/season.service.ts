@@ -5,8 +5,10 @@ import { SeasonModel } from './models/season.model';
 import { SeasonMapper } from './mappers/season.mapper';
 import { CreateSeasonsInput } from './dto/create-seasons.input';
 import { ReleaseDateType } from '@prisma/client';
-import { UpdateSeasonsInput } from './dto/update-seasons.input';
-
+import { CreateEpisodesInput } from './dto/create-episodes.input';
+import { UpdateSeasonInput } from './dto/update-season.input';
+import { EpisodeMapper } from './mappers/episode.mapper';
+import { UpdateEpisodeInput } from './dto/update-episode.input';
 @Injectable()
 export class SeasonService {
   private readonly defaultInclude = {
@@ -58,21 +60,57 @@ export class SeasonService {
     return new SeasonMapper().mapEntitiesToModels(seasons);
   }
 
-  async updateMany({ items }: UpdateSeasonsInput): Promise<SeasonModel[]> {
-    const seasons = await this.prismaService.$transaction(
-      items.map((item) =>
-        this.prismaService.season.update({
-          where: {
-            id: item.id,
-          },
-          data: {
-            number: item.number,
-          },
-          ...this.defaultInclude,
-        }),
-      ),
-    );
+  async update({ id, ...data }: UpdateSeasonInput): Promise<SeasonModel> {
+    const season = await this.prismaService.season.update({
+      where: {
+        id,
+      },
+      data: {
+        ...data,
+      },
+      ...this.defaultInclude,
+    });
 
-    return new SeasonMapper().mapEntitiesToModels(seasons);
+    return new SeasonMapper().mapEntityToModel(season);
+  }
+
+  async addEpisodes({ seasonId, items }: CreateEpisodesInput): Promise<SeasonModel> {
+    const season = await this.prismaService.season.update({
+      where: {
+        id: seasonId,
+      },
+      data: {
+        episodes: {
+          create: items,
+        },
+      },
+      ...this.defaultInclude,
+    });
+
+    return new SeasonMapper().mapEntityToModel(season);
+  }
+
+  async updateEpisode({ id, ...data }: UpdateEpisodeInput): Promise<SeasonModel> {
+    const season = await this.prismaService.episode.update({
+      where: {
+        id,
+      },
+      data: {
+        ...data,
+      },
+      include: {
+        image: {
+          include: {
+            image: {
+              include: {
+                assets: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    return new EpisodeMapper().mapEntityToModel(season);
   }
 }
