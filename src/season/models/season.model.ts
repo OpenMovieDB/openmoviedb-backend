@@ -6,7 +6,7 @@ import { BaseModel } from 'src/common/models/base.model';
 @ObjectType()
 export class SeasonModel extends BaseModel {
   @Field()
-  movieId: string;
+  movieId?: string;
 
   @Field(() => Int)
   number: number;
