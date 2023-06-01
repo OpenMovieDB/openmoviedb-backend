@@ -165,13 +165,13 @@ model Fact {
 // ====================================================
 
 model Season {
-  id            String      @id @default(uuid()) @db.Uuid
+  id            String       @id @default(uuid()) @db.Uuid
   number        Int
   episodes      Episode[]
-  movie         Movie       @relation(fields: [movieId], references: [id])
-  movieId       String      @db.Uuid
-  releaseDate   ReleaseDate @relation(fields: [releaseDateId], references: [id])
-  releaseDateId String      @db.Uuid
+  movie         Movie        @relation(fields: [movieId], references: [id])
+  movieId       String       @db.Uuid
+  releaseDate   ReleaseDate? @relation(fields: [releaseDateId], references: [id])
+  releaseDateId String?      @db.Uuid
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -184,17 +184,17 @@ model Season {
 // ====================================================
 
 model Episode {
-  id            String      @id @default(uuid()) @db.Uuid
-  image         ImageLink?  @relation(fields: [imageLinkId], references: [id])
-  imageLinkId   String?     @db.Uuid
+  id            String       @id @default(uuid()) @db.Uuid
+  image         ImageLink?   @relation(fields: [imageLinkId], references: [id])
+  imageLinkId   String?      @db.Uuid
   number        Int
   title         String
-  season        Season      @relation(fields: [seasonId], references: [id])
-  seasonId      String      @db.Uuid
-  releaseDate   ReleaseDate @relation(fields: [releaseDateId], references: [id])
-  releaseDateId String      @db.Uuid
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
+  season        Season       @relation(fields: [seasonId], references: [id])
+  seasonId      String       @db.Uuid
+  releaseDate   ReleaseDate? @relation(fields: [releaseDateId], references: [id])
+  releaseDateId String?      @db.Uuid
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
 
   @@unique([seasonId, number])
 }
@@ -215,15 +215,15 @@ model ReleaseDate {
   id        String          @id @default(uuid()) @db.Uuid
   type      ReleaseDateType
   date      DateTime
-  country   Country         @relation(fields: [countryId], references: [id])
-  countryId String          @db.Uuid
-  movie     Movie           @relation(fields: [movieId], references: [id])
-  movieId   String          @db.Uuid
-  Season    Season[]
+  country   Country?        @relation(fields: [countryId], references: [id])
+  countryId String?         @db.Uuid
+  movie     Movie?          @relation(fields: [movieId], references: [id])
+  movieId   String?         @db.Uuid
+  seasons   Season[]
+  episodes  Episode[]
 
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  Episode   Episode[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // ====================================================
