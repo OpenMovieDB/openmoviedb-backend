@@ -219,8 +219,9 @@ model ReleaseDate {
   countryId String?         @db.Uuid
   movie     Movie?          @relation(fields: [movieId], references: [id])
   movieId   String?         @db.Uuid
-  seasons   Season[]
-  episodes  Episode[]
+
+  seasons  Season[]
+  episodes Episode[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
