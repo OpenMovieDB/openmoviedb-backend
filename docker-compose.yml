@@ -9,3 +9,15 @@ services:
     command: start-single-node --insecure
     volumes:
       - "${PWD}/.docker/cockroach-data/crdb:/cockroach/cockroach-data"
+  
+  minio:
+    image: minio/minio:latest
+    volumes:
+      - "${PWD}/.docker/minio/data:/data"
+      - "${PWD}/.docker/minio/config:/root/.minio"
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: ${MINIO_ACCESS_KEY}
+      MINIO_SECRET_KEY: ${MINIO_SECRET_KEY}
+    command: server /data
