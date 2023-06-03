@@ -23,6 +23,7 @@ import { CollectionModule } from './collection/collection.module';
 import { PageModule } from './page/page.module';
 import { SliderModule } from './slider/slider.module';
 import { BlockModule } from './block/block.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -61,6 +62,7 @@ import { BlockModule } from './block/block.module';
     PageModule,
     SliderModule,
     BlockModule,
+    FileModule,
   ],
 })
 export class AppModule {}
