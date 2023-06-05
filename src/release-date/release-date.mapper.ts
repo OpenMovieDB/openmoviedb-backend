@@ -1,6 +1,7 @@
 import { ReleaseDate } from '@prisma/client';
 import { IMapper } from '../common/interfaces/mapper.interface';
-import { ReleaseDateModel, ReleaseDateType } from './models/release-date.model';
+import { ReleaseDateModel } from './models/release-date.model';
+import { ReleaseDateType } from './models/release-date-type.enum';
 
 type ReleaseDateEntity = ReleaseDate;
 

@@ -164,6 +164,19 @@ input CreatePersonInput {
   slug: String!
 }
 
+input CreateReleaseDateInput {
+  countryId: String!
+  date: DateTime!
+  episodeId: String!
+  movieId: String!
+  seasonId: String!
+  type: ReleaseDateType!
+}
+
+input CreateReleaseDatesInput {
+  items: [CreateReleaseDateInput!]!
+}
+
 input CreateSeasonInput {
   movieId: String!
   number: Int!
@@ -360,7 +373,7 @@ type GenresModel {
 
 """Format of the image asset"""
 enum ImageAssetFormat {
-  AVIF
+  AVI
   GIF
   JPEG
   PNG
@@ -570,6 +583,7 @@ type Mutation {
   createGenres(data: CreateGenresInput!): [GenreModel!]!
   createMovie(data: CreateMovieInput!): MovieModel!
   createPerson(data: CreatePersonInput!): PersonModel!
+  createReleaseDates(data: CreateReleaseDatesInput!): [ReleaseDateModel!]!
   createSeasons(data: CreateSeasonsInput!): [SeasonModel!]!
   createSeos(data: CreateManySeoInput!): [SeoModel!]!
   login(data: LoginInput!): Auth!
