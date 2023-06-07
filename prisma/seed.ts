@@ -33,7 +33,7 @@ async function main() {
 
   const person = await prisma.person.create({
     data: {
-      slug: 'test-person',
+      slug: 'test-person1',
       name: 'Test Person',
     },
   });
@@ -47,7 +47,7 @@ async function main() {
 
   const genre = await prisma.genre.create({
     data: {
-      slug: 'test-genre',
+      slug: 'test-genre2',
       pageInfo: {
         connect: {
           id: pageInfo.id,
@@ -59,7 +59,7 @@ async function main() {
 
   const country = await prisma.country.create({
     data: {
-      slug: 'test-country',
+      slug: 'test-country3',
       pageInfo: {
         connect: {
           id: pageInfo.id,
@@ -71,7 +71,7 @@ async function main() {
 
   const movie = await prisma.movie.create({
     data: {
-      slug: 'test-movie_1',
+      slug: 'test-movie_4',
       type: MovieType.MOVIE,
       title: 'Test Movie 2',
       year: 2023,
