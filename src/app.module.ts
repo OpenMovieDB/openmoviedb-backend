@@ -1,7 +1,7 @@
 import { Logger, Module } from '@nestjs/common';
 import { loggingMiddleware, PrismaModule } from 'nestjs-prisma';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GqlConfigService } from './common/configs/gql-config.service';
 import config from './common/configs/config';
@@ -39,7 +39,6 @@ import { FileModule } from './file/file.module';
         ],
       },
     }),
-
     GraphQLModule.forRootAsync<ApolloDriverConfig>({
       driver: ApolloDriver,
       useClass: GqlConfigService,
