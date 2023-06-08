@@ -11,7 +11,7 @@ export class FileService {
 
   constructor(private readonly s3Service: S3Service, private readonly configService: ConfigService) {}
 
-  async upload(filePath: string, file: Buffer): Promise<boolean> {
+  async upload(filePath: string, file: Buffer, contentType: string): Promise<boolean> {
     const bucket = this.configService.get<string>('S3_BUCKET');
 
     const objectParams: Types.PutObjectRequest = {
@@ -19,6 +19,7 @@ export class FileService {
       Key: filePath,
       Body: file,
       ACL: 'public-read',
+      ContentType: contentType,
     };
 
     try {
