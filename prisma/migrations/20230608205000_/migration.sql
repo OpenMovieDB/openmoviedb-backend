@@ -29,7 +29,7 @@ CREATE TYPE "ImageType" AS ENUM ('POSTER', 'BACKDROP', 'LOGO', 'PHOTO', 'STILL',
 CREATE TYPE "ImageAssetFormat" AS ENUM ('AVIF', 'GIF', 'JPEG', 'PNG', 'WEBP');
 
 -- CreateEnum
-CREATE TYPE "ImageAssetWidth" AS ENUM ('W375', 'W768', 'W1024', 'W1280', 'W1366', 'W1600', 'W1920', 'W2560');
+CREATE TYPE "ImageAssetWidth" AS ENUM ('W375', 'W768', 'W1024', 'W1366', 'W1920', 'ORIGINAL');
 
 -- CreateEnum
 CREATE TYPE "MediaType" AS ENUM ('TRAILER', 'TEASER', 'BACKDROP', 'VIDEO', 'AUDIO');
@@ -46,9 +46,9 @@ CREATE TYPE "BlockType" AS ENUM ('TEXT', 'IMAGE', 'VIDEO', 'MOVIE_COLLECTION', '
 -- CreateTable
 CREATE TABLE "User" (
     "id" UUID NOT NULL,
-    "email" STRING NOT NULL,
-    "password" STRING NOT NULL,
-    "name" STRING,
+    "email" TEXT NOT NULL,
+    "password" TEXT NOT NULL,
+    "name" TEXT,
     "role" "Role" NOT NULL DEFAULT 'USER',
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -60,7 +60,7 @@ CREATE TABLE "User" (
 CREATE TABLE "ExternalID" (
     "source" "ExternalIDSource" NOT NULL,
     "type" "ExternalIDType" NOT NULL,
-    "value" STRING NOT NULL,
+    "value" TEXT NOT NULL,
     "movieId" UUID,
     "personId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -72,13 +72,13 @@ CREATE TABLE "ExternalID" (
 -- CreateTable
 CREATE TABLE "Movie" (
     "id" UUID NOT NULL,
-    "slug" STRING NOT NULL,
+    "slug" TEXT NOT NULL,
     "type" "MovieType" NOT NULL,
     "pageInfoId" UUID NOT NULL,
-    "title" STRING NOT NULL,
-    "originalTitle" STRING,
-    "description" STRING,
-    "year" INT4 NOT NULL,
+    "title" TEXT NOT NULL,
+    "originalTitle" TEXT,
+    "description" TEXT,
+    "year" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "ratingId" UUID NOT NULL,
@@ -89,7 +89,7 @@ CREATE TABLE "Movie" (
 -- CreateTable
 CREATE TABLE "Rating" (
     "id" UUID NOT NULL,
-    "value" FLOAT8 NOT NULL DEFAULT 0,
+    "value" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -99,7 +99,7 @@ CREATE TABLE "Rating" (
 -- CreateTable
 CREATE TABLE "Vote" (
     "id" UUID NOT NULL,
-    "value" INT4 NOT NULL DEFAULT 0,
+    "value" INTEGER NOT NULL DEFAULT 0,
     "userId" UUID,
     "ratingId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -112,7 +112,7 @@ CREATE TABLE "Vote" (
 CREATE TABLE "VendorRating" (
     "id" UUID NOT NULL,
     "vendor" "Vendor" NOT NULL,
-    "value" FLOAT8 NOT NULL DEFAULT 0,
+    "value" DOUBLE PRECISION NOT NULL DEFAULT 0,
     "ratingId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -123,9 +123,9 @@ CREATE TABLE "VendorRating" (
 -- CreateTable
 CREATE TABLE "Fact" (
     "id" UUID NOT NULL,
-    "content" STRING NOT NULL,
+    "content" TEXT NOT NULL,
     "movieId" UUID NOT NULL,
-    "isSpoiler" BOOL NOT NULL,
+    "isSpoiler" BOOLEAN NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -135,8 +135,9 @@ CREATE TABLE "Fact" (
 -- CreateTable
 CREATE TABLE "Season" (
     "id" UUID NOT NULL,
-    "number" INT4 NOT NULL,
+    "number" INTEGER NOT NULL,
     "movieId" UUID NOT NULL,
+    "releaseDateId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -147,9 +148,10 @@ CREATE TABLE "Season" (
 CREATE TABLE "Episode" (
     "id" UUID NOT NULL,
     "imageLinkId" UUID,
-    "number" INT4 NOT NULL,
-    "title" STRING NOT NULL,
+    "number" INTEGER NOT NULL,
+    "title" TEXT NOT NULL,
     "seasonId" UUID NOT NULL,
+    "releaseDateId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -161,9 +163,8 @@ CREATE TABLE "ReleaseDate" (
     "id" UUID NOT NULL,
     "type" "ReleaseDateType" NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
-    "countryId" UUID NOT NULL,
-    "movieId" UUID NOT NULL,
-    "seasonId" UUID,
+    "countryId" UUID,
+    "movieId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -173,8 +174,9 @@ CREATE TABLE "ReleaseDate" (
 -- CreateTable
 CREATE TABLE "Genre" (
     "id" UUID NOT NULL,
+    "slug" TEXT NOT NULL,
     "pageInfoId" UUID NOT NULL,
-    "title" STRING NOT NULL,
+    "title" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -184,8 +186,9 @@ CREATE TABLE "Genre" (
 -- CreateTable
 CREATE TABLE "Country" (
     "id" UUID NOT NULL,
+    "slug" TEXT NOT NULL,
     "pageInfoId" UUID NOT NULL,
-    "title" STRING NOT NULL,
+    "title" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -195,7 +198,8 @@ CREATE TABLE "Country" (
 -- CreateTable
 CREATE TABLE "Person" (
     "id" UUID NOT NULL,
-    "name" STRING NOT NULL,
+    "slug" TEXT NOT NULL,
+    "name" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -206,7 +210,7 @@ CREATE TABLE "Person" (
 CREATE TABLE "FilmographyEntry" (
     "id" UUID NOT NULL,
     "role" "PersonRoleType" NOT NULL,
-    "description" STRING,
+    "description" TEXT,
     "personId" UUID NOT NULL,
     "movieId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -218,8 +222,8 @@ CREATE TABLE "FilmographyEntry" (
 -- CreateTable
 CREATE TABLE "PageInfo" (
     "id" UUID NOT NULL,
-    "title" STRING NOT NULL,
-    "description" STRING NOT NULL,
+    "title" TEXT,
+    "description" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -229,11 +233,11 @@ CREATE TABLE "PageInfo" (
 -- CreateTable
 CREATE TABLE "Seo" (
     "id" UUID NOT NULL,
-    "title" STRING,
-    "description" STRING,
+    "title" TEXT,
+    "description" TEXT,
     "imageLinkId" UUID,
     "type" "SeoType" NOT NULL,
-    "pageInfoId" UUID,
+    "pageInfoId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -243,8 +247,8 @@ CREATE TABLE "Seo" (
 -- CreateTable
 CREATE TABLE "Image" (
     "id" UUID NOT NULL,
-    "height" INT4 NOT NULL,
-    "width" INT4 NOT NULL,
+    "height" INTEGER NOT NULL,
+    "width" INTEGER NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -256,7 +260,7 @@ CREATE TABLE "ImageAsset" (
     "id" UUID NOT NULL,
     "format" "ImageAssetFormat" NOT NULL,
     "width" "ImageAssetWidth" NOT NULL,
-    "url" STRING NOT NULL,
+    "url" TEXT NOT NULL,
     "imageId" UUID NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -270,6 +274,8 @@ CREATE TABLE "ImageLink" (
     "type" "ImageType" NOT NULL,
     "imageId" UUID NOT NULL,
     "movieId" UUID,
+    "genreId" UUID,
+    "countryId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "collectionId" UUID,
@@ -281,7 +287,7 @@ CREATE TABLE "ImageLink" (
 -- CreateTable
 CREATE TABLE "Media" (
     "id" UUID NOT NULL,
-    "title" STRING NOT NULL,
+    "title" TEXT NOT NULL,
     "imageLinkId" UUID NOT NULL,
     "source" "MediaSource" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -293,8 +299,8 @@ CREATE TABLE "Media" (
 -- CreateTable
 CREATE TABLE "MediaAsset" (
     "id" UUID NOT NULL,
-    "url" STRING NOT NULL,
-    "duration" FLOAT8 NOT NULL,
+    "url" TEXT NOT NULL,
+    "duration" DOUBLE PRECISION NOT NULL,
     "source" "MediaSource" NOT NULL,
     "format" "MediaFormat" NOT NULL,
     "mediaId" UUID,
@@ -320,7 +326,7 @@ CREATE TABLE "MediaLink" (
 CREATE TABLE "Collection" (
     "id" UUID NOT NULL,
     "pageInfoId" UUID NOT NULL,
-    "title" STRING NOT NULL,
+    "title" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "blockId" UUID,
@@ -331,10 +337,10 @@ CREATE TABLE "Collection" (
 -- CreateTable
 CREATE TABLE "Page" (
     "id" UUID NOT NULL,
-    "slug" STRING NOT NULL,
-    "title" STRING NOT NULL,
+    "slug" TEXT NOT NULL,
+    "title" TEXT NOT NULL,
     "pageInfoId" UUID NOT NULL,
-    "isPublished" BOOL NOT NULL,
+    "isPublished" BOOLEAN NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -345,9 +351,9 @@ CREATE TABLE "Page" (
 CREATE TABLE "Block" (
     "id" UUID NOT NULL,
     "blockType" "BlockType" NOT NULL,
-    "title" STRING NOT NULL,
-    "content" STRING NOT NULL,
-    "order" INT4 NOT NULL,
+    "title" TEXT NOT NULL,
+    "content" TEXT NOT NULL,
+    "order" INTEGER NOT NULL,
     "imageId" UUID,
     "pageId" UUID,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -369,9 +375,9 @@ CREATE TABLE "Slider" (
 -- CreateTable
 CREATE TABLE "Slide" (
     "id" UUID NOT NULL,
-    "title" STRING NOT NULL,
-    "order" INT4 NOT NULL,
-    "description" STRING NOT NULL,
+    "title" TEXT NOT NULL,
+    "order" INTEGER NOT NULL,
+    "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "sliderId" UUID,
@@ -381,19 +387,7 @@ CREATE TABLE "Slide" (
 );
 
 -- CreateTable
-CREATE TABLE "_GenreToImageLink" (
-    "A" UUID NOT NULL,
-    "B" UUID NOT NULL
-);
-
--- CreateTable
 CREATE TABLE "_GenreToMovie" (
-    "A" UUID NOT NULL,
-    "B" UUID NOT NULL
-);
-
--- CreateTable
-CREATE TABLE "_CountryToImageLink" (
     "A" UUID NOT NULL,
     "B" UUID NOT NULL
 );
@@ -432,6 +426,24 @@ CREATE UNIQUE INDEX "Vote_userId_ratingId_key" ON "Vote"("userId", "ratingId");
 CREATE UNIQUE INDEX "VendorRating_vendor_ratingId_key" ON "VendorRating"("vendor", "ratingId");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "Season_movieId_number_key" ON "Season"("movieId", "number");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Episode_seasonId_number_key" ON "Episode"("seasonId", "number");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Genre_slug_key" ON "Genre"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Country_slug_key" ON "Country"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Person_slug_key" ON "Person"("slug");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Seo_pageInfoId_type_key" ON "Seo"("pageInfoId", "type");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "ImageLink_imageId_key" ON "ImageLink"("imageId");
 
 -- CreateIndex
@@ -441,22 +453,10 @@ CREATE UNIQUE INDEX "MediaLink_mediaId_key" ON "MediaLink"("mediaId");
 CREATE UNIQUE INDEX "Page_slug_key" ON "Page"("slug");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_GenreToImageLink_AB_unique" ON "_GenreToImageLink"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_GenreToImageLink_B_index" ON "_GenreToImageLink"("B");
-
--- CreateIndex
 CREATE UNIQUE INDEX "_GenreToMovie_AB_unique" ON "_GenreToMovie"("A", "B");
 
 -- CreateIndex
 CREATE INDEX "_GenreToMovie_B_index" ON "_GenreToMovie"("B");
-
--- CreateIndex
-CREATE UNIQUE INDEX "_CountryToImageLink_AB_unique" ON "_CountryToImageLink"("A", "B");
-
--- CreateIndex
-CREATE INDEX "_CountryToImageLink_B_index" ON "_CountryToImageLink"("B");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_CountryToMovie_AB_unique" ON "_CountryToMovie"("A", "B");
@@ -504,19 +504,22 @@ ALTER TABLE "Fact" ADD CONSTRAINT "Fact_movieId_fkey" FOREIGN KEY ("movieId") RE
 ALTER TABLE "Season" ADD CONSTRAINT "Season_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Season" ADD CONSTRAINT "Season_releaseDateId_fkey" FOREIGN KEY ("releaseDateId") REFERENCES "ReleaseDate"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Episode" ADD CONSTRAINT "Episode_imageLinkId_fkey" FOREIGN KEY ("imageLinkId") REFERENCES "ImageLink"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Episode" ADD CONSTRAINT "Episode_seasonId_fkey" FOREIGN KEY ("seasonId") REFERENCES "Season"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ReleaseDate" ADD CONSTRAINT "ReleaseDate_countryId_fkey" FOREIGN KEY ("countryId") REFERENCES "Country"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "Episode" ADD CONSTRAINT "Episode_releaseDateId_fkey" FOREIGN KEY ("releaseDateId") REFERENCES "ReleaseDate"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ReleaseDate" ADD CONSTRAINT "ReleaseDate_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "ReleaseDate" ADD CONSTRAINT "ReleaseDate_countryId_fkey" FOREIGN KEY ("countryId") REFERENCES "Country"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "ReleaseDate" ADD CONSTRAINT "ReleaseDate_seasonId_fkey" FOREIGN KEY ("seasonId") REFERENCES "Season"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "ReleaseDate" ADD CONSTRAINT "ReleaseDate_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Genre" ADD CONSTRAINT "Genre_pageInfoId_fkey" FOREIGN KEY ("pageInfoId") REFERENCES "PageInfo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -534,7 +537,7 @@ ALTER TABLE "FilmographyEntry" ADD CONSTRAINT "FilmographyEntry_movieId_fkey" FO
 ALTER TABLE "Seo" ADD CONSTRAINT "Seo_imageLinkId_fkey" FOREIGN KEY ("imageLinkId") REFERENCES "ImageLink"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Seo" ADD CONSTRAINT "Seo_pageInfoId_fkey" FOREIGN KEY ("pageInfoId") REFERENCES "PageInfo"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "Seo" ADD CONSTRAINT "Seo_pageInfoId_fkey" FOREIGN KEY ("pageInfoId") REFERENCES "PageInfo"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ImageAsset" ADD CONSTRAINT "ImageAsset_imageId_fkey" FOREIGN KEY ("imageId") REFERENCES "Image"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -544,6 +547,12 @@ ALTER TABLE "ImageLink" ADD CONSTRAINT "ImageLink_imageId_fkey" FOREIGN KEY ("im
 
 -- AddForeignKey
 ALTER TABLE "ImageLink" ADD CONSTRAINT "ImageLink_movieId_fkey" FOREIGN KEY ("movieId") REFERENCES "Movie"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ImageLink" ADD CONSTRAINT "ImageLink_genreId_fkey" FOREIGN KEY ("genreId") REFERENCES "Genre"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ImageLink" ADD CONSTRAINT "ImageLink_countryId_fkey" FOREIGN KEY ("countryId") REFERENCES "Country"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "ImageLink" ADD CONSTRAINT "ImageLink_collectionId_fkey" FOREIGN KEY ("collectionId") REFERENCES "Collection"("id") ON DELETE SET NULL ON UPDATE CASCADE;
@@ -588,22 +597,10 @@ ALTER TABLE "Slide" ADD CONSTRAINT "Slide_movieId_fkey" FOREIGN KEY ("movieId") 
 ALTER TABLE "Slide" ADD CONSTRAINT "Slide_sliderId_fkey" FOREIGN KEY ("sliderId") REFERENCES "Slider"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_GenreToImageLink" ADD CONSTRAINT "_GenreToImageLink_A_fkey" FOREIGN KEY ("A") REFERENCES "Genre"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_GenreToImageLink" ADD CONSTRAINT "_GenreToImageLink_B_fkey" FOREIGN KEY ("B") REFERENCES "ImageLink"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
 ALTER TABLE "_GenreToMovie" ADD CONSTRAINT "_GenreToMovie_A_fkey" FOREIGN KEY ("A") REFERENCES "Genre"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_GenreToMovie" ADD CONSTRAINT "_GenreToMovie_B_fkey" FOREIGN KEY ("B") REFERENCES "Movie"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_CountryToImageLink" ADD CONSTRAINT "_CountryToImageLink_A_fkey" FOREIGN KEY ("A") REFERENCES "Country"("id") ON DELETE CASCADE ON UPDATE CASCADE;
-
--- AddForeignKey
-ALTER TABLE "_CountryToImageLink" ADD CONSTRAINT "_CountryToImageLink_B_fkey" FOREIGN KEY ("B") REFERENCES "ImageLink"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "_CountryToMovie" ADD CONSTRAINT "_CountryToMovie_A_fkey" FOREIGN KEY ("A") REFERENCES "Country"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -10,7 +10,7 @@ generator dbml {
 }
 
 datasource db {
-  provider = "cockroachdb"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -369,11 +369,9 @@ enum ImageAssetWidth {
   W375
   W768
   W1024
-  W1280
   W1366
-  W1600
   W1920
-  W2560
+  ORIGINAL
 }
 
 model Image {

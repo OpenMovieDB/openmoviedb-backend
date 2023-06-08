@@ -1,14 +1,16 @@
 version: '3.9'
 
 services:
-  crdb:
-    image: cockroachdb/cockroach:latest
+  postgres:
+    image: postgres:latest
     ports:
-      - "26257:26257"
-      - "8080:8080"
-    command: start-single-node --insecure
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
     volumes:
-      - "${PWD}/.docker/cockroach-data/crdb:/cockroach/cockroach-data"
+      - "${PWD}/.docker/postgres-data:/var/lib/postgresql/data"
   
   minio:
     image: minio/minio:latest
