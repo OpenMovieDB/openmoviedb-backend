@@ -3,16 +3,16 @@ import { BaseModel } from '../../common/models/base.model';
 import { ImageModel } from './image.model';
 
 export enum ImageType {
-  POSTER,
-  BACKDROP,
-  LOGO,
-  PHOTO,
-  STILL,
-  SHOOTING,
-  ICON,
-  PROFILE,
-  SEO,
-  HERO,
+  POSTER = 'POSTER',
+  BACKDROP = 'BACKDROP',
+  LOGO = 'LOGO',
+  PHOTO = 'PHOTO',
+  STILL = 'STILL',
+  SHOOTING = 'SHOOTING',
+  ICON = 'ICON',
+  PROFILE = 'PROFILE',
+  SEO = 'SEO',
+  HERO = 'HERO',
 }
 
 registerEnumType(ImageType, {
