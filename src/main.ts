@@ -5,6 +5,7 @@ import { PrismaClientExceptionFilter, PrismaService } from 'nestjs-prisma';
 import { ConfigService } from '@nestjs/config';
 import { CorsConfig, NestConfig } from './common/configs/config.interface';
 import { statusAppMessage } from './common/utils/status-app-message.util';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -24,6 +25,12 @@ async function bootstrap() {
   if (corsConfig.enabled) {
     app.enableCors();
   }
+
+  const config = new DocumentBuilder().setTitle('OpenMovieDB rest api').addBearerAuth().setVersion('1').build();
+
+  const document = SwaggerModule.createDocument(app, config);
+
+  SwaggerModule.setup('docs', app, document);
 
   await app.listen(process.env.PORT || nestConfig.port || 3000);
   await statusAppMessage(app);
