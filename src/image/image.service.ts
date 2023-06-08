@@ -40,10 +40,11 @@ export class ImageService {
   private async createImage(image: Express.Multer.File) {
     const size = this.imageProcessingService.getOptimalSizes(image.buffer)[0];
     const width = parseInt(size.width.replace('W', ''), 10);
+    const height = Math.round(width / size.aspectRatio);
     return this.prismaService.image.create({
       data: {
         width: width,
-        height: width / size.aspectRatio,
+        height: height,
       },
     });
   }
@@ -120,5 +121,14 @@ export class ImageService {
     });
 
     return new ImageLinkMapper().mapEntitiesToModels(images);
+  }
+
+  async findManyImages(): Promise<ImageModel[]> {
+    const images = await this.prismaService.image.findMany({
+      include: {
+        assets: true,
+      },
+    });
+    return images.map((image) => new ImageMapper().mapEntityToModel(image));
   }
 }

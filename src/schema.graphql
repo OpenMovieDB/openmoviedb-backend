@@ -656,6 +656,7 @@ type Query {
   country(id: String!): CountryModel!
   genre(id: String!): GenreModel!
   genres(data: FindGenresInput!): GenresModel!
+  images: [ImageModel!]!
   me: User!
   media(id: String!): MediaLinkModel!
   movie(id: String!): MovieModel!

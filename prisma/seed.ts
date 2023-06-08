@@ -31,6 +31,78 @@ async function main() {
     ],
   });
 
+  const image = await prisma.image.create({
+    data: {
+      id: 'd5b8c7bd-eed5-4873-9d17-da65c3f8c6f1',
+      height: 563,
+      width: 375,
+      assets: {
+        create: [
+          {
+            format: 'AVIF',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/e93abedc-a47d-44ab-afd6-bac5468f70b0_W375.avif',
+            width: 'W375',
+          },
+          {
+            format: 'AVIF',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/fb501673-627d-465f-8754-ef3d82ea0c8b_W768.avif',
+            width: 'W768',
+          },
+          {
+            format: 'WEBP',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/bdf44e99-2d49-410d-9312-fe74ff92afe8_ORIGINAL.webp',
+            width: 'ORIGINAL',
+          },
+          {
+            format: 'WEBP',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/cad13578-bdfc-440c-a87a-dbb93cb9cf42_W1366.webp',
+            width: 'W1366',
+          },
+          {
+            format: 'AVIF',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/085335d8-9052-45f4-b0ae-4cf087cb7fec_W1024.avif',
+            width: 'W1024',
+          },
+          {
+            format: 'WEBP',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/4b5688c8-1e9c-4fee-8c12-98c7058f7bb6_W375.webp',
+            width: 'W375',
+          },
+          {
+            format: 'WEBP',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/0512e45a-b9e1-44f1-abe5-766a75092496_W1024.webp',
+            width: 'W1024',
+          },
+          {
+            format: 'WEBP',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/3b1d9708-e790-44bd-9917-ea633ea13701_W768.webp',
+            width: 'W768',
+          },
+          {
+            format: 'AVIF',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/387767d7-7f39-4886-af82-7786e77234a1_ORIGINAL.avif',
+            width: 'ORIGINAL',
+          },
+          {
+            format: 'AVIF',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/0b1c28a2-5bf0-4f0b-af62-9ac81024426f_W1366.avif',
+            width: 'W1366',
+          },
+          {
+            format: 'WEBP',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/edd58d2f-c3a9-4584-8979-9c5a1aafc356_W1920.webp',
+            width: 'W1920',
+          },
+          {
+            format: 'AVIF',
+            url: 'https://s3.timeweb.com/3f7bc49e-openmoviedb/d5b8c7bd-eed5-4873-9d17-da65c3f8c6f1/1367e133-5f92-4704-94f0-1851c02ca565_W1920.avif',
+            width: 'W1920',
+          },
+        ],
+      },
+    },
+  });
+
   const person = await prisma.person.create({
     data: {
       slug: 'test-person1',
@@ -191,16 +263,8 @@ async function main() {
         create: {
           type: 'POSTER',
           image: {
-            create: {
-              height: 450,
-              width: 300,
-              assets: {
-                create: {
-                  url: 'https//avatars.mds.yandex.net/get-kinopoisk-image/1898899/c5cabd6f-3a63-4711-9c58-13557a8acfbf/300x450',
-                  format: 'WEBP',
-                  width: 'W375',
-                },
-              },
+            connect: {
+              id: image.id,
             },
           },
         },
