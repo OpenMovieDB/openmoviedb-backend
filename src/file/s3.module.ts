@@ -11,7 +11,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         endpoint: configService.get('S3_ENDPOINT'),
         accessKeyId: configService.get('S3_ACCESS_KEY'),
         secretAccessKey: configService.get('S3_SECRET_KEY'),
-        region: '',
+        region: configService.get('S3_REGION'),
         bucket: configService.get('S3_BUCKET'),
       }),
     }),
