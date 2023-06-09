@@ -37,6 +37,13 @@ enum BlockType {
   VIDEO
 }
 
+input BooleanFilterInput {
+  equals: Boolean
+  in: [Boolean!]
+  not: BooleanFilterInput
+  notIn: [Boolean!]
+}
+
 input ChangePasswordInput {
   newPassword: String!
   oldPassword: String!
@@ -157,6 +164,12 @@ input CreateMovieInput {
   title: String!
   type: MovieType!
   year: Int!
+}
+
+input CreatePageInput {
+  isPublished: Boolean!
+  slug: String!
+  title: String!
 }
 
 input CreatePersonInput {
@@ -332,6 +345,10 @@ input FindMoviesInput {
   type: MovieTypeEnumInput
   updatedAt: DateFilterInput
   year: NumberFilterInput
+}
+
+input FindPagesInput {
+  isPublished: BooleanFilterInput!
 }
 
 type GenreModel {
@@ -580,6 +597,7 @@ type Mutation {
   createFacts(data: CreateFactsInput!): [FactModel!]!
   createGenres(data: CreateGenresInput!): [GenreModel!]!
   createMovie(data: CreateMovieInput!): MovieModel!
+  createPage(data: CreatePageInput!): PageModel!
   createPerson(data: CreatePersonInput!): PersonModel!
   createReleaseDates(data: CreateReleaseDatesInput!): [ReleaseDateModel!]!
   createSeasons(data: CreateSeasonsInput!): [SeasonModel!]!
@@ -626,6 +644,33 @@ type PageInfoModel {
   updatedAt: DateTime!
 }
 
+type PageModel {
+  blocks: [BlockModel!]
+
+  """Identifies the date and time when the object was created."""
+  createdAt: DateTime!
+  id: ID!
+  isPublished: Boolean!
+  pageInfo: PageInfoModel!
+  pageInfoId: String!
+  slug: String!
+  title: String!
+
+  """Identifies the date and time when the object was last updated."""
+  updatedAt: DateTime!
+}
+
+type PageModelEdge {
+  cursor: String!
+  node: PageModel!
+}
+
+type PagesModel {
+  edges: [PageModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 type PersonModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
@@ -661,6 +706,8 @@ type Query {
   media(id: String!): MediaLinkModel!
   movie(id: String!): MovieModel!
   movies(data: FindMoviesInput!): MoviesModel!
+  page(id: String!): PageModel!
+  pages(data: FindPagesInput!): PagesModel!
 }
 
 type RatingModel {
