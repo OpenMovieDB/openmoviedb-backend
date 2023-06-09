@@ -11,8 +11,8 @@ export class PageModel extends BasePageModel {
   @Field()
   title: string;
 
-  @Field((type) => [Block])
-  blocks: BlockModel[];
+  @Field((type) => [Block], { nullable: true })
+  blocks?: BlockModel[];
 
   @Field((_type) => Boolean)
   isPublished: boolean;

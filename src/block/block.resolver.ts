@@ -1,4 +1,5 @@
 import { Resolver } from '@nestjs/graphql';
+import { BlockModel } from './models/block.model';
 
-@Resolver()
+@Resolver(() => BlockModel)
 export class BlockResolver {}
