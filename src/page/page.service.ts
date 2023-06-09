@@ -6,6 +6,7 @@ import { FindPagesInput } from './dto/find-pages.input';
 import { PageModel } from './models/page.model';
 import { PagesModel } from './models/pages.model';
 import { PageMapper } from './page.mapper';
+import { CreatePageInput } from './dto/create-page.input';
 
 @Injectable()
 export class PageService {
@@ -33,5 +34,21 @@ export class PageService {
         node: new PageMapper().mapEntityToModel(edge.node),
       })),
     };
+  }
+
+  async create(data: CreatePageInput): Promise<PageModel> {
+    const page = await this.prismaService.page.create({
+      data: {
+        ...data,
+        pageInfo: {
+          create: {
+            description: null,
+            title: null,
+          },
+        },
+      },
+    });
+
+    return new PageMapper().mapEntityToModel(page);
   }
 }
