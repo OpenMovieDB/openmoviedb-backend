@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
+import { BlockModel } from './models/block.model';
+import { BlockMapper } from './block.mapper';
 
 @Injectable()
 export class BlockService {
@@ -10,12 +12,19 @@ export class BlockService {
       where: {
         id,
       },
-      include: {
-        image: true,
-        collections: true,
-        sliders: true,
-      },
     });
     return block;
+  }
+
+  async getBlocksByPageIds(pageIds: string[]): Promise<BlockModel[]> {
+    const blocks = await this.prismaService.block.findMany({
+      where: {
+        pageId: {
+          in: pageIds,
+        },
+      },
+    });
+
+    return new BlockMapper().mapEntitiesToModels(blocks);
   }
 }
