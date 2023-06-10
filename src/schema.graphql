@@ -19,7 +19,7 @@ type BlockModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  images: [ImageModel!]
+  images: [ImageLinkModel!]
   order: Int!
   sliders: [SliderModel!]
   title: String!
@@ -51,13 +51,14 @@ input ChangePasswordInput {
 
 type CollectionModel {
   block: BlockModel
+  blockId: String!
 
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  images: [ImageModel!]!
-  movies: [MovieModel!]!
-  pageInfo: PageInfoModel!
+  images: [ImageLinkModel!]
+  movies: [MovieModel!]
+  pageInfo: PageInfoModel
   pageInfoId: String!
 
   """Identifies the date and time when the object was last updated."""
