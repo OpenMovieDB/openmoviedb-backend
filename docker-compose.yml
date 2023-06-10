@@ -10,16 +10,16 @@ services:
       - postgres
     env_file:
       - .env
-    # labels:
-    #   - "traefik.enable=true"
-    #   - "traefik.http.routers.api.middlewares=default-headers@file"
-    #   - "traefik.http.routers.api.rule=Host(`dev-api.openmoviedb.com`)"
-    #   - "traefik.http.routers.api.priority=10"
-    #   - "traefik.http.routers.api.entrypoints=https"
-    #   - "traefik.http.routers.api.tls.certresolver=certbot"
-    #   - "traefik.http.services.api.loadbalancer.server.port=3000"
-    # networks:
-    #   - traefik
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api.middlewares=default-headers@file"
+      - "traefik.http.routers.api.rule=Host(`dev-api.openmoviedb.com`)"
+      - "traefik.http.routers.api.priority=10"
+      - "traefik.http.routers.api.entrypoints=https"
+      - "traefik.http.routers.api.tls.certresolver=certbot"
+      - "traefik.http.services.api.loadbalancer.server.port=3000"
+    networks:
+      - traefik
 
   postgres:
     image: postgres:latest
