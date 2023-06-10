@@ -7,6 +7,7 @@ import { PageInfoModel } from 'src/page-info/models/page-info.model';
 import { FindPagesInput } from './dto/find-pages.input';
 import { PagesModel } from './models/pages.model';
 import PagesLoader from './page.loader';
+import { BlockModel } from 'src/block/models/block.model';
 
 @Resolver(() => PageModel)
 export class PageResolver {
@@ -30,5 +31,10 @@ export class PageResolver {
   @ResolveField('pageInfo', () => PageInfoModel, { nullable: true })
   async pageInfo(@Parent() page: PageModel): Promise<PageInfoModel> {
     return this.pagesLoader.batchPageInfo.load(page.pageInfoId);
+  }
+
+  @ResolveField('blocks', () => BlockModel, { nullable: true })
+  async blocks(@Parent() page: PageModel): Promise<BlockModel> {
+    return this.pagesLoader.batchBlocks.load(page.id);
   }
 }
