@@ -136,6 +136,19 @@ export class ImageService {
     return new ImageLinkMapper().mapEntitiesToModels(images);
   }
 
+  async findManyByCollectionIds(ids: string[]): Promise<ImageLinkModel[]> {
+    const images = await this.prismaService.imageLink.findMany({
+      where: {
+        collectionId: {
+          in: ids,
+        },
+      },
+      ...this.defaultInclude,
+    });
+
+    return new ImageLinkMapper().mapEntitiesToModels(images);
+  }
+
   async findManyImages(): Promise<ImageModel[]> {
     const images = await this.prismaService.image.findMany({
       include: {
