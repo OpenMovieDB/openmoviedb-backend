@@ -1,4 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
+// @ts-ignore
 import { S3Service, S3ModuleUploadedFile } from '@appotter/nestjs-S3';
 import { ConfigService } from '@nestjs/config';
 import { Types } from 'aws-sdk/clients/s3';

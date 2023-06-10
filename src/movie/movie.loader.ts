@@ -1,4 +1,5 @@
 import { Injectable, Scope } from '@nestjs/common';
+// @ts-ignore
 import * as DataLoader from 'dataloader';
 import { ExternalIdService } from 'src/external-id/external-id.service';
 import { MediaService } from 'src/media/media.service';

@@ -1,3 +1,4 @@
+// @ts-ignore
 import { S3Module, S3Service } from '@appotter/nestjs-S3';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';

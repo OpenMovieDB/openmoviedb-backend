@@ -1,6 +1,26 @@
 version: '3.9'
 
 services:
+  dev-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    depends_on:
+      - postgres
+    env_file:
+      - .env
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.api.middlewares=default-headers@file"
+    #   - "traefik.http.routers.api.rule=Host(`dev-api.openmoviedb.com`)"
+    #   - "traefik.http.routers.api.priority=10"
+    #   - "traefik.http.routers.api.entrypoints=https"
+    #   - "traefik.http.routers.api.tls.certresolver=certbot"
+    #   - "traefik.http.services.api.loadbalancer.server.port=3000"
+    # networks:
+    #   - traefik
+
   postgres:
     image: postgres:latest
     ports:
@@ -11,19 +31,8 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - "${PWD}/.docker/postgres-data:/var/lib/postgresql/data"
-  
-  minio:
-    image: minio/minio:latest
-    volumes:
-      - "${PWD}/.docker/minio/data:/data"
-      - "${PWD}/.docker/minio/config:/root/.minio"
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    environment:
-      MINIO_ACCESS_KEY: ${S3_ACCESS_KEY}
-      MINIO_SECRET_KEY: ${S3_SECRET_KEY}
-      MINIO_ADDRESS: ':9000'
-      MINIO_CONSOLE_ADDRESS: ':9001'
-    command: server /data
 
+networks:
+  traefik:
+    name: traefik_proxy
+    external: true

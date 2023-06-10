@@ -1,4 +1,5 @@
 import { Injectable, Scope } from '@nestjs/common';
+// @ts-ignore
 import * as DataLoader from 'dataloader';
 import { PageInfoService } from 'src/page-info/page-info.service';
 

@@ -1,4 +1,5 @@
 import { Inject, Injectable, Scope, forwardRef } from '@nestjs/common';
+// @ts-ignore
 import * as DataLoader from 'dataloader';
 import { ImageService } from 'src/image/image.service';
 
