@@ -16,6 +16,17 @@ export class BlockService {
     return block;
   }
 
+  async getBlockByIds(ids: string[]): Promise<BlockModel[]> {
+    const blocks = await this.prismaService.block.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+    return new BlockMapper().mapEntitiesToModels(blocks);
+  }
+
   async getBlocksByPageIds(pageIds: string[]): Promise<BlockModel[]> {
     const blocks = await this.prismaService.block.findMany({
       where: {
