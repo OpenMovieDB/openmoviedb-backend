@@ -6,8 +6,7 @@ import { Types } from 'aws-sdk/clients/s3';
 @Injectable()
 export class FileService {
   private readonly logger = new Logger(FileService.name);
-  public readonly s3Url =
-    this.configService.get<string>('S3_ENDPOINT') + '/' + this.configService.get<string>('S3_BUCKET');
+  public readonly s3Url = this.configService.get<string>('S3_URL');
 
   constructor(private readonly s3Service: S3Service, private readonly configService: ConfigService) {}
 
