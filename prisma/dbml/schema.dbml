@@ -272,9 +272,10 @@ Table ImageLink {
   updatedAt DateTime [not null]
   collection Collection
   collectionId String
-  block Block [not null]
   slide Slide
   slideId String
+  Block Block
+  blockId String
 }
 
 Table Media {
@@ -345,8 +346,7 @@ Table Block {
   order Int [not null]
   collections Collection [not null]
   sliders Slider [not null]
-  image ImageLink
-  imageId String
+  images ImageLink [not null]
   page Page
   pageId String
   createdAt DateTime [default: `now()`, not null]
@@ -547,6 +547,8 @@ Ref: ImageLink.collectionId > Collection.id
 
 Ref: ImageLink.slideId > Slide.id
 
+Ref: ImageLink.blockId > Block.id
+
 Ref: Media.imageLinkId > ImageLink.id
 
 Ref: MediaAsset.mediaId > Media.id
@@ -560,8 +562,6 @@ Ref: Collection.pageInfoId > PageInfo.id
 Ref: Collection.blockId > Block.id
 
 Ref: Page.pageInfoId > PageInfo.id
-
-Ref: Block.imageId > ImageLink.id
 
 Ref: Block.pageId > Page.id
 
