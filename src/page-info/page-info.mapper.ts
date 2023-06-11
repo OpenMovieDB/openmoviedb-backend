@@ -3,13 +3,12 @@ import { IMapper } from '../common/interfaces/mapper.interface';
 import { PageInfoModel } from 'src/page-info/models/page-info.model';
 import { SeoEntity, SeoMapper } from 'src/seo/seo.mapper';
 
-type PageInfoEntity = PageInfo & { seo: SeoEntity[] };
+type PageInfoEntity = PageInfo;
 
 export class PageInfoMapper implements IMapper<PageInfoEntity, PageInfoModel> {
   public mapEntityToModel(entity: PageInfoEntity): PageInfoModel {
     return {
       ...entity,
-      seo: new SeoMapper().mapEntitiesToModels(entity.seo),
     };
   }
 

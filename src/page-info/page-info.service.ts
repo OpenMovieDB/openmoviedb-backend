@@ -25,6 +25,15 @@ export class PageInfoService {
   };
   constructor(private readonly prismaService: PrismaService) {}
 
+  async findOne(id: string): Promise<PageInfoModel> {
+    const pageInfo = await this.prismaService.pageInfo.findUnique({
+      where: {
+        id,
+      },
+    });
+    return new PageInfoMapper().mapEntityToModel(pageInfo);
+  }
+
   async findManyByIds(ids: string[]): Promise<PageInfoModel[]> {
     const pagesInfo = await this.prismaService.pageInfo.findMany({
       where: {
@@ -32,7 +41,6 @@ export class PageInfoService {
           in: ids,
         },
       },
-      ...this.defaultIncludes,
     });
     return new PageInfoMapper().mapEntitiesToModels(pagesInfo);
   }
@@ -43,7 +51,6 @@ export class PageInfoService {
         id,
       },
       data,
-      ...this.defaultIncludes,
     });
     return new PageInfoMapper().mapEntityToModel(pageInfo);
   }
