@@ -1,8 +1,7 @@
 import { Body, Controller, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { ApiOperation, ApiConsumes, ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiConsumes, ApiOperation } from '@nestjs/swagger';
 import { CreateImageDto } from './dto/create-image.dto';
-import { CreateImageResponse } from 'aws-sdk/clients/sagemaker';
 import { CreateImageResponseDto } from './dto/create-image.response.dto';
 import { ImageService } from './image.service';
 

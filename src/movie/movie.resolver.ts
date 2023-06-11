@@ -1,8 +1,7 @@
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { MovieService } from './movie.service';
 import { MovieModel } from './models/movie.model';
 import { FindMoviesInput } from './dto/find-movies.input';
-import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { MoviesModel } from './models/movies.model';
 import { ExternalIDModel } from 'src/external-id/models/external-id.model';
 import MoviesLoader from './movie.loader';
@@ -17,19 +16,21 @@ import { SeasonModel } from 'src/season/models/season.model';
 import { RatingModel } from 'src/rating/models/rating.model';
 import { PageInfoModel } from 'src/page-info/models/page-info.model';
 import { CreateMovieInput } from './dto/create-movie.input';
+import { BaseResolver } from '../common/resolvers/base.resolver';
+import { UpdateMovieInput } from './dto/update-movie.input';
 
 @Resolver(() => MovieModel)
-export class MovieResolver {
-  constructor(private readonly movieService: MovieService, private readonly moviesLoader: MoviesLoader) {}
-
-  @Query(() => MovieModel)
-  async movie(@Args('id') id: string): Promise<MovieModel> {
-    return this.movieService.findOne(id);
-  }
-
-  @Query(() => MoviesModel)
-  async movies(@Args() pagination: PaginationArgs, @Args('data') dto: FindMoviesInput): Promise<MoviesModel> {
-    return this.movieService.findMany(pagination, dto);
+export class MovieResolver extends BaseResolver(
+  'Movie',
+  MovieModel,
+  MoviesModel,
+  FindMoviesInput,
+  CreateMovieInput,
+  UpdateMovieInput,
+  MovieService,
+) {
+  constructor(private readonly movieService: MovieService, private readonly moviesLoader: MoviesLoader) {
+    super(movieService);
   }
 
   @ResolveField('externalIDs', () => [ExternalIDModel], { nullable: true })
@@ -85,10 +86,5 @@ export class MovieResolver {
   @ResolveField('pageInfo', () => PageInfoModel, { nullable: true })
   async pageInfo(@Parent() movie: MovieModel): Promise<PageInfoModel> {
     return this.moviesLoader.batchPageInfo.load(movie.pageInfoId);
-  }
-
-  @Mutation(() => MovieModel)
-  async createMovie(@Args('data') dto: CreateMovieInput): Promise<MovieModel> {
-    return this.movieService.create(dto);
   }
 }

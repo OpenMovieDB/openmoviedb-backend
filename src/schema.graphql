@@ -41,7 +41,9 @@ type BlockModelEdge {
 }
 
 input BlockPaginationDto {
-  id: UuidFilterInput!
+  createdAt: DateFilterInput
+  id: UuidFilterInput
+  updatedAt: DateFilterInput
 }
 
 type BlockPaginationModel {
@@ -104,7 +106,9 @@ type CollectionModelEdge {
 }
 
 input CollectionPaginationDto {
-  id: UuidFilterInput!
+  createdAt: DateFilterInput
+  id: UuidFilterInput
+  updatedAt: DateFilterInput
 }
 
 type CollectionPaginationModel {
@@ -148,7 +152,10 @@ type CountryModelEdge {
 }
 
 input CountryPaginationDto {
+  createdAt: DateFilterInput
+  id: UuidFilterInput
   title: String
+  updatedAt: DateFilterInput
 }
 
 type CountryPaginationModel {
@@ -335,7 +342,9 @@ type ExternalIDModelEdge {
 }
 
 input ExternalIDPaginationDto {
-  id: UuidFilterInput!
+  createdAt: DateFilterInput
+  id: UuidFilterInput
+  updatedAt: DateFilterInput
 }
 
 type ExternalIDPaginationModel {
@@ -430,11 +439,17 @@ type FilmographyEntryPersonModel {
 }
 
 input FindCountriesInput {
+  createdAt: DateFilterInput
+  id: UuidFilterInput
   title: String
+  updatedAt: DateFilterInput
 }
 
 input FindGenresInput {
+  createdAt: DateFilterInput
+  id: UuidFilterInput
   title: String
+  updatedAt: DateFilterInput
 }
 
 input FindMoviesInput {
