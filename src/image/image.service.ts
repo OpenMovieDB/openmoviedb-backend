@@ -4,9 +4,10 @@ import { ImageMapper } from './mappers/image.mapper';
 import { ImageModel } from './models/image.model';
 import { ImageLinkModel } from './models/image-link.model';
 import { ImageLinkMapper } from './mappers/image-link.mapper';
-import { ImageAssetFormat, ImageAssetWidth } from './models/image-asset.model';
+import { ImageAssetFormat } from './models/image-asset.model';
 import { ImageProcessingService } from './image-processing.service';
 import { Image, ImageAsset } from '@prisma/client';
+
 @Injectable()
 export class ImageService {
   private readonly defaultInclude = {
@@ -82,6 +83,18 @@ export class ImageService {
       },
     });
     return new ImageMapper().mapEntityToModel(image);
+  }
+
+  async findManyByIds(ids: string[]): Promise<ImageLinkModel[]> {
+    const images = await this.prismaService.imageLink.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+      ...this.defaultInclude,
+    });
+    return new ImageLinkMapper().mapEntitiesToModels(images);
   }
 
   async findManyByMovieIds(ids: string[]): Promise<ImageLinkModel[]> {
