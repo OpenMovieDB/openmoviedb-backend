@@ -51,6 +51,11 @@ export function BaseResolver<T, TModel, TPaginationModel, TPaginationDto, TCreat
     async update(@Args('id') id: string, @Args('data') dto: InputTypeUpdateDto): Promise<TModel> {
       return this.service.update(id, dto);
     }
+
+    @Mutation(() => Model, { name: `delete${suffix}` })
+    async delete(@Args('id') id: string): Promise<boolean> {
+      return this.service.delete(id);
+    }
   }
 
   return BaseAbstractResolver;
