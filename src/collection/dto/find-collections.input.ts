@@ -1,8 +1,5 @@
-import { Field, InputType } from '@nestjs/graphql';
-import { UuidFilterInput } from '../../common/dto/uuid-filter.input';
+import { InputType } from '@nestjs/graphql';
+import { BaseFindManyInput } from '../../common/dto/base-find-many.input';
 
 @InputType()
-export class FindCollectionsInput {
-  @Field((type) => UuidFilterInput)
-  id: UuidFilterInput;
-}
+export class FindCollectionsInput extends BaseFindManyInput {}
