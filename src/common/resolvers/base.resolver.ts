@@ -10,7 +10,7 @@ export function BaseResolver<T, TModel, TPaginationModel, TPaginationDto, TCreat
   PaginationModel: Constructor<TPaginationModel>,
   PaginationDto: Constructor<TPaginationDto>,
   CreateDto: Constructor<TCreateDto>,
-  UpdateDto: Constructor<TCreateDto>,
+  UpdateDto: Constructor<TUpdateDto>,
   Service: Constructor<TService>,
 ) {
   @InputType(`${suffix}PaginationDto`, { isAbstract: true })
