@@ -1,31 +1,27 @@
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { PageModel } from './models/page.model';
 import { PageService } from './page.service';
-import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { CreatePageInput } from './dto/create-page.input';
 import { PageInfoModel } from 'src/page-info/models/page-info.model';
 import { FindPagesInput } from './dto/find-pages.input';
 import { PagesModel } from './models/pages.model';
 import PagesLoader from './page.loader';
-import { BlockModel } from 'src/block/models/block.model';
+import { BaseResolver } from '../common/resolvers/base.resolver';
+import { BlockModel } from '../block/models/block.model';
+import { UpdatePageInput } from './dto/update-page.input';
 
 @Resolver(() => PageModel)
-export class PageResolver {
-  constructor(private readonly pageService: PageService, private readonly pagesLoader: PagesLoader) {}
-
-  @Query(() => PageModel)
-  async page(@Args('id') id: string): Promise<PageModel> {
-    return this.pageService.findOne(id);
-  }
-
-  @Query(() => [PagesModel])
-  async pages(@Args() pagination: PaginationArgs, @Args('data') dto: FindPagesInput): Promise<PagesModel> {
-    return this.pageService.findMany(pagination, dto);
-  }
-
-  @Mutation(() => PageModel)
-  async createPage(@Args('data') dto: CreatePageInput): Promise<PageModel> {
-    return this.pageService.create(dto);
+export class PageResolver extends BaseResolver(
+  'Page',
+  PageModel,
+  PagesModel,
+  FindPagesInput,
+  CreatePageInput,
+  UpdatePageInput,
+  PageService,
+) {
+  constructor(private readonly pageService: PageService, private readonly pagesLoader: PagesLoader) {
+    super(pageService);
   }
 
   @ResolveField('pageInfo', () => PageInfoModel, { nullable: true })
