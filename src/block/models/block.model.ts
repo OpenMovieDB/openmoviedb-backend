@@ -5,11 +5,11 @@ import { BaseModel } from '../../common/models/base.model';
 import { CollectionModel } from '../../collection/models/collection.model';
 
 export enum BlockType {
-  TEXT,
-  IMAGE,
-  VIDEO,
-  MOVIE_COLLECTION,
-  SLIDER,
+  TEXT = 'TEXT',
+  IMAGE = 'IMAGE',
+  VIDEO = 'VIDEO',
+  MOVIE_COLLECTION = 'MOVIE_COLLECTION',
+  SLIDER = 'SLIDER',
 }
 
 registerEnumType(BlockType, {

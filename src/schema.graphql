@@ -28,6 +28,11 @@ type BlockModel {
   updatedAt: DateTime!
 }
 
+type BlockModelEdge {
+  cursor: String!
+  node: BlockModel!
+}
+
 """Type of the block"""
 enum BlockType {
   IMAGE
@@ -35,6 +40,12 @@ enum BlockType {
   SLIDER
   TEXT
   VIDEO
+}
+
+type BlocksModel {
+  edges: [BlockModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 input BooleanFilterInput {
@@ -99,6 +110,13 @@ input CountryWhereInput {
   id: UuidFilterInput
   slug: StringFilterInput
   title: StringFilterInput
+}
+
+input CreateBlockInput {
+  blockType: BlockType!
+  content: String!
+  order: Int!
+  title: String!
 }
 
 input CreateCountriesInput {
@@ -323,6 +341,10 @@ type FilmographyEntryPersonModel {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+input FindBlocksInput {
+  id: UuidFilterInput!
 }
 
 input FindCountriesInput {
@@ -600,6 +622,7 @@ type MoviesModel {
 type Mutation {
   addEpisodes(data: CreateEpisodesInput!): SeasonModel!
   changePassword(data: ChangePasswordInput!): User!
+  createBlock(data: CreateBlockInput!): BlockModel!
   createCountries(data: CreateCountriesInput!): [CountryModel!]!
   createExternalIds(data: CreateExternalIdsInput!): [ExternalIDModel!]!
   createFacts(data: CreateFactsInput!): [FactModel!]!
@@ -613,6 +636,7 @@ type Mutation {
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
+  updateBlock(data: CreateBlockInput!, id: String!): BlockModel!
   updateEpisodes(data: UpdateEpisodeInput!): SeasonModel!
   updatePageInfo(data: UpdatePageInfoInput!): PageInfoModel!
   updatePerson(data: UpdatePersonInput!): PersonModel!
@@ -705,6 +729,8 @@ enum PersonRoleType {
 }
 
 type Query {
+  block(id: String!): BlockModel!
+  blocks(data: FindBlocksInput!): BlocksModel!
   countries(data: FindCountriesInput!): CountriesModel!
   country(id: String!): CountryModel!
   genre(id: String!): GenreModel!

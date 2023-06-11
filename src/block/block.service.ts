@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 
 import { PaginationArgs } from '../common/pagination/pagination.args';
-import { FindBlocksInput } from '../block/dto/find-blocks.input';
-import { BlocksModel } from '../block/models/blocks.model';
-import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
+import { FindBlocksInput } from './dto/find-blocks.input';
 import { BlockMapper } from './block.mapper';
+import { CreateBlockInput } from './dto/create-block.input';
+import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
+import { BlocksModel } from './models/blocks.model';
 import { BlockModel } from './models/block.model';
 
 @Injectable()
@@ -57,5 +58,26 @@ export class BlockService {
     });
 
     return new BlockMapper().mapEntitiesToModels(blocks);
+  }
+
+  async create(data: CreateBlockInput): Promise<BlockModel> {
+    const block = await this.prismaService.block.create({
+      data: {
+        ...data,
+      },
+    });
+
+    return new BlockMapper().mapEntityToModel(block);
+  }
+
+  async update(id: string, data: CreateBlockInput): Promise<BlockModel> {
+    const block = await this.prismaService.block.update({
+      where: { id },
+      data: {
+        ...data,
+      },
+    });
+
+    return new BlockMapper().mapEntityToModel(block);
   }
 }

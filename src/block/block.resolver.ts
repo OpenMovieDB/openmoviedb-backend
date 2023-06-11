@@ -1,12 +1,12 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
 import { ImageLinkModel } from 'src/image/models/image-link.model';
 import BlocksLoader from './block.loader';
 import { BlockService } from './block.service';
-
+import { FindBlocksInput } from './dto/find-blocks.input';
 import { PaginationArgs } from '../common/pagination/pagination.args';
-import { FindBlocksInput } from '../block/dto/find-blocks.input';
-import { BlockModel } from './models/block.model';
+import { CreateBlockInput } from './dto/create-block.input';
 import { BlocksModel } from './models/blocks.model';
+import { BlockModel } from './models/block.model';
 
 @Resolver(() => BlockModel)
 export class BlockResolver {
@@ -25,5 +25,15 @@ export class BlockResolver {
   @ResolveField('images', () => [ImageLinkModel], { nullable: true })
   async blockImages(@Parent() block: BlockModel): Promise<ImageLinkModel[]> {
     return this.blocksLoader.batchImages.load(block.id);
+  }
+
+  @Mutation(() => BlockModel)
+  async createBlock(@Args('data') dto: CreateBlockInput): Promise<BlockModel> {
+    return this.blockService.create(dto);
+  }
+
+  @Mutation(() => BlockModel)
+  async updateBlock(@Args('id') id: string, @Args('data') dto: CreateBlockInput): Promise<BlockModel> {
+    return this.blockService.update(id, dto);
   }
 }
