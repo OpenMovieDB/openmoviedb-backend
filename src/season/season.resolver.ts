@@ -29,7 +29,7 @@ export class SeasonResolver extends BaseResolver(
   }
 
   @Mutation(() => SeasonModel)
-  updateEpisodes(@Args('data') data: UpdateEpisodeInput): Promise<SeasonModel> {
+  updateEpisodes(@Args('id') id: string, @Args('data') data: UpdateEpisodeInput): Promise<SeasonModel> {
     return this.seasonService.updateEpisode(data);
   }
 }
