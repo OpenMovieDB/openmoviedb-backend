@@ -1,6 +1,8 @@
 // @ts-nocheck
 import { Args, InputType, Mutation, ObjectType, Query, Resolver } from '@nestjs/graphql';
 import { PaginationArgs } from '../pagination/pagination.args';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from '../../auth/gql-auth.guard';
 
 type Constructor<T> = new (...args: any[]) => T;
 
@@ -26,6 +28,7 @@ export function BaseResolver<T, TModel, TPaginationModel, TPaginationDto, TCreat
   class ObjectTypePaginationModel extends PaginationModel {}
 
   @Resolver({ isAbstract: true })
+  @UseGuards(GqlAuthGuard)
   abstract class BaseAbstractResolver {
     protected constructor(readonly service: TService) {}
 
@@ -43,16 +46,19 @@ export function BaseResolver<T, TModel, TPaginationModel, TPaginationDto, TCreat
     }
 
     @Mutation(() => Model, { name: `create${suffix}` })
+    @UseGuards(GqlAuthGuard)
     async create(@Args('data') dto: InputTypeCreateDto): Promise<TModel> {
       return this.service.create(dto);
     }
 
     @Mutation(() => Model, { name: `update${suffix}` })
+    @UseGuards(GqlAuthGuard)
     async update(@Args('id') id: string, @Args('data') dto: InputTypeUpdateDto): Promise<TModel> {
       return this.service.update(id, dto);
     }
 
     @Mutation(() => Model, { name: `delete${suffix}` })
+    @UseGuards(GqlAuthGuard)
     async delete(@Args('id') id: string): Promise<boolean> {
       return this.service.delete(id);
     }
