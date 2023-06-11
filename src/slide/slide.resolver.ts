@@ -7,10 +7,23 @@ import { FindSlidesInput } from './dto/find-slides.input';
 import { SlideService } from './slide.service';
 import { ImageLinkModel } from 'src/image/models/image-link.model';
 import { MovieModel } from 'src/movie/models/movie.model';
+import { BaseResolver } from '../common/resolvers/base.resolver';
+import { CreateSlideInput } from './dto/create-slide.input';
+import { UpdateSlideInput } from './dto/update-slide.input';
 
 @Resolver(() => SlideModel)
-export class SlideResolver {
-  constructor(private readonly slidersLoader: SlidesLoader, private readonly sliderService: SlideService) {}
+export class SlideResolver extends BaseResolver(
+  'Slide',
+  SlideModel,
+  SlidesModel,
+  FindSlidesInput,
+  CreateSlideInput,
+  UpdateSlideInput,
+  SlideService,
+) {
+  constructor(private readonly slidersLoader: SlidesLoader, private readonly sliderService: SlideService) {
+    super(sliderService);
+  }
 
   @Query(() => SlideModel)
   async slide(@Args('id') id: string): Promise<SlideModel> {
