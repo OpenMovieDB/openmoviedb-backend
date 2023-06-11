@@ -1,34 +1,36 @@
 import { GenreService } from './genre.service';
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { GenreModel } from './models/genre.model';
 import GenreLoader from './genre.loader';
 import { ImageLinkModel } from 'src/image/models/image-link.model';
 import { GenresModel } from './models/genres.model';
-import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { FindGenresInput } from 'src/genre/dto/find-genres.input';
 import { CreateGenresInput } from './dto/create-genres.input';
+import { BaseResolver } from '../common/resolvers/base.resolver';
+import { UpdateGenreInput } from './dto/update-genre.input';
+import { CreateGenreInput } from './dto/create-genre.input';
 
 @Resolver(() => GenreModel)
-export class GenreResolver {
-  constructor(private readonly genreService: GenreService, private readonly genreLoader: GenreLoader) {}
-
-  @Query(() => GenreModel)
-  async genre(@Args('id') id: string): Promise<GenreModel> {
-    return this.genreService.findOne(id);
-  }
-
-  @Query(() => GenresModel)
-  async genres(@Args() pagination: PaginationArgs, @Args('data') dto: FindGenresInput): Promise<GenresModel> {
-    return this.genreService.findMany(pagination, dto);
-  }
-
-  @ResolveField('images', () => [ImageLinkModel], { nullable: true })
-  async genreImages(@Parent() genre: GenreModel): Promise<ImageLinkModel[]> {
-    return this.genreLoader.batchImages.load(genre.id);
+export class GenreResolver extends BaseResolver(
+  'Genre',
+  GenreModel,
+  GenresModel,
+  FindGenresInput,
+  CreateGenreInput,
+  UpdateGenreInput,
+  GenreService,
+) {
+  constructor(private readonly genreService: GenreService, private readonly genreLoader: GenreLoader) {
+    super(genreService);
   }
 
   @Mutation(() => [GenreModel])
   async createGenres(@Args('data') data: CreateGenresInput): Promise<GenreModel[]> {
     return this.genreService.createMany(data);
+  }
+
+  @ResolveField('images', () => [ImageLinkModel], { nullable: true })
+  async genreImages(@Parent() genre: GenreModel): Promise<ImageLinkModel[]> {
+    return this.genreLoader.batchImages.load(genre.id);
   }
 }
