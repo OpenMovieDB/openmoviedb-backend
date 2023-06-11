@@ -7,20 +7,19 @@ import { UpdateManySeoInput } from './dto/update-many-seo-input';
 
 @Injectable()
 export class SeoService {
-  private readonly defaultIncludes = {
-    include: {
-      image: {
-        include: {
-          image: {
-            include: {
-              assets: true,
-            },
-          },
+  constructor(private readonly prismaService: PrismaService) {}
+
+  async findManyByPageInfoIds(ids: string[]): Promise<SeoModel[]> {
+    const seoItems = await this.prismaService.seo.findMany({
+      where: {
+        pageInfoId: {
+          in: ids,
         },
       },
-    },
-  };
-  constructor(private readonly prismaService: PrismaService) {}
+    });
+
+    return new SeoMapper().mapEntitiesToModels(seoItems);
+  }
 
   async createMany({ items }: CreateManySeoInput): Promise<SeoModel[]> {
     const seoItems = await this.prismaService.$transaction(
@@ -29,7 +28,6 @@ export class SeoService {
           data: {
             ...item,
           },
-          ...this.defaultIncludes,
         }),
       ),
     );
@@ -47,7 +45,6 @@ export class SeoService {
           data: {
             ...item,
           },
-          ...this.defaultIncludes,
         }),
       ),
     );
