@@ -70,9 +70,21 @@ type CollectionModel {
   images: [ImageLinkModel!]
   pageInfo: PageInfoModel
   pageInfoId: String!
+  title: String!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+type CollectionModelEdge {
+  cursor: String!
+  node: CollectionModel!
+}
+
+type CollectionsModel {
+  edges: [CollectionModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 type CountriesModel {
@@ -116,6 +128,10 @@ input CreateBlockInput {
   blockType: BlockType!
   content: String!
   order: Int!
+  title: String!
+}
+
+input CreateCollectionInput {
   title: String!
 }
 
@@ -344,6 +360,10 @@ type FilmographyEntryPersonModel {
 }
 
 input FindBlocksInput {
+  id: UuidFilterInput!
+}
+
+input FindCollectionsInput {
   id: UuidFilterInput!
 }
 
@@ -623,6 +643,7 @@ type Mutation {
   addEpisodes(data: CreateEpisodesInput!): SeasonModel!
   changePassword(data: ChangePasswordInput!): User!
   createBlock(data: CreateBlockInput!): BlockModel!
+  createCollection(data: CreateCollectionInput!): CollectionModel!
   createCountries(data: CreateCountriesInput!): [CountryModel!]!
   createExternalIds(data: CreateExternalIdsInput!): [ExternalIDModel!]!
   createFacts(data: CreateFactsInput!): [FactModel!]!
@@ -637,6 +658,7 @@ type Mutation {
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   updateBlock(data: CreateBlockInput!, id: String!): BlockModel!
+  updateCollection(data: CreateCollectionInput!, id: String!): CollectionModel!
   updateEpisodes(data: UpdateEpisodeInput!): SeasonModel!
   updatePageInfo(data: UpdatePageInfoInput!): PageInfoModel!
   updatePerson(data: UpdatePersonInput!): PersonModel!
@@ -731,6 +753,8 @@ enum PersonRoleType {
 type Query {
   block(id: String!): BlockModel!
   blocks(data: FindBlocksInput!): BlocksModel!
+  collection(id: String!): CollectionModel!
+  collections(data: FindCollectionsInput!): CollectionsModel!
   countries(data: FindCountriesInput!): CountriesModel!
   country(id: String!): CountryModel!
   genre(id: String!): GenreModel!
