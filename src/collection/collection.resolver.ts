@@ -1,43 +1,31 @@
-import { Args, Mutation, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
-import { ImageLinkModel } from '../image/models/image-link.model';
+import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { CollectionModel } from './models/collection.model';
+import { FindCollectionsInput } from './dto/find-collections.input';
+import { UpdateCollectionInput } from './dto/update-collection.input';
+import { ImageLinkModel } from '../image/models/image-link.model';
+import { BaseResolver } from '../common/resolvers/base.resolver';
 import CollectionsLoader from './collection.loader';
 import { CollectionsModel } from './models/collections.model';
-import { PaginationArgs } from '../common/pagination/pagination.args';
 import { CollectionService } from './collection.service';
-import { FindCollectionsInput } from './dto/find-collections.input';
 import { PageInfoModel } from '../page-info/models/page-info.model';
 import { BlockModel } from '../block/models/block.model';
 import { CreateCollectionInput } from './dto/create-collection.input';
 
 @Resolver(() => CollectionModel)
-export class CollectionResolver {
+export class CollectionResolver extends BaseResolver(
+  'Collection',
+  CollectionModel,
+  CollectionsModel,
+  FindCollectionsInput,
+  CreateCollectionInput,
+  UpdateCollectionInput,
+  CollectionService,
+) {
   constructor(
     private readonly collectionsLoader: CollectionsLoader,
     private readonly collectionService: CollectionService,
-  ) {}
-
-  @Query(() => CollectionModel)
-  async collection(@Args('id') id: string): Promise<CollectionModel> {
-    return this.collectionService.findOne(id);
-  }
-
-  @Query(() => CollectionsModel)
-  async collections(
-    @Args() pagination: PaginationArgs,
-    @Args('data') dto: FindCollectionsInput,
-  ): Promise<CollectionsModel> {
-    return this.collectionService.findMany(pagination, dto);
-  }
-
-  @Mutation(() => CollectionModel)
-  async createCollection(@Args('data') dto: CreateCollectionInput): Promise<CollectionModel> {
-    return this.collectionService.create(dto);
-  }
-
-  @Mutation(() => CollectionModel)
-  async updateCollection(@Args('id') id: string, @Args('data') dto: CreateCollectionInput): Promise<CollectionModel> {
-    return this.collectionService.update(id, dto);
+  ) {
+    super(collectionService);
   }
 
   @ResolveField('pageInfo', () => PageInfoModel, { nullable: true })
