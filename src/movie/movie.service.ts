@@ -36,6 +36,18 @@ export class MovieService {
     };
   }
 
+  async findManyByIds(ids: string[]): Promise<MovieModel[]> {
+    const movies = await this.prismaService.movie.findMany({
+      where: {
+        id: {
+          in: ids,
+        },
+      },
+    });
+
+    return movies.map((movie) => new MovieMapper().mapEntityToModel(movie));
+  }
+
   async create(data: CreateMovieInput): Promise<MovieModel> {
     const movie = await this.prismaService.movie.create({
       data: {

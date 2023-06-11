@@ -28,5 +28,6 @@ import { PageInfoModule } from 'src/page-info/page-info.module';
     PageInfoModule,
   ],
   providers: [MovieResolver, MovieService, MoviesLoader],
+  exports: [MovieService],
 })
 export class MovieModule {}

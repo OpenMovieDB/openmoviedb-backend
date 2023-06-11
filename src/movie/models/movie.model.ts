@@ -8,11 +8,11 @@ import { RatingModel } from '../../rating/models/rating.model';
 import { CountryModel } from '../../country/models/country.model';
 import { FactModel } from '../../fact/models/fact.model';
 import { ReleaseDateModel } from '../../release-date/models/release-date.model';
-import { SlideModel } from '../../slider/models/slide.model';
 import { ExternalIDModel } from '../../external-id/models/external-id.model';
 import { ImageLinkModel } from '../../image/models/image-link.model';
 import { MediaLinkModel } from '../../media/models/media-link.model';
 import { MovieType } from './movie-type.enum';
+import { SlideModel } from 'src/slide/models/slide.model';
 
 @ObjectType()
 export class MovieModel extends BasePageModel {
