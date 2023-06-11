@@ -195,7 +195,7 @@ input CreateEpisodesInput {
   seasonId: String!
 }
 
-input CreateExternalIdInput {
+input CreateExternalIDInput {
   movieId: String
   personId: String
   source: ExternalIDSource!
@@ -203,8 +203,8 @@ input CreateExternalIdInput {
   value: String!
 }
 
-input CreateExternalIdsInput {
-  ids: [CreateExternalIdInput!]!
+input CreateExternalIDsInput {
+  ids: [CreateExternalIDInput!]!
 }
 
 input CreateFactInput {
@@ -308,6 +308,14 @@ type EpisodeModel {
   updatedAt: DateTime!
 }
 
+input ExternalIDCreateDto {
+  movieId: String
+  personId: String
+  source: ExternalIDSource!
+  type: ExternalIDType!
+  value: String!
+}
+
 type ExternalIDModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
@@ -319,6 +327,21 @@ type ExternalIDModel {
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
   value: String!
+}
+
+type ExternalIDModelEdge {
+  cursor: String!
+  node: ExternalIDModel!
+}
+
+input ExternalIDPaginationDto {
+  id: UuidFilterInput!
+}
+
+type ExternalIDPaginationModel {
+  edges: [ExternalIDModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 """Source of the external id"""
@@ -345,6 +368,14 @@ input ExternalIDTypeEnumInput {
   equals: ExternalIDType
   in: [ExternalIDType!]
   notIn: [ExternalIDType!]
+}
+
+input ExternalIDUpdateDto {
+  movieId: String
+  personId: String
+  source: ExternalIDSource
+  type: ExternalIDType
+  value: String
 }
 
 input ExternalIdRelationInput {
@@ -677,7 +708,8 @@ type Mutation {
   createCollection(data: CollectionCreateDto!): CollectionModel!
   createCountries(data: CreateCountriesInput!): [CountryModel!]!
   createCountry(data: CountryCreateDto!): CountryModel!
-  createExternalIds(data: CreateExternalIdsInput!): [ExternalIDModel!]!
+  createExternalID(data: ExternalIDCreateDto!): ExternalIDModel!
+  createExternalIds(data: CreateExternalIDsInput!): [ExternalIDModel!]!
   createFacts(data: CreateFactsInput!): [FactModel!]!
   createGenres(data: CreateGenresInput!): [GenreModel!]!
   createMovie(data: CreateMovieInput!): MovieModel!
@@ -693,6 +725,7 @@ type Mutation {
   updateCollection(data: CollectionUpdateDto!, id: String!): CollectionModel!
   updateCountry(data: CountryUpdateDto!, id: String!): CountryModel!
   updateEpisodes(data: UpdateEpisodeInput!): SeasonModel!
+  updateExternalID(data: ExternalIDUpdateDto!, id: String!): ExternalIDModel!
   updatePageInfo(data: UpdatePageInfoInput!): PageInfoModel!
   updatePerson(data: UpdatePersonInput!): PersonModel!
   updateSeasons(data: UpdateSeasonInput!): SeasonModel!
@@ -789,9 +822,11 @@ type Query {
   findManyBlock(data: BlockPaginationDto!): BlockPaginationModel!
   findManyCollection(data: CollectionPaginationDto!): CollectionPaginationModel!
   findManyCountry(data: CountryPaginationDto!): CountryPaginationModel!
+  findManyExternalID(data: ExternalIDPaginationDto!): ExternalIDPaginationModel!
   findOneBlock(id: String!): BlockModel!
   findOneCollection(id: String!): CollectionModel!
   findOneCountry(id: String!): CountryModel!
+  findOneExternalID(id: String!): ExternalIDModel!
   genre(id: String!): GenreModel!
   genres(data: FindGenresInput!): GenresModel!
   images: [ImageModel!]!

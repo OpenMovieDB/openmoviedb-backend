@@ -1,8 +1,8 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
-import { CreateExternalIdInput } from './create-external-id.input';
+import { Field, InputType } from '@nestjs/graphql';
+import { CreateExternalIDInput } from './create-external-id.input';
 
 @InputType()
-export class CreateExternalIdsInput {
-  @Field(() => [CreateExternalIdInput])
-  ids: CreateExternalIdInput[];
+export class CreateExternalIDsInput {
+  @Field(() => [CreateExternalIDInput])
+  ids: CreateExternalIDInput[];
 }

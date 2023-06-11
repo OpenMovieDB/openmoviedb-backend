@@ -1,8 +1,8 @@
-import { Field, InputType, ObjectType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 import { ExternalIDSource, ExternalIDType } from '../models/external-id-type.enum';
 
 @InputType()
-export class CreateExternalIdInput {
+export class CreateExternalIDInput {
   @Field((type) => ExternalIDSource)
   source: ExternalIDSource;
 

@@ -1,6 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
-import { ExternalIdService } from 'src/external-id/external-id.service';
+import { ExternalIDService } from 'src/external-id/external-id.service';
 import { MediaService } from 'src/media/media.service';
 import { ImageService } from '../image/image.service';
 import { PersonService } from '../person/person.service';
@@ -15,7 +15,7 @@ import { PageInfoService } from 'src/page-info/page-info.service';
 @Injectable({ scope: Scope.REQUEST })
 export default class MoviesLoader {
   constructor(
-    private readonly externalIdService: ExternalIdService,
+    private readonly externalIDService: ExternalIDService,
     private readonly mediaService: MediaService,
     private readonly imageService: ImageService,
     private readonly personService: PersonService,
@@ -29,7 +29,7 @@ export default class MoviesLoader {
   ) {}
 
   public readonly batchExternalIds = new DataLoader(async (ids: string[]) => {
-    const res = await this.externalIdService.findManyByMovieIds(ids);
+    const res = await this.externalIDService.findManyByMovieIds(ids);
     return ids.map((id) => res.filter((externalId) => externalId.movieId === id));
   });
 
