@@ -57,7 +57,6 @@ type CollectionModel {
   createdAt: DateTime!
   id: ID!
   images: [ImageLinkModel!]
-  movies: [MovieModel!]
   pageInfo: PageInfoModel
   pageInfoId: String!
 
@@ -350,6 +349,14 @@ input FindMoviesInput {
 
 input FindPagesInput {
   isPublished: BooleanFilterInput!
+}
+
+input FindSlidersInput {
+  id: UuidFilterInput
+}
+
+input FindSlidesInput {
+  id: UuidFilterInput
 }
 
 type GenreModel {
@@ -708,7 +715,11 @@ type Query {
   movie(id: String!): MovieModel!
   movies(data: FindMoviesInput!): MoviesModel!
   page(id: String!): PageModel!
-  pages(data: FindPagesInput!): PagesModel!
+  pages(data: FindPagesInput!): [PagesModel!]!
+  slide(id: String!): SlideModel!
+  slider(id: String!): SliderModel!
+  sliders(data: FindSlidersInput!): [SlidersModel!]!
+  slides(data: FindSlidesInput!): [SlidesModel!]!
 }
 
 type RatingModel {
@@ -811,13 +822,17 @@ type SlideModel {
   createdAt: DateTime!
   description: String!
   id: ID!
-  images: [ImageModel!]!
-  movie: MovieModel!
-  position: Int!
+  images: [ImageLinkModel!]
+  movie: MovieModel
   title: String!
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+type SlideModelEdge {
+  cursor: String!
+  node: SlideModel!
 }
 
 type SliderModel {
@@ -826,10 +841,27 @@ type SliderModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
   id: ID!
-  slides: [SlideModel!]!
+  slides: [SlideModel!]
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+type SliderModelEdge {
+  cursor: String!
+  node: SliderModel!
+}
+
+type SlidersModel {
+  edges: [SliderModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+type SlidesModel {
+  edges: [SlideModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
 }
 
 input StringFilterInput {

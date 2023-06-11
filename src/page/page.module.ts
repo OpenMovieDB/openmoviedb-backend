@@ -8,5 +8,6 @@ import { BlockModule } from 'src/block/block.module';
 @Module({
   imports: [PageInfoModule, BlockModule],
   providers: [PageResolver, PageService, PagesLoader],
+  exports: [PageService],
 })
 export class PageModule {}

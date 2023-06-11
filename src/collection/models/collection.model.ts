@@ -13,9 +13,6 @@ export class CollectionModel extends BasePageModel {
   @Field((type) => [ImageModel], { nullable: true })
   images?: ImageLinkModel[];
 
-  @Field((type) => [MovieModel], { nullable: true })
-  movies?: MovieModel[];
-
   @Field((type) => BlockModel, { nullable: true })
   block?: BlockModel;
 }

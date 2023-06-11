@@ -18,7 +18,7 @@ export class PageResolver {
     return this.pageService.findOne(id);
   }
 
-  @Query(() => PagesModel)
+  @Query(() => [PagesModel])
   async pages(@Args() pagination: PaginationArgs, @Args('data') dto: FindPagesInput): Promise<PagesModel> {
     return this.pageService.findMany(pagination, dto);
   }
