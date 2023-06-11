@@ -17,6 +17,9 @@ export class SeoModel extends BaseModel {
   @Field((type) => ImageLinkModel, { nullable: true })
   image?: ImageLinkModel | null;
 
+  @Field({ nullable: true })
+  imageId?: string | null;
+
   @Field((type) => SeoType)
   type: SeoType;
 }

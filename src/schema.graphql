@@ -715,6 +715,7 @@ type Query {
   movie(id: String!): MovieModel!
   movies(data: FindMoviesInput!): MoviesModel!
   page(id: String!): PageModel!
+  pageInfo(id: String!): PageInfoModel!
   pages(data: FindPagesInput!): [PagesModel!]!
   slide(id: String!): SlideModel!
   slider(id: String!): SliderModel!
@@ -795,6 +796,7 @@ type SeoModel {
   description: String
   id: ID!
   image: ImageLinkModel
+  imageId: String
   pageInfoId: String!
   title: String
   type: SeoType!
