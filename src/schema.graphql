@@ -11,6 +11,13 @@ type Auth {
   user: User!
 }
 
+input BlockCreateDto {
+  blockType: BlockType!
+  content: String!
+  order: Int!
+  title: String!
+}
+
 type BlockModel {
   blockType: BlockType!
   collections: [CollectionModel!]
@@ -33,6 +40,16 @@ type BlockModelEdge {
   node: BlockModel!
 }
 
+input BlockPaginationDto {
+  id: UuidFilterInput!
+}
+
+type BlockPaginationModel {
+  edges: [BlockModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 """Type of the block"""
 enum BlockType {
   IMAGE
@@ -42,10 +59,11 @@ enum BlockType {
   VIDEO
 }
 
-type BlocksModel {
-  edges: [BlockModelEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int!
+input BlockUpdateDto {
+  blockType: BlockType
+  content: String
+  order: Int
+  title: String
 }
 
 input BooleanFilterInput {
@@ -58,6 +76,10 @@ input BooleanFilterInput {
 input ChangePasswordInput {
   newPassword: String!
   oldPassword: String!
+}
+
+input CollectionCreateDto {
+  title: String!
 }
 
 type CollectionModel {
@@ -81,16 +103,29 @@ type CollectionModelEdge {
   node: CollectionModel!
 }
 
-type CollectionsModel {
+input CollectionPaginationDto {
+  id: UuidFilterInput!
+}
+
+type CollectionPaginationModel {
   edges: [CollectionModelEdge!]
   pageInfo: PageInfo!
   totalCount: Int!
+}
+
+input CollectionUpdateDto {
+  title: String
 }
 
 type CountriesModel {
   edges: [CountryModelEdge!]
   pageInfo: PageInfo!
   totalCount: Int!
+}
+
+input CountryCreateDto {
+  slug: String!
+  title: String!
 }
 
 type CountryModel {
@@ -112,27 +147,31 @@ type CountryModelEdge {
   node: CountryModel!
 }
 
+input CountryPaginationDto {
+  title: String
+}
+
+type CountryPaginationModel {
+  edges: [CountryModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 input CountryRelationInput {
   every: CountryWhereInput
   none: CountryWhereInput
   some: CountryWhereInput
 }
 
+input CountryUpdateDto {
+  slug: String
+  title: String
+}
+
 input CountryWhereInput {
   id: UuidFilterInput
   slug: StringFilterInput
   title: StringFilterInput
-}
-
-input CreateBlockInput {
-  blockType: BlockType!
-  content: String!
-  order: Int!
-  title: String!
-}
-
-input CreateCollectionInput {
-  title: String!
 }
 
 input CreateCountriesInput {
@@ -357,14 +396,6 @@ type FilmographyEntryPersonModel {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
-}
-
-input FindBlocksInput {
-  id: UuidFilterInput!
-}
-
-input FindCollectionsInput {
-  id: UuidFilterInput!
 }
 
 input FindCountriesInput {
@@ -642,9 +673,10 @@ type MoviesModel {
 type Mutation {
   addEpisodes(data: CreateEpisodesInput!): SeasonModel!
   changePassword(data: ChangePasswordInput!): User!
-  createBlock(data: CreateBlockInput!): BlockModel!
-  createCollection(data: CreateCollectionInput!): CollectionModel!
+  createBlock(data: BlockCreateDto!): BlockModel!
+  createCollection(data: CollectionCreateDto!): CollectionModel!
   createCountries(data: CreateCountriesInput!): [CountryModel!]!
+  createCountry(data: CountryCreateDto!): CountryModel!
   createExternalIds(data: CreateExternalIdsInput!): [ExternalIDModel!]!
   createFacts(data: CreateFactsInput!): [FactModel!]!
   createGenres(data: CreateGenresInput!): [GenreModel!]!
@@ -657,8 +689,9 @@ type Mutation {
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
-  updateBlock(data: CreateBlockInput!, id: String!): BlockModel!
-  updateCollection(data: CreateCollectionInput!, id: String!): CollectionModel!
+  updateBlock(data: BlockUpdateDto!, id: String!): BlockModel!
+  updateCollection(data: CollectionUpdateDto!, id: String!): CollectionModel!
+  updateCountry(data: CountryUpdateDto!, id: String!): CountryModel!
   updateEpisodes(data: UpdateEpisodeInput!): SeasonModel!
   updatePageInfo(data: UpdatePageInfoInput!): PageInfoModel!
   updatePerson(data: UpdatePersonInput!): PersonModel!
@@ -751,12 +784,14 @@ enum PersonRoleType {
 }
 
 type Query {
-  block(id: String!): BlockModel!
-  blocks(data: FindBlocksInput!): BlocksModel!
-  collection(id: String!): CollectionModel!
-  collections(data: FindCollectionsInput!): CollectionsModel!
   countries(data: FindCountriesInput!): CountriesModel!
   country(id: String!): CountryModel!
+  findManyBlock(data: BlockPaginationDto!): BlockPaginationModel!
+  findManyCollection(data: CollectionPaginationDto!): CollectionPaginationModel!
+  findManyCountry(data: CountryPaginationDto!): CountryPaginationModel!
+  findOneBlock(id: String!): BlockModel!
+  findOneCollection(id: String!): CollectionModel!
+  findOneCountry(id: String!): CountryModel!
   genre(id: String!): GenreModel!
   genres(data: FindGenresInput!): GenresModel!
   images: [ImageModel!]!

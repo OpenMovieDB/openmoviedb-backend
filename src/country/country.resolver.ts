@@ -8,10 +8,26 @@ import { FindCountriesInput } from './dto/find-countries.input';
 import CountryLoader from './country.loader';
 import { CreateCountryInput } from './dto/create-country.input';
 import { CreateCountriesInput } from './dto/create-countries.input';
+import { BaseResolver } from '../common/resolvers/base.resolver';
+import { UpdateCountryInput } from './dto/update-country.input';
 
 @Resolver(() => CountryModel)
-export class CountryResolver {
-  constructor(private readonly countryService: CountryService, private readonly countryLoader: CountryLoader) {}
+export class CountryResolver extends BaseResolver(
+  'Country',
+  CountryModel,
+  CountriesModel,
+  FindCountriesInput,
+  CreateCountryInput,
+  UpdateCountryInput,
+  CountryService,
+) {
+  constructor(private readonly countryService: CountryService, private readonly countryLoader: CountryLoader) {
+    super(countryService);
+  }
+  @Mutation(() => [CountryModel])
+  async createCountries(@Args('data') data: CreateCountriesInput): Promise<CountryModel[]> {
+    return this.countryService.createMany(data);
+  }
 
   @Query(() => CountryModel)
   async country(@Args('id') id: string): Promise<CountryModel> {
@@ -26,10 +42,5 @@ export class CountryResolver {
   @ResolveField('images', () => [ImageLinkModel], { nullable: true })
   async countryImages(@Parent() country: CountryModel): Promise<ImageLinkModel[]> {
     return this.countryLoader.batchImages.load(country.id);
-  }
-
-  @Mutation(() => [CountryModel])
-  async createCountries(@Args('data') data: CreateCountriesInput): Promise<CountryModel[]> {
-    return this.countryService.createMany(data);
   }
 }
