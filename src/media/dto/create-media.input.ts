@@ -1,4 +1,7 @@
-import { InputType } from '@nestjs/graphql';
+import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class CreateMediaInput {}
+export class CreateMediaInput {
+  @Field()
+  title: string;
+}

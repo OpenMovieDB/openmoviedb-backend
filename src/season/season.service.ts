@@ -1,14 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { GenreModel } from 'src/genre/models/genre.model';
 import { SeasonModel } from './models/season.model';
 import { SeasonMapper } from './mappers/season.mapper';
 import { CreateSeasonsInput } from './dto/create-seasons.input';
-import { ReleaseDateType } from '@prisma/client';
 import { CreateEpisodesInput } from './dto/create-episodes.input';
-import { UpdateSeasonInput } from './dto/update-season.input';
 import { EpisodeMapper } from './mappers/episode.mapper';
 import { UpdateEpisodeInput } from './dto/update-episode.input';
+
 @Injectable()
 export class SeasonService {
   private readonly defaultInclude = {
@@ -60,19 +58,19 @@ export class SeasonService {
     return new SeasonMapper().mapEntitiesToModels(seasons);
   }
 
-  async update({ id, ...data }: UpdateSeasonInput): Promise<SeasonModel> {
-    const season = await this.prismaService.season.update({
-      where: {
-        id,
-      },
-      data: {
-        ...data,
-      },
-      ...this.defaultInclude,
-    });
-
-    return new SeasonMapper().mapEntityToModel(season);
-  }
+  // async update({ id, ...data }: UpdateSeasonInput): Promise<SeasonModel> {
+  //   const season = await this.prismaService.season.update({
+  //     where: {
+  //       id,
+  //     },
+  //     data: {
+  //       ...data,
+  //     },
+  //     ...this.defaultInclude,
+  //   });
+  //
+  //   return new SeasonMapper().mapEntityToModel(season);
+  // }
 
   async addEpisodes({ seasonId, items }: CreateEpisodesInput): Promise<SeasonModel> {
     const season = await this.prismaService.season.update({
@@ -90,7 +88,7 @@ export class SeasonService {
     return new SeasonMapper().mapEntityToModel(season);
   }
 
-  async updateEpisode({ id, ...data }: UpdateEpisodeInput): Promise<SeasonModel> {
+  async updateEpisode(id: string, data: UpdateEpisodeInput): Promise<SeasonModel> {
     const season = await this.prismaService.episode.update({
       where: {
         id,

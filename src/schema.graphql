@@ -237,26 +237,6 @@ input CreateManySeoInput {
   items: [CreateSeoInput!]!
 }
 
-input CreateMovieInput {
-  description: String
-  originalTitle: String
-  slug: String!
-  title: String!
-  type: MovieType!
-  year: Int!
-}
-
-input CreatePageInput {
-  isPublished: Boolean!
-  slug: String!
-  title: String!
-}
-
-input CreatePersonInput {
-  name: String!
-  slug: String!
-}
-
 input CreateReleaseDateInput {
   countryId: String!
   date: DateTime!
@@ -273,10 +253,6 @@ input CreateReleaseDatesInput {
 input CreateSeasonInput {
   movieId: String!
   number: Int!
-}
-
-input CreateSeasonsInput {
-  items: [CreateSeasonInput!]!
 }
 
 input CreateSeoInput {
@@ -399,6 +375,12 @@ input ExternalIdWhereInput {
   value: StringFilterInput
 }
 
+input FactCreateDto {
+  content: String!
+  isSpoiler: Boolean!
+  movieId: String!
+}
+
 type FactModel {
   content: String!
 
@@ -410,6 +392,29 @@ type FactModel {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+type FactModelEdge {
+  cursor: String!
+  node: FactModel!
+}
+
+input FactPaginationDto {
+  createdAt: DateFilterInput
+  id: UuidFilterInput
+  updatedAt: DateFilterInput
+}
+
+type FactPaginationModel {
+  edges: [FactModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input FactUpdateDto {
+  content: String
+  isSpoiler: Boolean
+  movieId: String
 }
 
 type FilmographyEntryMovieModel {
@@ -445,37 +450,13 @@ input FindCountriesInput {
   updatedAt: DateFilterInput
 }
 
-input FindGenresInput {
-  createdAt: DateFilterInput
-  id: UuidFilterInput
-  title: String
-  updatedAt: DateFilterInput
-}
-
-input FindMoviesInput {
-  countries: CountryRelationInput
-  createdAt: DateFilterInput
-  externalID: ExternalIdRelationInput
-  genres: GenreRelationInput
-  id: UuidFilterInput
-  rating: RatingRelationInput
-  slug: StringFilterInput
-  title: StringFilterInput
-  type: MovieTypeEnumInput
-  updatedAt: DateFilterInput
-  year: NumberFilterInput
-}
-
-input FindPagesInput {
-  isPublished: BooleanFilterInput!
-}
-
-input FindSlidersInput {
-  id: UuidFilterInput
-}
-
 input FindSlidesInput {
   id: UuidFilterInput
+}
+
+input GenreCreateDto {
+  slug: String!
+  title: String!
 }
 
 type GenreModel {
@@ -497,22 +478,34 @@ type GenreModelEdge {
   node: GenreModel!
 }
 
+input GenrePaginationDto {
+  createdAt: DateFilterInput
+  id: UuidFilterInput
+  title: String
+  updatedAt: DateFilterInput
+}
+
+type GenrePaginationModel {
+  edges: [GenreModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 input GenreRelationInput {
   every: GenreWhereInput
   none: GenreWhereInput
   some: GenreWhereInput
 }
 
+input GenreUpdateDto {
+  slug: String
+  title: String
+}
+
 input GenreWhereInput {
   id: UuidFilterInput
   slug: StringFilterInput
   title: StringFilterInput
-}
-
-type GenresModel {
-  edges: [GenreModelEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 """Format of the image asset"""
@@ -610,6 +603,10 @@ type MediaAssetModel {
   url: String!
 }
 
+input MediaCreateDto {
+  title: String!
+}
+
 """Format of the media"""
 enum MediaFormat {
   MKV
@@ -646,6 +643,23 @@ type MediaModel {
   updatedAt: DateTime!
 }
 
+type MediaModelEdge {
+  cursor: String!
+  node: MediaModel!
+}
+
+input MediaPaginationDto {
+  createdAt: DateFilterInput
+  id: UuidFilterInput
+  updatedAt: DateFilterInput
+}
+
+type MediaPaginationModel {
+  edges: [MediaModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 """Source of the media"""
 enum MediaSource {
   S3
@@ -660,6 +674,19 @@ enum MediaType {
   TEASER
   TRAILER
   VIDEO
+}
+
+input MediaUpdateDto {
+  title: String
+}
+
+input MovieCreateDto {
+  description: String
+  originalTitle: String
+  slug: String!
+  title: String!
+  type: MovieType!
+  year: Int!
 }
 
 type MovieModel {
@@ -698,6 +725,26 @@ type MovieModelEdge {
   node: MovieModel!
 }
 
+input MoviePaginationDto {
+  countries: CountryRelationInput
+  createdAt: DateFilterInput
+  externalID: ExternalIdRelationInput
+  genres: GenreRelationInput
+  id: UuidFilterInput
+  rating: RatingRelationInput
+  slug: StringFilterInput
+  title: StringFilterInput
+  type: MovieTypeEnumInput
+  updatedAt: DateFilterInput
+  year: NumberFilterInput
+}
+
+type MoviePaginationModel {
+  edges: [MovieModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 """Type of the movie"""
 enum MovieType {
   MOVIE
@@ -710,10 +757,13 @@ input MovieTypeEnumInput {
   notIn: [MovieType!]
 }
 
-type MoviesModel {
-  edges: [MovieModelEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int!
+input MovieUpdateDto {
+  description: String
+  originalTitle: String
+  slug: String
+  title: String
+  type: MovieType
+  year: Int
 }
 
 type Mutation {
@@ -725,26 +775,51 @@ type Mutation {
   createCountry(data: CountryCreateDto!): CountryModel!
   createExternalID(data: ExternalIDCreateDto!): ExternalIDModel!
   createExternalIds(data: CreateExternalIDsInput!): [ExternalIDModel!]!
+  createFact(data: FactCreateDto!): FactModel!
   createFacts(data: CreateFactsInput!): [FactModel!]!
+  createGenre(data: GenreCreateDto!): GenreModel!
   createGenres(data: CreateGenresInput!): [GenreModel!]!
-  createMovie(data: CreateMovieInput!): MovieModel!
-  createPage(data: CreatePageInput!): PageModel!
-  createPerson(data: CreatePersonInput!): PersonModel!
+  createMedia(data: MediaCreateDto!): MediaModel!
+  createMovie(data: MovieCreateDto!): MovieModel!
+  createPage(data: PageCreateDto!): PageModel!
+  createPerson(data: PersonCreateDto!): PersonModel!
   createReleaseDates(data: CreateReleaseDatesInput!): [ReleaseDateModel!]!
-  createSeasons(data: CreateSeasonsInput!): [SeasonModel!]!
+  createSeason(data: SeasonCreateDto!): SeasonModel!
   createSeos(data: CreateManySeoInput!): [SeoModel!]!
+  createSlide(data: SlideCreateDto!): SlideModel!
+  createSlider(data: SliderCreateDto!): SliderModel!
+  deleteBlock(id: String!): BlockModel!
+  deleteCollection(id: String!): CollectionModel!
+  deleteCountry(id: String!): CountryModel!
+  deleteExternalID(id: String!): ExternalIDModel!
+  deleteFact(id: String!): FactModel!
+  deleteGenre(id: String!): GenreModel!
+  deleteMedia(id: String!): MediaModel!
+  deleteMovie(id: String!): MovieModel!
+  deletePage(id: String!): PageModel!
+  deletePerson(id: String!): PersonModel!
+  deleteSeason(id: String!): SeasonModel!
+  deleteSlide(id: String!): SlideModel!
+  deleteSlider(id: String!): SliderModel!
   login(data: LoginInput!): Auth!
   refreshToken(token: JWT!): Token!
   signup(data: SignupInput!): Auth!
   updateBlock(data: BlockUpdateDto!, id: String!): BlockModel!
   updateCollection(data: CollectionUpdateDto!, id: String!): CollectionModel!
   updateCountry(data: CountryUpdateDto!, id: String!): CountryModel!
-  updateEpisodes(data: UpdateEpisodeInput!): SeasonModel!
+  updateEpisodes(data: UpdateEpisodeInput!, id: String!): SeasonModel!
   updateExternalID(data: ExternalIDUpdateDto!, id: String!): ExternalIDModel!
+  updateFact(data: FactUpdateDto!, id: String!): FactModel!
+  updateGenre(data: GenreUpdateDto!, id: String!): GenreModel!
+  updateMedia(data: MediaUpdateDto!, id: String!): MediaModel!
+  updateMovie(data: MovieUpdateDto!, id: String!): MovieModel!
+  updatePage(data: PageUpdateDto!, id: String!): PageModel!
   updatePageInfo(data: UpdatePageInfoInput!): PageInfoModel!
-  updatePerson(data: UpdatePersonInput!): PersonModel!
-  updateSeasons(data: UpdateSeasonInput!): SeasonModel!
+  updatePerson(data: PersonUpdateDto!, id: String!): PersonModel!
+  updateSeason(data: SeasonUpdateDto!, id: String!): SeasonModel!
   updateSeos(data: UpdateManySeoInput!): [SeoModel!]!
+  updateSlide(data: SlideUpdateDto!, id: String!): SlideModel!
+  updateSlider(data: SliderUpdateDto!, id: String!): SliderModel!
   updateUser(data: UpdateUserInput!): User!
 }
 
@@ -758,6 +833,12 @@ input NumberFilterInput {
   lte: Int
   not: NumberFilterInput
   notIn: [Int!]
+}
+
+input PageCreateDto {
+  isPublished: Boolean!
+  slug: String!
+  title: String!
 }
 
 type PageInfo {
@@ -800,10 +881,28 @@ type PageModelEdge {
   node: PageModel!
 }
 
-type PagesModel {
+input PagePaginationDto {
+  createdAt: DateFilterInput
+  id: UuidFilterInput
+  isPublished: BooleanFilterInput!
+  updatedAt: DateFilterInput
+}
+
+type PagePaginationModel {
   edges: [PageModelEdge!]
   pageInfo: PageInfo!
   totalCount: Int!
+}
+
+input PageUpdateDto {
+  isPublished: Boolean
+  slug: String
+  title: String
+}
+
+input PersonCreateDto {
+  name: String!
+  slug: String!
 }
 
 type PersonModel {
@@ -820,6 +919,23 @@ type PersonModel {
   updatedAt: DateTime!
 }
 
+type PersonModelEdge {
+  cursor: String!
+  node: PersonModel!
+}
+
+input PersonPaginationDto {
+  createdAt: DateFilterInput
+  id: UuidFilterInput
+  updatedAt: DateFilterInput
+}
+
+type PersonPaginationModel {
+  edges: [PersonModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
 """Role of the person"""
 enum PersonRoleType {
   ACTOR
@@ -831,6 +947,12 @@ enum PersonRoleType {
   WRITER
 }
 
+input PersonUpdateDto {
+  id: String!
+  name: String!
+  slug: String!
+}
+
 type Query {
   countries(data: FindCountriesInput!): CountriesModel!
   country(id: String!): CountryModel!
@@ -838,23 +960,33 @@ type Query {
   findManyCollection(data: CollectionPaginationDto!): CollectionPaginationModel!
   findManyCountry(data: CountryPaginationDto!): CountryPaginationModel!
   findManyExternalID(data: ExternalIDPaginationDto!): ExternalIDPaginationModel!
+  findManyFact(data: FactPaginationDto!): FactPaginationModel!
+  findManyGenre(data: GenrePaginationDto!): GenrePaginationModel!
+  findManyMedia(data: MediaPaginationDto!): MediaPaginationModel!
+  findManyMovie(data: MoviePaginationDto!): MoviePaginationModel!
+  findManyPage(data: PagePaginationDto!): PagePaginationModel!
+  findManyPerson(data: PersonPaginationDto!): PersonPaginationModel!
+  findManySeason(data: SeasonPaginationDto!): SeasonPaginationModel!
+  findManySlide(data: SlidePaginationDto!): SlidePaginationModel!
+  findManySlider(data: SliderPaginationDto!): SliderPaginationModel!
   findOneBlock(id: String!): BlockModel!
   findOneCollection(id: String!): CollectionModel!
   findOneCountry(id: String!): CountryModel!
   findOneExternalID(id: String!): ExternalIDModel!
-  genre(id: String!): GenreModel!
-  genres(data: FindGenresInput!): GenresModel!
+  findOneFact(id: String!): FactModel!
+  findOneGenre(id: String!): GenreModel!
+  findOneMedia(id: String!): MediaModel!
+  findOneMovie(id: String!): MovieModel!
+  findOnePage(id: String!): PageModel!
+  findOnePerson(id: String!): PersonModel!
+  findOneSeason(id: String!): SeasonModel!
+  findOneSlide(id: String!): SlideModel!
+  findOneSlider(id: String!): SliderModel!
   images: [ImageModel!]!
   me: User!
   media(id: String!): MediaLinkModel!
-  movie(id: String!): MovieModel!
-  movies(data: FindMoviesInput!): MoviesModel!
-  page(id: String!): PageModel!
   pageInfo(id: String!): PageInfoModel!
-  pages(data: FindPagesInput!): [PagesModel!]!
   slide(id: String!): SlideModel!
-  slider(id: String!): SliderModel!
-  sliders(data: FindSlidersInput!): [SlidersModel!]!
   slides(data: FindSlidesInput!): [SlidesModel!]!
 }
 
@@ -912,6 +1044,11 @@ enum Role {
   USER
 }
 
+input SeasonCreateDto {
+  movieId: String!
+  number: Int!
+}
+
 type SeasonModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
@@ -923,6 +1060,27 @@ type SeasonModel {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
+}
+
+type SeasonModelEdge {
+  cursor: String!
+  node: SeasonModel!
+}
+
+input SeasonPaginationDto {
+  createdAt: DateFilterInput
+  id: UuidFilterInput
+  updatedAt: DateFilterInput
+}
+
+type SeasonPaginationModel {
+  edges: [SeasonModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input SeasonUpdateDto {
+  items: [CreateSeasonInput!]
 }
 
 type SeoModel {
@@ -954,6 +1112,10 @@ input SignupInput {
   password: String!
 }
 
+input SlideCreateDto {
+  title: String!
+}
+
 type SlideModel {
   """Identifies the date and time when the object was created."""
   createdAt: DateTime!
@@ -970,6 +1132,24 @@ type SlideModel {
 type SlideModelEdge {
   cursor: String!
   node: SlideModel!
+}
+
+input SlidePaginationDto {
+  id: UuidFilterInput
+}
+
+type SlidePaginationModel {
+  edges: [SlideModelEdge!]
+  pageInfo: PageInfo!
+  totalCount: Int!
+}
+
+input SlideUpdateDto {
+  title: String
+}
+
+input SliderCreateDto {
+  title: String!
 }
 
 type SliderModel {
@@ -989,10 +1169,18 @@ type SliderModelEdge {
   node: SliderModel!
 }
 
-type SlidersModel {
+input SliderPaginationDto {
+  id: UuidFilterInput
+}
+
+type SliderPaginationModel {
   edges: [SliderModelEdge!]
   pageInfo: PageInfo!
   totalCount: Int!
+}
+
+input SliderUpdateDto {
+  title: String
 }
 
 type SlidesModel {
@@ -1018,7 +1206,6 @@ type Token {
 }
 
 input UpdateEpisodeInput {
-  id: String!
   number: Int
   title: String
 }
@@ -1031,17 +1218,6 @@ input UpdatePageInfoInput {
   description: String
   id: String!
   title: String
-}
-
-input UpdatePersonInput {
-  id: String!
-  name: String!
-  slug: String!
-}
-
-input UpdateSeasonInput {
-  id: String!
-  number: Int
 }
 
 input UpdateSeoInput {
