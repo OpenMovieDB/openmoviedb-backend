@@ -11,7 +11,7 @@ mutation User {
 }
 
 mutation RefreshToken {
-  refreshToken(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJmNzU5ZGRiMS0wNDBkLTQ2ZGMtYTQ5Yi0yM2JiNzhlY2RkODYiLCJpYXQiOjE2ODQzMzE5MzAsImV4cCI6MTY4NDkzNjczMH0.f8wy5dxEJi9klsESn1U7bfU-NNDV2YTzXDJcJWVpJ_w") {
+  refreshToken(token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIyN2IzZjE0Yy00YTQ5LTQ3YjItODc3ZC01Mjk0ZjE1ZmQxOTkiLCJpYXQiOjE2ODY2MDM4ODIsImV4cCI6MTY4NjYwNDAwMn0.OAFblP0Fvvz4xJd4Y9_K1FgXxgCmsGBIq-GISmZtCWw") {
     ...TokenData
   }
 }

@@ -3,10 +3,24 @@ import { PrismaService } from 'nestjs-prisma';
 import { FactModel } from './models/fact.model';
 import { FactMapper } from './fact.mapper';
 import { CreateFactsInput } from './dto/create-facts.input';
+import { BaseService } from '../common/services/base.service';
+import { FindFactsInput } from './dto/find-facts.input';
+import { CreateFactInput } from './dto/create-fact.input';
+import { FactsModel } from './models/facts.model';
 
 @Injectable()
-export class FactService {
-  constructor(private readonly prismaService: PrismaService) {}
+export class FactService extends BaseService(
+  'fact',
+  FactModel,
+  FactModel,
+  FactsModel,
+  FindFactsInput,
+  CreateFactInput,
+  FactMapper,
+) {
+  constructor(readonly prismaService: PrismaService) {
+    super(prismaService);
+  }
 
   async findManyByMovieIds(ids: string[]): Promise<FactModel[]> {
     const facts = await this.prismaService.fact.findMany({
