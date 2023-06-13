@@ -1,7 +1,6 @@
-import { Args, Parent, Query, ResolveField, Resolver } from '@nestjs/graphql';
+import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import SlidesLoader from './slide.loader';
 import { SlideModel } from './models/slide.model';
-import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { SlidesModel } from './models/slides.model';
 import { FindSlidesInput } from './dto/find-slides.input';
 import { SlideService } from './slide.service';
@@ -23,16 +22,6 @@ export class SlideResolver extends BaseResolver(
 ) {
   constructor(private readonly slidersLoader: SlidesLoader, private readonly sliderService: SlideService) {
     super(sliderService);
-  }
-
-  @Query(() => SlideModel)
-  async slide(@Args('id') id: string): Promise<SlideModel> {
-    return this.sliderService.findOne(id);
-  }
-
-  @Query(() => [SlidesModel])
-  async slides(@Args() pagination: PaginationArgs, @Args('data') dto: FindSlidesInput): Promise<SlidesModel> {
-    return this.sliderService.findMany(pagination, dto);
   }
 
   @ResolveField('images', () => [ImageLinkModel], { nullable: true })

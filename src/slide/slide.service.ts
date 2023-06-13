@@ -1,38 +1,24 @@
-import { findManyCursorConnection } from '@devoxa/prisma-relay-cursor-connection';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
-import { PaginationArgs } from 'src/common/pagination/pagination.args';
 import { SlideModel } from './models/slide.model';
 import { SlideMapper } from './slide.mapper';
 import { FindSlidesInput } from './dto/find-slides.input';
 import { SlidesModel } from './models/slides.model';
+import { BaseService } from '../common/services/base.service';
+import { CreateSlideInput } from './dto/create-slide.input';
 
 @Injectable()
-export class SlideService {
-  constructor(private readonly prismaService: PrismaService) {}
-
-  async findOne(id: string): Promise<SlideModel> {
-    const slide = await this.prismaService.slide.findUnique({
-      where: { id },
-    });
-
-    return new SlideMapper().mapEntityToModel(slide);
-  }
-
-  async findMany({ after, before, first, last }: PaginationArgs, where: FindSlidesInput): Promise<SlidesModel> {
-    const res = await findManyCursorConnection(
-      (args) => this.prismaService.slide.findMany({ where }),
-      () => this.prismaService.slide.count({ where }),
-      { after, before, first, last },
-    );
-
-    return {
-      ...res,
-      edges: res.edges.map((edge) => ({
-        ...edge,
-        node: new SlideMapper().mapEntityToModel(edge.node),
-      })),
-    };
+export class SlideService extends BaseService(
+  'slide',
+  SlideModel,
+  SlideModel,
+  SlidesModel,
+  FindSlidesInput,
+  CreateSlideInput,
+  SlideMapper,
+) {
+  constructor(readonly prismaService: PrismaService) {
+    super(prismaService);
   }
 
   async findManyBySliderIds(ids: string[]): Promise<SlideModel[]> {
