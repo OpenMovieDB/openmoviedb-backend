@@ -2,33 +2,25 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { MediaLinkModel } from 'src/media/models/media-link.model';
 import { MediaLinkMapper } from './mappers/media-link.mapper';
+import { BaseService } from '../common/services/base.service';
+import { MediaMapper } from './mappers/media.mapper';
+import { MediaModel } from './models/media.model';
+import { FindMediasInput } from './dto/find-medias.input';
+import { CreateMediaInput } from './dto/create-media.input';
+import { MediasModel } from './models/medias.model';
 
 @Injectable()
-export class MediaService {
-  constructor(private readonly prismaService: PrismaService) {}
-
-  async findOne(id: string): Promise<MediaLinkModel> {
-    const media = await this.prismaService.mediaLink.findUnique({
-      where: { id },
-      include: {
-        media: {
-          include: {
-            assets: true,
-            image: {
-              include: {
-                image: {
-                  include: {
-                    assets: true,
-                  },
-                },
-              },
-            },
-          },
-        },
-      },
-    });
-
-    return new MediaLinkMapper().mapEntityToModel(media);
+export class MediaService extends BaseService(
+  'media',
+  MediaModel,
+  MediaModel,
+  MediasModel,
+  FindMediasInput,
+  CreateMediaInput,
+  MediaMapper,
+) {
+  constructor(readonly prismaService: PrismaService) {
+    super(prismaService);
   }
 
   async findManyByMovieIds(ids: string[]): Promise<MediaLinkModel[]> {
