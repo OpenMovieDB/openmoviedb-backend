@@ -5,10 +5,20 @@ import { FilmographyEntryMovieMapper } from './mappers/filmography-entry-movie.m
 import { CreatePersonInput } from './dto/create-person.input';
 import { PersonModel } from './models/person.model';
 import { PersonMapper } from './mappers/person.mapper';
-import { UpdatePersonInput } from './dto/update-person.input';
+import { BaseService } from '../common/services/base.service';
+import { PersonsModel } from './models/persons.model';
+import { FindPersonsInput } from './dto/find-persons.input';
 
 @Injectable()
-export class PersonService {
+export class PersonService extends BaseService(
+  'block',
+  PersonModel,
+  PersonModel,
+  PersonsModel,
+  FindPersonsInput,
+  CreatePersonInput,
+  PersonMapper,
+) {
   private readonly defaultPersonIncludes = {
     include: {
       externalIDs: true,
@@ -23,8 +33,9 @@ export class PersonService {
       },
     },
   };
-  constructor(private readonly prismaService: PrismaService) {}
-
+  constructor(readonly prismaService: PrismaService) {
+    super(prismaService);
+  }
   async findManyFilmographyEntryByMovieIds(ids: string[]): Promise<FilmographyEntryMovieModel[]> {
     const entries = await this.prismaService.filmographyEntry.findMany({
       where: {
@@ -40,24 +51,5 @@ export class PersonService {
     });
 
     return new FilmographyEntryMovieMapper().mapEntitiesToModels(entries);
-  }
-
-  async create(data: CreatePersonInput): Promise<PersonModel> {
-    const person = await this.prismaService.person.create({
-      data,
-      ...this.defaultPersonIncludes,
-    });
-    return new PersonMapper().mapEntityToModel(person);
-  }
-
-  async update(data: UpdatePersonInput): Promise<PersonModel> {
-    const person = await this.prismaService.person.update({
-      where: {
-        id: data.id,
-      },
-      data,
-      ...this.defaultPersonIncludes,
-    });
-    return new PersonMapper().mapEntityToModel(person);
   }
 }
