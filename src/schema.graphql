@@ -121,12 +121,6 @@ input CollectionUpdateDto {
   title: String
 }
 
-type CountriesModel {
-  edges: [CountryModelEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int!
-}
-
 input CountryCreateDto {
   slug: String!
   title: String!
@@ -179,15 +173,6 @@ input CountryWhereInput {
   id: UuidFilterInput
   slug: StringFilterInput
   title: StringFilterInput
-}
-
-input CreateCountriesInput {
-  items: [CreateCountryInput!]!
-}
-
-input CreateCountryInput {
-  slug: String!
-  title: String!
 }
 
 input CreateEpisodeInput {
@@ -441,17 +426,6 @@ type FilmographyEntryPersonModel {
 
   """Identifies the date and time when the object was last updated."""
   updatedAt: DateTime!
-}
-
-input FindCountriesInput {
-  createdAt: DateFilterInput
-  id: UuidFilterInput
-  title: String
-  updatedAt: DateFilterInput
-}
-
-input FindSlidesInput {
-  id: UuidFilterInput
 }
 
 input GenreCreateDto {
@@ -771,7 +745,6 @@ type Mutation {
   changePassword(data: ChangePasswordInput!): User!
   createBlock(data: BlockCreateDto!): BlockModel!
   createCollection(data: CollectionCreateDto!): CollectionModel!
-  createCountries(data: CreateCountriesInput!): [CountryModel!]!
   createCountry(data: CountryCreateDto!): CountryModel!
   createExternalID(data: ExternalIDCreateDto!): ExternalIDModel!
   createExternalIds(data: CreateExternalIDsInput!): [ExternalIDModel!]!
@@ -954,8 +927,6 @@ input PersonUpdateDto {
 }
 
 type Query {
-  countries(data: FindCountriesInput!): CountriesModel!
-  country(id: String!): CountryModel!
   findManyBlock(data: BlockPaginationDto!): BlockPaginationModel!
   findManyCollection(data: CollectionPaginationDto!): CollectionPaginationModel!
   findManyCountry(data: CountryPaginationDto!): CountryPaginationModel!
@@ -984,10 +955,7 @@ type Query {
   findOneSlider(id: String!): SliderModel!
   images: [ImageModel!]!
   me: User!
-  media(id: String!): MediaLinkModel!
   pageInfo(id: String!): PageInfoModel!
-  slide(id: String!): SlideModel!
-  slides(data: FindSlidesInput!): [SlidesModel!]!
 }
 
 type RatingModel {
@@ -1181,12 +1149,6 @@ type SliderPaginationModel {
 
 input SliderUpdateDto {
   title: String
-}
-
-type SlidesModel {
-  edges: [SlideModelEdge!]
-  pageInfo: PageInfo!
-  totalCount: Int!
 }
 
 input StringFilterInput {
