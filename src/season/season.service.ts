@@ -1,14 +1,29 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { SeasonModel } from './models/season.model';
-import { SeasonMapper } from './mappers/season.mapper';
 import { CreateSeasonsInput } from './dto/create-seasons.input';
 import { CreateEpisodesInput } from './dto/create-episodes.input';
 import { EpisodeMapper } from './mappers/episode.mapper';
 import { UpdateEpisodeInput } from './dto/update-episode.input';
+import { BaseService } from '../common/services/base.service';
+import { SeasonMapper } from './mappers/season.mapper';
+import { CreateSeasonInput } from './dto/create-season.input';
+import { FindSeasonsInput } from './dto/find-seasons.input';
+import { SeasonsModel } from './models/seasons.model';
 
 @Injectable()
-export class SeasonService {
+export class SeasonService extends BaseService(
+  'season',
+  SeasonModel,
+  SeasonModel,
+  SeasonsModel,
+  FindSeasonsInput,
+  CreateSeasonInput,
+  SeasonMapper,
+) {
+  constructor(readonly prismaService: PrismaService) {
+    super(prismaService);
+  }
   private readonly defaultInclude = {
     include: {
       episodes: {
@@ -27,7 +42,6 @@ export class SeasonService {
       releaseDate: true,
     },
   };
-  constructor(private readonly prismaService: PrismaService) {}
 
   async findManyByMovieIds(ids: string[]): Promise<SeasonModel[]> {
     const res = await this.prismaService.season.findMany({
@@ -57,20 +71,6 @@ export class SeasonService {
 
     return new SeasonMapper().mapEntitiesToModels(seasons);
   }
-
-  // async update({ id, ...data }: UpdateSeasonInput): Promise<SeasonModel> {
-  //   const season = await this.prismaService.season.update({
-  //     where: {
-  //       id,
-  //     },
-  //     data: {
-  //       ...data,
-  //     },
-  //     ...this.defaultInclude,
-  //   });
-  //
-  //   return new SeasonMapper().mapEntityToModel(season);
-  // }
 
   async addEpisodes({ seasonId, items }: CreateEpisodesInput): Promise<SeasonModel> {
     const season = await this.prismaService.season.update({
