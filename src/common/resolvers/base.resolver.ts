@@ -28,7 +28,6 @@ export function BaseResolver<T, TModel, TPaginationModel, TPaginationDto, TCreat
   class ObjectTypePaginationModel extends PaginationModel {}
 
   @Resolver({ isAbstract: true })
-  @UseGuards(GqlAuthGuard)
   abstract class BaseAbstractResolver {
     protected constructor(readonly service: TService) {}
 
@@ -42,7 +41,7 @@ export function BaseResolver<T, TModel, TPaginationModel, TPaginationDto, TCreat
       @Args() pagination: PaginationArgs,
       @Args('data') dto: InputTypePaginationDto,
     ): Promise<TPaginationModel> {
-      return this.service.findMany(pagination);
+      return this.service.findMany(pagination, dto);
     }
 
     @Mutation(() => Model, { name: `create${suffix}` })
