@@ -3,6 +3,7 @@ import { PrismaService } from 'nestjs-prisma';
 import { RatingModel } from './models/rating.model';
 import { RatingMapper } from './rating.mapper';
 import { CreateManyVendorRatingInput } from './dto/create-many-vendor-rating.input';
+import { UpdateVendorRatingInput } from './dto/update-vendor-rating.input';
 
 @Injectable()
 export class RatingService {
@@ -47,6 +48,17 @@ export class RatingService {
             data: dto.vendorRatings,
           },
         },
+      },
+    });
+  }
+
+  async updateVendorRating(id: string, dto: UpdateVendorRatingInput): Promise<RatingModel> {
+    return await this.prismaService.vendorRating.update({
+      where: {
+        id,
+      },
+      data: {
+        value: dto.value,
       },
     });
   }
