@@ -11,6 +11,8 @@ export class RatingMapper implements IMapper<RatingEntity, RatingModel> {
   public mapEntityToModel(entity: RatingEntity): RatingModel {
     return {
       ...entity,
+      value:
+        entity.vendorRatings.reduce((acc, vendorRating) => acc + vendorRating.value, 0) / entity.vendorRatings.length,
       vendorRatings: entity.vendorRatings.map((vendorRating) => ({
         ...vendorRating,
         vendor: VendorType[vendorRating.vendor],
