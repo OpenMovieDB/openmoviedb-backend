@@ -1,4 +1,15 @@
-import { Resolver } from '@nestjs/graphql';
+import { Args, Mutation, Resolver } from '@nestjs/graphql';
+import { RatingService } from './rating.service';
+import { CreateVendorRatingInput } from './dto/create-vendor-rating.input';
+import { RatingModel } from './models/rating.model';
+import { CreateManyVendorRatingInput } from './dto/create-many-vendor-rating.input';
 
-@Resolver()
-export class RatingResolver {}
+@Resolver(() => RatingModel)
+export class RatingResolver {
+  constructor(private readonly ratingService: RatingService) {}
+
+  @Mutation(() => RatingModel)
+  createManyVendorRating(@Args('ratingId') ratingId: string, @Args('data') dto: CreateManyVendorRatingInput) {
+    return this.ratingService.createManyVendorRating(ratingId, dto);
+  }
+}

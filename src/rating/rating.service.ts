@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { RatingModel } from './models/rating.model';
 import { RatingMapper } from './rating.mapper';
+import { CreateManyVendorRatingInput } from './dto/create-many-vendor-rating.input';
 
 @Injectable()
 export class RatingService {
@@ -33,5 +34,20 @@ export class RatingService {
     });
 
     return new RatingMapper().mapEntityToModel(rating);
+  }
+
+  async createManyVendorRating(ratingId: string, dto: CreateManyVendorRatingInput): Promise<RatingModel> {
+    return await this.prismaService.rating.update({
+      where: {
+        id: ratingId,
+      },
+      data: {
+        vendorRatings: {
+          createMany: {
+            data: dto.vendorRatings,
+          },
+        },
+      },
+    });
   }
 }
