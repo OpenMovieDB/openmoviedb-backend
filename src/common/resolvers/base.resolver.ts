@@ -2,7 +2,7 @@
 import { Args, InputType, Mutation, ObjectType, Query, Resolver } from '@nestjs/graphql';
 import { PaginationArgs } from '../pagination/pagination.args';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from '../../auth/gql-auth.guard';
+import { GqlAuthGuard } from '../../domains/auth/gql-auth.guard';
 
 type Constructor<T> = new (...args: any[]) => T;
 
