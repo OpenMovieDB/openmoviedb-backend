@@ -1,7 +1,7 @@
 import { Logger, Module } from '@nestjs/common';
 import { loggingMiddleware, PrismaModule } from 'nestjs-prisma';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { GraphQLModule } from '@nestjs/graphql';
 import { GqlConfigService } from './common/configs/gql-config.service';
 import config from './common/configs/config';
@@ -24,6 +24,7 @@ import { PageModule } from './domains/page/page.module';
 import { SliderModule } from './domains/slider/slider.module';
 import { BlockModule } from './domains/block/block.module';
 import { FileModule } from './domains/file/file.module';
+import { SyncModule } from './services/sync/sync.module';
 
 @Module({
   imports: [
@@ -62,6 +63,7 @@ import { FileModule } from './domains/file/file.module';
     SliderModule,
     BlockModule,
     FileModule,
+    SyncModule,
   ],
 })
 export class AppModule {}

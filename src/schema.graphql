@@ -222,6 +222,10 @@ input CreateManySeoInput {
   items: [CreateSeoInput!]!
 }
 
+input CreateManyVendorRatingInput {
+  vendorRatings: CreateVendorRatingInput!
+}
+
 input CreateReleaseDateInput {
   countryId: String!
   date: DateTime!
@@ -245,6 +249,12 @@ input CreateSeoInput {
   pageInfoId: String!
   title: String
   type: SeoType
+}
+
+input CreateVendorRatingInput {
+  ratingId: String!
+  value: Float!
+  vendor: VendorType!
 }
 
 input DateFilterInput {
@@ -752,6 +762,7 @@ type Mutation {
   createFacts(data: CreateFactsInput!): [FactModel!]!
   createGenre(data: GenreCreateDto!): GenreModel!
   createGenres(data: CreateGenresInput!): [GenreModel!]!
+  createManyVendorRating(data: CreateManyVendorRatingInput!, ratingId: String!): RatingModel!
   createMedia(data: MediaCreateDto!): MediaModel!
   createMovie(data: MovieCreateDto!): MovieModel!
   createPage(data: PageCreateDto!): PageModel!
@@ -794,6 +805,7 @@ type Mutation {
   updateSlide(data: SlideUpdateDto!, id: String!): SlideModel!
   updateSlider(data: SliderUpdateDto!, id: String!): SliderModel!
   updateUser(data: UpdateUserInput!): User!
+  updateVendorRating(data: UpdateVendorRatingInput!, di: String!): RatingModel!
 }
 
 input NumberFilterInput {
@@ -1190,6 +1202,10 @@ input UpdateSeoInput {
 
 input UpdateUserInput {
   name: String
+}
+
+input UpdateVendorRatingInput {
+  value: Float!
 }
 
 type User {
