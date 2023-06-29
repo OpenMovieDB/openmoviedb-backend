@@ -13,7 +13,30 @@ export class SyncService {
 
   async getMoviesByYears(year: number, page: number = 1) {
     const qb = new MovieQueryBuilder();
-    const query = qb.sort('id', SORT_TYPE.DESC).filterExact('year', year).paginate(page, this.MOVIES_LIMIT).build();
+    const query = qb
+      .select([
+        'id',
+        'name',
+        'enName',
+        'type',
+        'isSeries',
+        'names',
+        'year',
+        'audience',
+        'poster',
+        'backdrop',
+        'externalId',
+        'facts',
+        'rating',
+        'persons',
+        'releaseYears',
+        'genres',
+        'countries',
+      ] as any)
+      .sort('id', SORT_TYPE.DESC)
+      .filterExact('year', year)
+      .paginate(page, this.MOVIES_LIMIT)
+      .build();
     return this.kp.movie.getByFilters(query);
   }
 }
