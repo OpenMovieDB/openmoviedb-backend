@@ -11,9 +11,9 @@ export class SyncService {
     this.kp = new KinopoiskDev(this.configService.get('KP_API_KEY'));
   }
 
-  async getMovies(page: number = 1) {
+  async getMoviesByYears(year: number, page: number = 1) {
     const qb = new MovieQueryBuilder();
-    const query = qb.sort('id', SORT_TYPE.DESC).paginate(page, this.MOVIES_LIMIT).build();
+    const query = qb.sort('id', SORT_TYPE.DESC).filterExact('year', year).paginate(page, this.MOVIES_LIMIT).build();
     return this.kp.movie.getByFilters(query);
   }
 }
