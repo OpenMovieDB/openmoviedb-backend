@@ -1,8 +1,9 @@
 import { Module } from '@nestjs/common';
 import { CountryResolver } from './country.resolver';
 import { CountryService } from './country.service';
-import { ImageModule } from 'src/domains/image/image.module';
+
 import CountryLoader from './country.loader';
+import { ImageModule } from '../image/image.module';
 
 @Module({
   imports: [ImageModule],

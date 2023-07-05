@@ -1,7 +1,8 @@
 import { Movie } from '@prisma/client';
-import { IMapper } from 'src/common/interfaces/mapper.interface';
+
 import { MovieModel } from './models/movie.model';
 import { MovieType } from './models/movie-type.enum';
+import { IMapper } from '../../common/interfaces/mapper.interface';
 
 export type MovieEntity = Movie;
 

@@ -1,6 +1,7 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { BaseModel } from 'src/common/models/base.model';
+
 import { MediaModel } from './media.model';
+import { BaseModel } from '../../../common/models/base.model';
 
 export enum MediaType {
   TRAILER,

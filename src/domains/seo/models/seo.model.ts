@@ -1,7 +1,8 @@
-import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
+import { Field, ObjectType } from '@nestjs/graphql';
 import { BaseModel } from '../../../common/models/base.model';
-import { ImageLinkModel } from 'src/domains/image/models/image-link.model';
+
 import { SeoType } from './seo-type.enum';
+import { ImageLinkModel } from '../../image/models/image-link.model';
 
 @ObjectType()
 export class SeoModel extends BaseModel {

@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { SliderResolver } from './slider.resolver';
 import { SliderService } from './slider.service';
 import SlidersLoader from './slider.loader';
-import { BlockModule } from 'src/domains/block/block.module';
-import { SlideModule } from 'src/domains/slide/slide.module';
-import { ImageModule } from 'src/domains/image/image.module';
+import { BlockModule } from '../block/block.module';
+import { ImageModule } from '../image/image.module';
+import { SlideModule } from '../slide/slide.module';
 
 @Module({
   imports: [BlockModule, SlideModule, ImageModule],

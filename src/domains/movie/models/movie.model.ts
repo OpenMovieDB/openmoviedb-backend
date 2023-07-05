@@ -1,5 +1,5 @@
-import { Field, Int, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { BasePageModel } from 'src/common/models/base-page.model';
+import { Field, Int, ObjectType } from '@nestjs/graphql';
+
 import { FilmographyEntryMovieModel } from '../../person/models/filmography-entry.model';
 import { CollectionModel } from '../../collection/models/collection.model';
 import { GenreModel } from '../../genre/models/genre.model';
@@ -12,7 +12,8 @@ import { ExternalIDModel } from '../../external-id/models/external-id.model';
 import { ImageLinkModel } from '../../image/models/image-link.model';
 import { MediaLinkModel } from '../../media/models/media-link.model';
 import { MovieType } from './movie-type.enum';
-import { SlideModel } from 'src/domains/slide/models/slide.model';
+import { BasePageModel } from '../../../common/models/base-page.model';
+import { SlideModel } from '../../slide/models/slide.model';
 
 @ObjectType()
 export class MovieModel extends BasePageModel {

@@ -1,16 +1,17 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
-import { ExternalIDService } from 'src/domains/external-id/external-id.service';
-import { MediaService } from 'src/domains/media/media.service';
+
 import { ImageService } from '../image/image.service';
 import { PersonService } from '../person/person.service';
-import { GenreService } from 'src/domains/genre/genre.service';
-import { CountryService } from 'src/domains/country/country.service';
-import { ReleaseDateService } from 'src/domains/release-date/release-date.service';
-import { SeasonService } from 'src/domains/season/season.service';
-import { FactService } from 'src/domains/fact/fact.service';
-import { RatingService } from 'src/domains/rating/rating.service';
-import { PageInfoService } from 'src/domains/page-info/page-info.service';
+import { ExternalIDService } from '../external-id/external-id.service';
+import { MediaService } from '../media/media.service';
+import { GenreService } from '../genre/genre.service';
+import { CountryService } from '../country/country.service';
+import { ReleaseDateService } from '../release-date/release-date.service';
+import { FactService } from '../fact/fact.service';
+import { RatingService } from '../rating/rating.service';
+import { PageInfoService } from '../page-info/page-info.service';
+import { SeasonService } from '../season/season.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class MoviesLoader {

@@ -1,7 +1,8 @@
 import { Image, ImageAsset, ImageLink } from '@prisma/client';
-import { IMapper } from 'src/common/interfaces/mapper.interface';
-import { ImageLinkModel, ImageType } from 'src/domains/image/models/image-link.model';
+
 import { ImageMapper } from './image.mapper';
+import { IMapper } from '../../../common/interfaces/mapper.interface';
+import { ImageLinkModel, ImageType } from '../models/image-link.model';
 
 export type ImageLinkEntity = ImageLink & {
   image: Image & {

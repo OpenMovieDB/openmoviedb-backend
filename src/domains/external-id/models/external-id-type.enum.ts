@@ -1,5 +1,5 @@
 import { InputType, registerEnumType } from '@nestjs/graphql';
-import { AbstractEnumFilterInput } from 'src/common/dto/abstract-enum-filter.input';
+import { AbstractEnumFilterInput } from '../../../common/dto/abstract-enum-filter.input';
 
 export enum ExternalIDSource {
   IMDB = 'IMDB',

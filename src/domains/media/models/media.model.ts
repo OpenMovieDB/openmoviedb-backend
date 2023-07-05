@@ -1,7 +1,8 @@
 import { Field, ObjectType, registerEnumType } from '@nestjs/graphql';
-import { BaseModel } from 'src/common/models/base.model';
+
 import { MediaAssetModel } from './media-asset.model';
 import { ImageLinkModel } from '../../image/models/image-link.model';
+import { BaseModel } from '../../../common/models/base.model';
 
 export enum MediaSource {
   YOUTUBE,

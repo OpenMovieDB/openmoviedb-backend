@@ -1,8 +1,7 @@
-import { InputType, Field } from '@nestjs/graphql';
-
-import { AbstractRelationListFilterInput } from 'src/common/dto/abstract-relation-list-filter.input';
-import { StringFilterInput } from 'src/common/dto/string-filter.input';
-import { UuidFilterInput } from 'src/common/dto/uuid-filter.input';
+import { Field, InputType } from '@nestjs/graphql';
+import { UuidFilterInput } from '../../../common/dto/uuid-filter.input';
+import { StringFilterInput } from '../../../common/dto/string-filter.input';
+import { AbstractRelationListFilterInput } from '../../../common/dto/abstract-relation-list-filter.input';
 
 @InputType()
 export class GenreWhereInput {

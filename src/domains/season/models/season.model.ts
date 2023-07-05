@@ -1,7 +1,8 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
-import { ReleaseDateModel } from 'src/domains/release-date/models/release-date.model';
+
 import { EpisodeModel } from './episode.model';
-import { BaseModel } from 'src/common/models/base.model';
+import { BaseModel } from '../../../common/models/base.model';
+import { ReleaseDateModel } from '../../release-date/models/release-date.model';
 
 @ObjectType()
 export class SeasonModel extends BaseModel {

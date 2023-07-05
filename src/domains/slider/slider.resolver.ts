@@ -4,10 +4,11 @@ import SlidersLoader from './slider.loader';
 import { SliderService } from './slider.service';
 import { FindSlidersInput } from './dto/find-slider.input';
 import { SlidersModel } from './models/sliders.model';
-import { SlideModel } from 'src/domains/slide/models/slide.model';
+
 import { BaseResolver } from '../../common/resolvers/base.resolver';
 import { CreateSliderInput } from './dto/create-slider.input';
 import { UpdateSliderInput } from './dto/update-slider.input';
+import { SlideModel } from '../slide/models/slide.model';
 
 @Resolver(() => SliderModel)
 export class SliderResolver extends BaseResolver(
@@ -19,7 +20,10 @@ export class SliderResolver extends BaseResolver(
   UpdateSliderInput,
   SliderService,
 ) {
-  constructor(private readonly slidersLoader: SlidersLoader, private readonly sliderService: SliderService) {
+  constructor(
+    private readonly slidersLoader: SlidersLoader,
+    private readonly sliderService: SliderService,
+  ) {
     super(sliderService);
   }
 

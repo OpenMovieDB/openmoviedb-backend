@@ -1,8 +1,8 @@
-import { Genre, ImageLink } from '@prisma/client';
+import { Genre } from '@prisma/client';
 import { IMapper } from '../../common/interfaces/mapper.interface';
 import { GenreModel } from './models/genre.model';
-import { ImageLinkEntity, ImageLinkMapper } from 'src/domains/image/mappers/image-link.mapper';
-import { MovieEntity, MovieMapper } from 'src/domains/movie/movie.mapper';
+import { MovieEntity } from '../movie/movie.mapper';
+import { ImageLinkEntity, ImageLinkMapper } from '../image/mappers/image-link.mapper';
 
 type GenreEntity = Genre & { images?: ImageLinkEntity[]; movies?: MovieEntity[] };
 

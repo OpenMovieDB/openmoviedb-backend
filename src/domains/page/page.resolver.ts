@@ -2,13 +2,14 @@ import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { PageModel } from './models/page.model';
 import { PageService } from './page.service';
 import { CreatePageInput } from './dto/create-page.input';
-import { PageInfoModel } from 'src/domains/page-info/models/page-info.model';
+
 import { FindPagesInput } from './dto/find-pages.input';
 import { PagesModel } from './models/pages.model';
 import PagesLoader from './page.loader';
 import { BaseResolver } from '../../common/resolvers/base.resolver';
 import { BlockModel } from '../block/models/block.model';
 import { UpdatePageInput } from './dto/update-page.input';
+import { PageInfoModel } from '../page-info/models/page-info.model';
 
 @Resolver(() => PageModel)
 export class PageResolver extends BaseResolver(
@@ -20,7 +21,10 @@ export class PageResolver extends BaseResolver(
   UpdatePageInput,
   PageService,
 ) {
-  constructor(private readonly pageService: PageService, private readonly pagesLoader: PagesLoader) {
+  constructor(
+    private readonly pageService: PageService,
+    private readonly pagesLoader: PagesLoader,
+  ) {
     super(pageService);
   }
 

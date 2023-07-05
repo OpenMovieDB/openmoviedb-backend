@@ -2,12 +2,15 @@ import { Injectable } from '@nestjs/common';
 import * as sharp from 'sharp';
 import sizeOf from 'image-size';
 import { ImageAssetFormat, ImageAssetWidth } from './models/image-asset.model';
-import { FileService } from 'src/domains/file/file.service';
 import { PrismaService } from 'nestjs-prisma';
+import { FileService } from '../file/file.service';
 
 @Injectable()
 export class ImageProcessingService {
-  constructor(private readonly fileService: FileService, private readonly prismaService: PrismaService) {}
+  constructor(
+    private readonly fileService: FileService,
+    private readonly prismaService: PrismaService,
+  ) {}
 
   async processAndUploadImageAsset(
     buffer: Buffer,

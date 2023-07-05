@@ -3,21 +3,24 @@ import { MovieService } from './movie.service';
 import { MovieModel } from './models/movie.model';
 import { FindMoviesInput } from './dto/find-movies.input';
 import { MoviesModel } from './models/movies.model';
-import { ExternalIDModel } from 'src/domains/external-id/models/external-id.model';
+
 import MoviesLoader from './movie.loader';
-import { MediaLinkModel } from 'src/domains/media/models/media-link.model';
+
 import { ImageLinkModel } from '../image/models/image-link.model';
 import { FilmographyEntryMovieModel } from '../person/models/filmography-entry.model';
-import { GenreModel } from 'src/domains/genre/models/genre.model';
-import { CountryModel } from 'src/domains/country/models/country.model';
-import { ReleaseDateModel } from 'src/domains/release-date/models/release-date.model';
-import { FactModel } from 'src/domains/fact/models/fact.model';
-import { SeasonModel } from 'src/domains/season/models/season.model';
-import { RatingModel } from 'src/domains/rating/models/rating.model';
-import { PageInfoModel } from 'src/domains/page-info/models/page-info.model';
+
 import { CreateMovieInput } from './dto/create-movie.input';
 import { BaseResolver } from '../../common/resolvers/base.resolver';
 import { UpdateMovieInput } from './dto/update-movie.input';
+import { ExternalIDModel } from '../external-id/models/external-id.model';
+import { MediaLinkModel } from '../media/models/media-link.model';
+import { GenreModel } from '../genre/models/genre.model';
+import { CountryModel } from '../country/models/country.model';
+import { ReleaseDateModel } from '../release-date/models/release-date.model';
+import { FactModel } from '../fact/models/fact.model';
+import { SeasonModel } from '../season/models/season.model';
+import { RatingModel } from '../rating/models/rating.model';
+import { PageInfoModel } from '../page-info/models/page-info.model';
 
 @Resolver(() => MovieModel)
 export class MovieResolver extends BaseResolver(
@@ -29,7 +32,10 @@ export class MovieResolver extends BaseResolver(
   UpdateMovieInput,
   MovieService,
 ) {
-  constructor(private readonly movieService: MovieService, private readonly moviesLoader: MoviesLoader) {
+  constructor(
+    private readonly movieService: MovieService,
+    private readonly moviesLoader: MoviesLoader,
+  ) {
     super(movieService);
   }
 

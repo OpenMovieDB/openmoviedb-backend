@@ -1,5 +1,5 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { ImageLinkModel } from 'src/domains/image/models/image-link.model';
+
 import { CountryService } from './country.service';
 import { CountriesModel } from './models/countries.model';
 import { CountryModel } from './models/country.model';
@@ -8,6 +8,7 @@ import CountryLoader from './country.loader';
 import { CreateCountryInput } from './dto/create-country.input';
 import { BaseResolver } from '../../common/resolvers/base.resolver';
 import { UpdateCountryInput } from './dto/update-country.input';
+import { ImageLinkModel } from '../image/models/image-link.model';
 
 @Resolver(() => CountryModel)
 export class CountryResolver extends BaseResolver(
@@ -19,7 +20,10 @@ export class CountryResolver extends BaseResolver(
   UpdateCountryInput,
   CountryService,
 ) {
-  constructor(private readonly countryService: CountryService, private readonly countryLoader: CountryLoader) {
+  constructor(
+    private readonly countryService: CountryService,
+    private readonly countryLoader: CountryLoader,
+  ) {
     super(countryService);
   }
 

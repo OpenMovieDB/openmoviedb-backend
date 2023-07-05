@@ -1,8 +1,7 @@
-import { InputType, Field } from '@nestjs/graphql';
-
-import { AbstractRelationListFilterInput } from 'src/common/dto/abstract-relation-list-filter.input';
-import { StringFilterInput } from 'src/common/dto/string-filter.input';
-import { ExternalIDSourceEnumInput, ExternalIDTypeEnumInput } from 'src/domains/external-id/models/external-id-type.enum';
+import { Field, InputType } from '@nestjs/graphql';
+import { StringFilterInput } from '../../../common/dto/string-filter.input';
+import { ExternalIDSourceEnumInput, ExternalIDTypeEnumInput } from '../../external-id/models/external-id-type.enum';
+import { AbstractRelationListFilterInput } from '../../../common/dto/abstract-relation-list-filter.input';
 
 @InputType()
 export class ExternalIdWhereInput {

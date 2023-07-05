@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { SeoResolver } from './page-info.resolver';
+import { SeoResolver } from '../seo/seo.resolver';
 
 describe('SeoResolver', () => {
   let resolver: SeoResolver;

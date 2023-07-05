@@ -1,8 +1,8 @@
 import { Episode } from '@prisma/client';
 
 import { EpisodeModel } from '../models/episode.model';
-import { IMapper } from 'src/common/interfaces/mapper.interface';
-import { ImageLinkEntity, ImageLinkMapper } from 'src/domains/image/mappers/image-link.mapper';
+import { ImageLinkEntity, ImageLinkMapper } from '../../image/mappers/image-link.mapper';
+import { IMapper } from '../../../common/interfaces/mapper.interface';
 
 export type EpisodeEntity = Episode & {
   image: ImageLinkEntity;

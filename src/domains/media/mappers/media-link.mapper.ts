@@ -1,7 +1,7 @@
 import { Image, ImageAsset, ImageLink, Media, MediaAsset, MediaLink } from '@prisma/client';
 import { IMapper } from '../../../common/interfaces/mapper.interface';
-import { MediaLinkModel, MediaType } from 'src/domains/media/models/media-link.model';
 import { MediaMapper } from './media.mapper';
+import { MediaLinkModel, MediaType } from '../models/media-link.model';
 
 type MediaEntity = MediaLink & {
   media: Media & { assets: MediaAsset[]; image: ImageLink & { image: Image & { assets: ImageAsset[] } } };

@@ -1,7 +1,6 @@
-import PaginatedResponse from 'src/common/pagination/pagination';
-
 import { ObjectType } from '@nestjs/graphql';
 import { SlideModel } from './slide.model';
+import { Paginated } from '../../../common/pagination/pagination';
 
 @ObjectType()
-export class SlidesModel extends PaginatedResponse(SlideModel) {}
+export class SlidesModel extends Paginated(SlideModel) {}

@@ -1,6 +1,7 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { BaseDateModel } from 'src/common/models/base-date.model';
+
 import { ExternalIDSource, ExternalIDType } from './external-id-type.enum';
+import { BaseDateModel } from '../../../common/models/base-date.model';
 
 @ObjectType()
 export class ExternalIDModel extends BaseDateModel {

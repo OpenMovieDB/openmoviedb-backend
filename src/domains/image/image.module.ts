@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { ImageResolver } from './image.resolver';
 import { ImageService } from './image.service';
 import { ImageController } from './image.controller';
-import { FileModule } from 'src/domains/file/file.module';
 import { ImageProcessingService } from './image-processing.service';
+import { FileModule } from '../file/file.module';
 
 @Module({
   imports: [FileModule],

@@ -1,8 +1,8 @@
-import { InputType, Field } from '@nestjs/graphql';
-import { NumberFilterInput } from 'src/common/dto/number-filter.input';
-import { AbstractRelationFilterInput } from 'src/common/dto/abstract-relation-filter.input';
-import { AbstractEntityFilterInput } from 'src/common/dto/abstract-entity-filter.input';
-import { RatingVendorEnumInput } from 'src/domains/rating/models/vendor-rating.enum';
+import { Field, InputType } from '@nestjs/graphql';
+import { NumberFilterInput } from '../../../common/dto/number-filter.input';
+import { RatingVendorEnumInput } from '../../rating/models/vendor-rating.enum';
+import { AbstractEntityFilterInput } from '../../../common/dto/abstract-entity-filter.input';
+import { AbstractRelationFilterInput } from '../../../common/dto/abstract-relation-filter.input';
 
 @InputType()
 export class VendorRatingWhereInput {

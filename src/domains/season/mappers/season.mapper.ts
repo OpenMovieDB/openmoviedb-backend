@@ -2,7 +2,7 @@ import { ReleaseDate, Season } from '@prisma/client';
 import { IMapper } from '../../../common/interfaces/mapper.interface';
 import { SeasonModel } from '../models/season.model';
 import { EpisodeEntity, EpisodeMapper } from './episode.mapper';
-import { ReleaseDateMapper } from 'src/domains/release-date/release-date.mapper';
+import { ReleaseDateMapper } from '../../release-date/release-date.mapper';
 
 export type SeasonEntity = Season & {
   episodes: EpisodeEntity[];

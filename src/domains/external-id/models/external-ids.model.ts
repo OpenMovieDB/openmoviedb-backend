@@ -1,6 +1,7 @@
 import { ObjectType } from '@nestjs/graphql';
-import PaginatedResponse from 'src/common/pagination/pagination';
+
 import { ExternalIDModel } from './external-id.model';
+import { Paginated } from '../../../common/pagination/pagination';
 
 @ObjectType()
-export class ExternalIDsModel extends PaginatedResponse(ExternalIDModel) {}
+export class ExternalIDsModel extends Paginated(ExternalIDModel) {}

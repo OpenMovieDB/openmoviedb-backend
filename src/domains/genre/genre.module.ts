@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { GenreResolver } from './genre.resolver';
 import { GenreService } from './genre.service';
 import GenreLoader from './genre.loader';
-import { ImageModule } from 'src/domains/image/image.module';
+import { ImageModule } from '../image/image.module';
 
 @Module({
   imports: [ImageModule],

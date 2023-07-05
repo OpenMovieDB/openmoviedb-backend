@@ -1,12 +1,13 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { NumberFilterInput } from 'src/common/dto/number-filter.input';
-import { StringFilterInput } from 'src/common/dto/string-filter.input';
+
 import { RatingRelationInput } from './rating.input';
 import { MovieTypeEnumInput } from '../models/movie-type.enum';
 import { ExternalIdRelationInput } from './external-id.input';
 import { GenreRelationInput } from './genre.input';
 import { CountryRelationInput } from './country.input';
 import { BaseFindManyInput } from '../../../common/dto/base-find-many.input';
+import { StringFilterInput } from '../../../common/dto/string-filter.input';
+import { NumberFilterInput } from '../../../common/dto/number-filter.input';
 
 @InputType()
 export class FindMoviesInput extends BaseFindManyInput {

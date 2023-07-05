@@ -1,15 +1,15 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ExternalIdService } from './external-id.service';
+import { ExternalIDService } from './external-id.service';
 
-describe('ExternalIdService', () => {
-  let service: ExternalIdService;
+describe('ExternalIDService', () => {
+  let service: ExternalIDService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ExternalIdService],
+      providers: [ExternalIDService],
     }).compile();
 
-    service = module.get<ExternalIdService>(ExternalIdService);
+    service = module.get<ExternalIDService>(ExternalIDService);
   });
 
   it('should be defined', () => {

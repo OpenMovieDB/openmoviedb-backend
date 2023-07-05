@@ -2,11 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { GenreModel } from './models/genre.model';
 import { GenreMapper } from './genre.mapper';
-import { FindGenresInput } from 'src/domains/genre/dto/find-genres.input';
+
 import { GenresModel } from './models/genres.model';
 import { CreateGenresInput } from './dto/create-genres.input';
 import { BaseService } from '../../common/services/base.service';
 import { CreateGenreInput } from './dto/create-genre.input';
+import { FindGenresInput } from './dto/find-genres.input';
 
 @Injectable()
 export class GenreService extends BaseService(

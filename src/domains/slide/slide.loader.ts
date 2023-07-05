@@ -1,11 +1,14 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
-import { ImageService } from 'src/domains/image/image.service';
-import { MovieService } from 'src/domains/movie/movie.service';
+import { MovieService } from '../movie/movie.service';
+import { ImageService } from '../image/image.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class SlidesLoader {
-  constructor(private readonly imageService: ImageService, private readonly movieService: MovieService) {}
+  constructor(
+    private readonly imageService: ImageService,
+    private readonly movieService: MovieService,
+  ) {}
 
   public readonly batchImages = new DataLoader(async (ids: string[]) => {
     const res = await this.imageService.findManyByMovieIds(ids);

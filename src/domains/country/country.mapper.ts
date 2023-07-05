@@ -1,8 +1,9 @@
 import { Country } from '@prisma/client';
 import { IMapper } from '../../common/interfaces/mapper.interface';
-import { ImageLinkEntity, ImageLinkMapper } from 'src/domains/image/mappers/image-link.mapper';
-import { MovieEntity, MovieMapper } from 'src/domains/movie/movie.mapper';
+
 import { CountryModel } from './models/country.model';
+import { ImageLinkEntity, ImageLinkMapper } from '../image/mappers/image-link.mapper';
+import { MovieEntity } from '../movie/movie.mapper';
 
 type CountryEntity = Country & { images?: ImageLinkEntity[]; movies?: MovieEntity[] };
 

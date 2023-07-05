@@ -1,8 +1,8 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
-import { BlockService } from 'src/domains/block/block.service';
-import { ImageService } from 'src/domains/image/image.service';
-import { PageInfoService } from 'src/domains/page-info/page-info.service';
+import { PageInfoService } from '../page-info/page-info.service';
+import { BlockService } from '../block/block.service';
+import { ImageService } from '../image/image.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class CollectionsLoader {

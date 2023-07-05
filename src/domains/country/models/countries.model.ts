@@ -1,6 +1,7 @@
 import { ObjectType } from '@nestjs/graphql';
-import PaginatedResponse from 'src/common/pagination/pagination';
+
 import { CountryModel } from './country.model';
+import { Paginated } from '../../../common/pagination/pagination';
 
 @ObjectType()
-export class CountriesModel extends PaginatedResponse(CountryModel) {}
+export class CountriesModel extends Paginated(CountryModel) {}

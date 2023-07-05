@@ -1,7 +1,7 @@
 import { Field, Int, ObjectType } from '@nestjs/graphql';
 import { ImageModel } from '../../image/models/image.model';
-import { BaseModel } from 'src/common/models/base.model';
-import { ImageLinkModel } from 'src/domains/image/models/image-link.model';
+import { ImageLinkModel } from '../../image/models/image-link.model';
+import { BaseModel } from '../../../common/models/base.model';
 
 @ObjectType()
 export class EpisodeModel extends BaseModel {

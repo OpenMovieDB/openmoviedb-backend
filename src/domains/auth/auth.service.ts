@@ -1,10 +1,10 @@
 import { PrismaService } from 'nestjs-prisma';
-import { Prisma, Role, User } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import {
-  Injectable,
-  NotFoundException,
   BadRequestException,
   ConflictException,
+  Injectable,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -12,7 +12,7 @@ import { JwtService } from '@nestjs/jwt';
 import { PasswordService } from './password.service';
 import { SignupInput } from './dto/signup.input';
 import { Token } from './models/token.model';
-import { SecurityConfig } from 'src/common/configs/config.interface';
+import { SecurityConfig } from '../../common/configs/config.interface';
 
 @Injectable()
 export class AuthService {
@@ -24,9 +24,7 @@ export class AuthService {
   ) {}
 
   async createUser(payload: SignupInput): Promise<Token> {
-    const hashedPassword = await this.passwordService.hashPassword(
-      payload.password,
-    );
+    const hashedPassword = await this.passwordService.hashPassword(payload.password);
 
     try {
       const user = await this.prisma.user.create({
@@ -40,10 +38,7 @@ export class AuthService {
         userId: user.id,
       });
     } catch (e) {
-      if (
-        e instanceof Prisma.PrismaClientKnownRequestError &&
-        e.code === 'P2002'
-      ) {
+      if (e instanceof Prisma.PrismaClientKnownRequestError && e.code === 'P2002') {
         throw new ConflictException(`Email ${payload.email} already used.`);
       }
       throw new Error(e);
@@ -57,10 +52,7 @@ export class AuthService {
       throw new NotFoundException(`No user found for email: ${email}`);
     }
 
-    const passwordValid = await this.passwordService.validatePassword(
-      password,
-      user.password,
-    );
+    const passwordValid = await this.passwordService.validatePassword(password, user.password);
 
     if (!passwordValid) {
       throw new BadRequestException('Invalid password');

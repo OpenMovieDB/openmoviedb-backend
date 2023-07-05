@@ -1,6 +1,7 @@
 import { ObjectType } from '@nestjs/graphql';
-import PaginatedResponse from 'src/common/pagination/pagination';
+
 import { MovieModel } from './movie.model';
+import { Paginated } from '../../../common/pagination/pagination';
 
 @ObjectType()
-export class MoviesModel extends PaginatedResponse(MovieModel) {}
+export class MoviesModel extends Paginated(MovieModel) {}

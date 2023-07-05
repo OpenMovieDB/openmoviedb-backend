@@ -1,17 +1,11 @@
-import {
-  Resolver,
-  Mutation,
-  Args,
-  Parent,
-  ResolveField,
-} from '@nestjs/graphql';
+import { Args, Mutation, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { AuthService } from './auth.service';
 import { Auth } from './models/auth.model';
 import { Token } from './models/token.model';
 import { LoginInput } from './dto/login.input';
 import { SignupInput } from './dto/signup.input';
 import { RefreshTokenInput } from './dto/refresh-token.input';
-import { User } from 'src/domains/users/models/user.model';
+import { User } from '../users/models/user.model';
 
 @Resolver(() => Auth)
 export class AuthResolver {
@@ -29,10 +23,7 @@ export class AuthResolver {
 
   @Mutation(() => Auth)
   async login(@Args('data') { email, password }: LoginInput) {
-    const { accessToken, refreshToken } = await this.auth.login(
-      email.toLowerCase(),
-      password
-    );
+    const { accessToken, refreshToken } = await this.auth.login(email.toLowerCase(), password);
 
     return {
       accessToken,

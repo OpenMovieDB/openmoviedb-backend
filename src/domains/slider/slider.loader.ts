@@ -1,7 +1,6 @@
 import { Injectable, Scope } from '@nestjs/common';
 import * as DataLoader from 'dataloader';
-import { BlockService } from 'src/domains/block/block.service';
-import { SlideService } from 'src/domains/slide/slide.service';
+import { SlideService } from '../slide/slide.service';
 
 @Injectable({ scope: Scope.REQUEST })
 export default class SlidersLoader {

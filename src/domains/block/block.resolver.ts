@@ -1,5 +1,5 @@
 import { Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { ImageLinkModel } from 'src/domains/image/models/image-link.model';
+
 import BlocksLoader from './block.loader';
 import { BlockService } from './block.service';
 import { CreateBlockInput } from './dto/create-block.input';
@@ -8,6 +8,7 @@ import { BlockModel } from './models/block.model';
 import { BaseResolver } from '../../common/resolvers/base.resolver';
 import { FindBlocksInput } from './dto/find-blocks.input';
 import { UpdateBlockInput } from './dto/update-block.input';
+import { ImageLinkModel } from '../image/models/image-link.model';
 
 @Resolver(() => BlockModel)
 export class BlockResolver extends BaseResolver(
@@ -19,7 +20,10 @@ export class BlockResolver extends BaseResolver(
   UpdateBlockInput,
   BlockService,
 ) {
-  constructor(private readonly blockService: BlockService, private readonly blocksLoader: BlocksLoader) {
+  constructor(
+    private readonly blockService: BlockService,
+    private readonly blocksLoader: BlocksLoader,
+  ) {
     super(blockService);
   }
 
