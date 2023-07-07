@@ -1,6 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { KinopoiskDev, MovieQueryBuilder, SORT_TYPE } from '@openmoviedb/kinopoiskdev_client';
+import { KinopoiskDev, MovieQueryBuilder, SORT_TYPE, SPECIAL_VALUE } from '@openmoviedb/kinopoiskdev_client';
+import { PrismaService } from 'nestjs-prisma';
+import { MovieConverter } from 'src/services/sync/converters/movie.converter';
 
 @Injectable()
 export class SyncService {
@@ -8,7 +10,11 @@ export class SyncService {
   private readonly MOVIES_LIMIT = 250;
   private kp: KinopoiskDev;
 
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly prismaService: PrismaService,
+    private readonly movieConverter: MovieConverter,
+  ) {
     this.kp = new KinopoiskDev(this.configService.get('KP_API_KEY'));
 
     this.syncMovies();
@@ -32,8 +38,17 @@ export class SyncService {
       }
 
       const { data } = res;
-      for (const movie of data.docs) {
-        this.logger.log(movie.name);
+      const newMovies = this.movieConverter.kpModels2CreateMovies(data.docs);
+      for (const newMovie of newMovies) {
+        try {
+          await this.prismaService.movie.create({
+            data: newMovie,
+          });
+        } catch (e) {
+          this.logger.error('Error creating movie', e);
+        }
+
+        this.logger.log(`Movie ${newMovie.title} created`);
       }
     }
   }
@@ -59,9 +74,11 @@ export class SyncService {
         'releaseYears',
         'genres',
         'countries',
-      ] as any)
+      ])
       .sort('id', SORT_TYPE.DESC)
       .filterExact('year', year)
+      .filterExact('name', SPECIAL_VALUE.NOT_NULL)
+      .filterExact('poster.url', SPECIAL_VALUE.NOT_NULL)
       .paginate(page, this.MOVIES_LIMIT)
       .build();
     return this.kp.movie.getByFilters(query);
