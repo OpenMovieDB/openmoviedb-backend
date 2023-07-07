@@ -1,13 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { MovieDtoV13 } from '@openmoviedb/kinopoiskdev_client';
 import { Prisma } from '@prisma/client';
-import { MovieType } from '.prisma/client';
+import { MovieType, Vendor } from '.prisma/client';
 import slugify from 'slugify';
 
 @Injectable()
 export class MovieConverter {
   kpModel2CreateMovie(model: MovieDtoV13): Prisma.MovieCreateInput {
-    const slug = slugify(model.name);
+    const name = (model.name || model.alternativeName || model.names[0]?.name).replace(/[^\p{L}\p{N} ]/gu, '');
+    const slug = slugify(name);
     return {
       type: model.isSeries ? MovieType.TV_SERIES : MovieType.MOVIE,
       title: model.name,
@@ -22,15 +23,17 @@ export class MovieConverter {
         create: {
           vendorRatings: {
             createMany: {
-              data: Object.keys(model.rating).map((key) => ({
-                vendor: model.rating[key].source,
-                value: model.rating[key].value,
-              })),
+              data: Object.keys(model.rating)
+                .map((key) => ({
+                  vendor: this.kpVendor2VendorType(key),
+                  value: model.rating[key],
+                }))
+                .filter((rating) => rating.vendor),
             },
           },
         },
       },
-      slug: slug,
+      slug: slug.toLowerCase(),
       year: model.year,
       genres: {
         connectOrCreate: model.genres.map((genre) => ({
@@ -45,5 +48,25 @@ export class MovieConverter {
         })),
       },
     };
+  }
+
+  kpModels2CreateMovies(models: MovieDtoV13[]): Prisma.MovieCreateInput[] {
+    return models.map((model) => this.kpModel2CreateMovie(model));
+  }
+
+  kpVendor2VendorType(type: string): Vendor {
+    switch (type) {
+      case 'kinopoisk':
+        return Vendor.KINOPOISK;
+      case 'kp':
+        return Vendor.KINOPOISK;
+      case 'imdb':
+        return Vendor.IMDB;
+      case 'tmdb':
+        return Vendor.TMDB;
+      default:
+        console.warn(`Unknown vendor type: ${type}`);
+        break;
+    }
   }
 }
