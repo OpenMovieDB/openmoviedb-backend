@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { KinopoiskDev, MovieQueryBuilder, SORT_TYPE, SPECIAL_VALUE } from '@openmoviedb/kinopoiskdev_client';
 import { PrismaService } from 'nestjs-prisma';
-import { MovieConverter } from 'src/services/sync/converters/movie.converter';
+import { KpMovieConverter } from 'src/services/sync/converters/kp-movie.converter';
 
 @Injectable()
 export class SyncService {
@@ -13,7 +13,7 @@ export class SyncService {
   constructor(
     private readonly configService: ConfigService,
     private readonly prismaService: PrismaService,
-    private readonly movieConverter: MovieConverter,
+    private readonly movieConverter: KpMovieConverter,
   ) {
     this.kp = new KinopoiskDev(this.configService.get('KP_API_KEY'));
 
@@ -38,14 +38,14 @@ export class SyncService {
       }
 
       const { data } = res;
-      const newMovies = this.movieConverter.kpModels2CreateMovies(data.docs);
+      const newMovies = this.movieConverter.models2CreateMovies(data.docs);
       for (const newMovie of newMovies) {
         try {
           await this.prismaService.movie.create({
             data: newMovie,
           });
         } catch (e) {
-          this.logger.error('Error creating movie', e);
+          this.logger.error(`Error creating movie: ${newMovie.slug}`, e);
         }
 
         this.logger.log(`Movie ${newMovie.title} created`);

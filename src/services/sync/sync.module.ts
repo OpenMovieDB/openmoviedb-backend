@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { SyncService } from './sync.service';
 import { PrismaModule } from 'nestjs-prisma';
-import { MovieConverter } from 'src/services/sync/converters/movie.converter';
+import { KpMovieConverter } from 'src/services/sync/converters/kp-movie.converter';
 
 @Module({
   imports: [PrismaModule],
-  providers: [SyncService, MovieConverter],
+  providers: [SyncService, KpMovieConverter],
 })
 export class SyncModule {}
