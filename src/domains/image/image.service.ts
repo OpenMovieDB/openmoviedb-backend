@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { ImageMapper } from './mappers/image.mapper';
 import { ImageModel } from './models/image.model';
@@ -10,6 +10,7 @@ import { Image, ImageAsset } from '@prisma/client';
 
 @Injectable()
 export class ImageService {
+  private readonly logger = new Logger(ImageService.name);
   private readonly defaultInclude = {
     include: {
       image: {
@@ -30,16 +31,24 @@ export class ImageService {
   }
 
   async uploadImageByURL(url: string): Promise<string> {
+    this.logger.debug(`Downloading image from ${url}`);
     const image = await this.imageProcessingService.downloadImage(url);
+    this.logger.debug(`Image downloaded from ${url}`);
     return this.uploadImage(image);
   }
 
   private async uploadImage(image: Buffer): Promise<string> {
+    this.logger.debug(`Uploading image`);
     const createdImage = await this.createImage(image);
-    const tasks = this.getProcessingTasks(image, createdImage);
-    const assets = await Promise.all(tasks);
+    this.logger.debug(`Image created with id ${createdImage.id}`);
 
+    const assets = await this.getProcessingTasks(image, createdImage);
+    this.logger.debug(`Image assets created`);
+
+    this.logger.debug(`Updating image assets`);
     await this.updateImageAssets(createdImage, assets);
+
+    this.logger.debug(`Image assets updated`);
     return createdImage.id;
   }
 
@@ -55,13 +64,19 @@ export class ImageService {
     });
   }
 
-  private getProcessingTasks(image: Buffer, createdImage: any): Array<Promise<any>> {
+  private async getProcessingTasks(image: Buffer, createdImage: any): Promise<Array<any>> {
     const formats = this.getImageFormats();
     const sizes = this.imageProcessingService.getOptimalSizes(image);
-
-    return formats.flatMap((format) =>
-      sizes.map((size) => this.imageProcessingService.processAndUploadImageAsset(image, createdImage.id, size, format)),
+    this.logger.debug(`Image will be processed in ${formats.length} formats and ${sizes.length} sizes`);
+    const tasks = await Promise.all(
+      formats.flatMap((format) =>
+        sizes.map((size) =>
+          this.imageProcessingService.processAndUploadImageAsset(image, createdImage.id, size, format),
+        ),
+      ),
     );
+    this.logger.debug(`Image processing tasks created for ${tasks.length} assets`);
+    return tasks;
   }
 
   private async updateImageAssets(createdImage: Image, assets: ImageAsset[]) {
@@ -72,7 +87,7 @@ export class ImageService {
   }
 
   private getImageFormats(): ImageAssetFormat[] {
-    return [ImageAssetFormat.AVIF, ImageAssetFormat.WEBP];
+    return [ImageAssetFormat.WEBP];
   }
 
   async findOne(id: string): Promise<ImageModel> {

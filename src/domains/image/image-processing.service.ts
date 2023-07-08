@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import * as sharp from 'sharp';
 import sizeOf from 'image-size';
 import { ImageAssetFormat, ImageAssetWidth } from './models/image-asset.model';
@@ -7,6 +7,7 @@ import { FileService } from '../file/file.service';
 
 @Injectable()
 export class ImageProcessingService {
+  private readonly logger = new Logger(ImageProcessingService.name);
   constructor(
     private readonly fileService: FileService,
     private readonly prismaService: PrismaService,
@@ -18,8 +19,12 @@ export class ImageProcessingService {
     size: { width: ImageAssetWidth; aspectRatio: number },
     format: ImageAssetFormat,
   ): Promise<any> {
+    this.logger.debug(`Processing image asset ${imageId} with size ${size.width} and format ${format}`);
     const processedImageBuffer = await this.processImage(buffer, size, format);
-    return await this.createAndUploadAsset(processedImageBuffer, imageId, size, format);
+    this.logger.debug(`Image asset ${imageId} processed`);
+    const data = await this.createAndUploadAsset(processedImageBuffer, imageId, size, format);
+    this.logger.debug(`Image asset ${imageId} uploaded`);
+    return data;
   }
 
   getOptimalSizes(file: Buffer): { width: ImageAssetWidth; aspectRatio: number }[] {
@@ -48,9 +53,6 @@ export class ImageProcessingService {
       case ImageAssetFormat.WEBP:
         processedImage.webp({ quality: 80 });
         break;
-      case ImageAssetFormat.AVIF:
-        processedImage.avif({ quality: 80 });
-        break;
     }
 
     return processedImage.toBuffer();
@@ -62,6 +64,7 @@ export class ImageProcessingService {
     size: { width: ImageAssetWidth; aspectRatio: number },
     format: ImageAssetFormat,
   ): Promise<any> {
+    this.logger.debug(`Uploading image asset ${imageId} with size ${size.width} and format ${format}`);
     const createdAsset = await this.prismaService.imageAsset.create({
       data: {
         format: format,
@@ -75,8 +78,9 @@ export class ImageProcessingService {
 
     const outputPath = `${imageId}/${createdAsset.id}_${size.width}.${format.toLowerCase()}`;
     const contentType = this.getContentType(format);
+    this.logger.debug(`Uploading image asset ${imageId} with size ${size.width} and format ${format} to ${outputPath}`);
     const fileUploaded = await this.fileService.upload(outputPath, file, contentType);
-
+    this.logger.debug(`Image asset ${imageId} with size ${size.width} and format ${format} uploaded to ${outputPath}`);
     if (fileUploaded) {
       await this.updateAssetUrl(createdAsset.id, outputPath);
     }
@@ -92,8 +96,6 @@ export class ImageProcessingService {
         return 'image/png';
       case ImageAssetFormat.WEBP:
         return 'image/webp';
-      case ImageAssetFormat.AVIF:
-        return 'image/avif';
       default:
         return 'application/octet-stream';
     }

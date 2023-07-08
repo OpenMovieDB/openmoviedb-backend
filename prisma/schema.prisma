@@ -358,7 +358,6 @@ enum ImageType {
 }
 
 enum ImageAssetFormat {
-  AVIF
   GIF
   JPEG
   PNG
@@ -367,9 +366,7 @@ enum ImageAssetFormat {
 
 enum ImageAssetWidth {
   W375
-  W768
   W1024
-  W1366
   W1920
   ORIGINAL
 }

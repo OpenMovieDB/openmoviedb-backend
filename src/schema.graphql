@@ -494,7 +494,6 @@ input GenreWhereInput {
 
 """Format of the image asset"""
 enum ImageAssetFormat {
-  AVIF
   GIF
   JPEG
   PNG
@@ -517,8 +516,6 @@ type ImageAssetModel {
 enum ImageAssetWidth {
   ORIGINAL
   W375
-  W768
-  W1024
   W1366
   W1920
 }
