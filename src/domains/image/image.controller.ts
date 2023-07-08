@@ -20,7 +20,7 @@ export class ImageController {
     @Body() dto: CreateImageDto,
     @UploadedFiles() images: Express.Multer.File[],
   ): Promise<CreateImageResponseDto> {
-    const ids = await this.imageService.uploadImages(images);
+    const ids = await this.imageService.uploadImages(images.map((image) => image.buffer));
     return {
       ids,
     };

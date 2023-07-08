@@ -25,11 +25,16 @@ export class ImageService {
     private readonly imageProcessingService: ImageProcessingService,
   ) {}
 
-  async uploadImages(images: Express.Multer.File[]): Promise<string[]> {
+  async uploadImages(images: Buffer[]): Promise<string[]> {
     return await Promise.all(images.map(this.uploadImage.bind(this)));
   }
 
-  private async uploadImage(image: Express.Multer.File): Promise<string> {
+  async uploadImageByURL(url: string): Promise<string> {
+    const image = await this.imageProcessingService.downloadImage(url);
+    return this.uploadImage(image);
+  }
+
+  private async uploadImage(image: Buffer): Promise<string> {
     const createdImage = await this.createImage(image);
     const tasks = this.getProcessingTasks(image, createdImage);
     const assets = await Promise.all(tasks);
@@ -38,8 +43,8 @@ export class ImageService {
     return createdImage.id;
   }
 
-  private async createImage(image: Express.Multer.File) {
-    const size = this.imageProcessingService.getOptimalSizes(image.buffer)[0];
+  private async createImage(image: Buffer) {
+    const size = this.imageProcessingService.getOptimalSizes(image)[0];
     const width = parseInt(size.width.replace('W', ''), 10);
     const height = Math.round(width / size.aspectRatio);
     return this.prismaService.image.create({
@@ -50,14 +55,12 @@ export class ImageService {
     });
   }
 
-  private getProcessingTasks(image: Express.Multer.File, createdImage: any): Array<Promise<any>> {
+  private getProcessingTasks(image: Buffer, createdImage: any): Array<Promise<any>> {
     const formats = this.getImageFormats();
-    const sizes = this.imageProcessingService.getOptimalSizes(image.buffer);
+    const sizes = this.imageProcessingService.getOptimalSizes(image);
 
     return formats.flatMap((format) =>
-      sizes.map((size) =>
-        this.imageProcessingService.processAndUploadImageAsset(image.buffer, createdImage.id, size, format),
-      ),
+      sizes.map((size) => this.imageProcessingService.processAndUploadImageAsset(image, createdImage.id, size, format)),
     );
   }
 

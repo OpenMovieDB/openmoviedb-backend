@@ -1,9 +1,17 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { KinopoiskDev, MovieQueryBuilder, SORT_TYPE, SPECIAL_VALUE } from '@openmoviedb/kinopoiskdev_client';
+import {
+  KinopoiskDev,
+  MovieDtoV13,
+  MovieQueryBuilder,
+  SORT_TYPE,
+  SPECIAL_VALUE,
+} from '@openmoviedb/kinopoiskdev_client';
 import { PrismaService } from 'nestjs-prisma';
 import { KpMovieConverter } from 'src/services/sync/converters/kp-movie.converter';
 import { ExternalIDSource } from 'src/domains/external-id/models/external-id-type.enum';
+import { Prisma } from '@prisma/client';
+import { ImageService } from 'src/domains/image/image.service';
 
 @Injectable()
 export class SyncService {
@@ -15,6 +23,7 @@ export class SyncService {
     private readonly configService: ConfigService,
     private readonly prismaService: PrismaService,
     private readonly movieConverter: KpMovieConverter,
+    private readonly imageService: ImageService,
   ) {
     this.kp = new KinopoiskDev(this.configService.get('KP_API_KEY'));
 
@@ -42,21 +51,40 @@ export class SyncService {
 
       for (const movie of data.docs) {
         const newMovie = this.movieConverter.model2CreateMovie(movie);
-        try {
-          const foundMovie = await this.prismaService.movie.findFirst({
-            where: { externalID: { every: { source: ExternalIDSource.KINOPOISK, value: String(movie.id) } } },
-          });
-
-          if (!foundMovie) {
-            await this.prismaService.movie.create({ data: newMovie });
-            this.logger.log(`Movie ${newMovie.title} created`);
-          } else {
-            this.logger.debug(`Movie ${newMovie.title} already exists`);
-          }
-        } catch (e) {
-          this.logger.error(`Error creating movie: ${newMovie.slug}`, e);
-        }
+        await this.checkMovieExistOrCreate(movie, newMovie);
       }
+    }
+  }
+
+  private async checkMovieExistOrCreate(movie: MovieDtoV13, newMovie: Prisma.MovieCreateInput) {
+    try {
+      const foundMovie = await this.prismaService.movie.findFirst({
+        where: { externalID: { every: { source: ExternalIDSource.KINOPOISK, value: String(movie.id) } } },
+      });
+
+      if (!foundMovie) {
+        const savedMovie = await this.prismaService.movie.create({ data: newMovie });
+        this.logger.log(`Movie ${newMovie.title} created`);
+
+        if (movie.poster.url) {
+          const posterId = await this.imageService.uploadImageByURL(movie.poster.url);
+          await this.prismaService.movie.update({
+            where: { id: savedMovie.id },
+            data: {
+              images: {
+                create: {
+                  image: { connect: { id: posterId } },
+                  type: 'POSTER',
+                },
+              },
+            },
+          });
+        }
+      } else {
+        this.logger.debug(`Movie ${newMovie.title} already exists`);
+      }
+    } catch (e) {
+      this.logger.error(`Error creating movie: ${newMovie.slug}`, e);
     }
   }
 

@@ -114,8 +114,7 @@ export class ImageProcessingService {
     }
 
     const data = await response.arrayBuffer();
-    const buffer = Buffer.from(data);
 
-    return buffer;
+    return Buffer.from(data);
   }
 }
