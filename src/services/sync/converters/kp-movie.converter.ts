@@ -18,7 +18,7 @@ export class KpMovieConverter {
         value: String(model.externalId[key]),
         type: ExternalIDType.MOVIE,
       }))
-      .filter((id) => id.source);
+      .filter((id) => id.source && id.value);
 
     externalIDs.push({ source: VendorType.KINOPOISK, value: String(model.id), type: ExternalIDType.MOVIE });
 
@@ -30,9 +30,10 @@ export class KpMovieConverter {
         create: { title: model.name || model.alternativeName + ' ' + model.year, description: model.description },
       },
       externalID: {
-        createMany: {
-          data: externalIDs,
-        },
+        connectOrCreate: externalIDs.map((id) => ({
+          where: { source_value: { source: id.source, value: id.value } },
+          create: { source: id.source, value: id.value, type: id.type },
+        })),
       },
       rating: {
         create: {
@@ -69,10 +70,11 @@ export class KpMovieConverter {
       },
       fact: {
         createMany: {
-          data: model.facts.map((fact) => ({
-            isSpoiler: fact.spoiler,
-            content: fact.value,
-          })),
+          data:
+            model?.facts?.map((fact) => ({
+              isSpoiler: fact.spoiler,
+              content: fact.value,
+            })) || [],
         },
       },
     };

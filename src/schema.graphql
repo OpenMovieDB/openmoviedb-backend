@@ -516,7 +516,7 @@ type ImageAssetModel {
 enum ImageAssetWidth {
   ORIGINAL
   W375
-  W1366
+  W1024
   W1920
 }
 

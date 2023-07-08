@@ -10,7 +10,7 @@ export enum ImageAssetFormat {
 
 export enum ImageAssetWidth {
   W375 = 'W375',
-  W1366 = 'W1366',
+  W1024 = 'W1024',
   W1920 = 'W1920',
   ORIGINAL = 'ORIGINAL',
 }

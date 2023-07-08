@@ -62,6 +62,15 @@ export class SyncService {
         where: { externalID: { every: { source: ExternalIDSource.KINOPOISK, value: String(movie.id) } } },
       });
 
+      const foundMovieBySlug = await this.prismaService.movie.findUnique({ where: { slug: newMovie.slug } });
+
+      if (foundMovieBySlug?.id !== foundMovie?.id) {
+        this.logger.warn(
+          `Movie ${newMovie.title} already exists with another slug ${newMovie.slug}, movie id: ${movie.id}`,
+        );
+        newMovie.slug = `${newMovie.slug}-${movie.id}`;
+      }
+
       if (!foundMovie) {
         const savedMovie = await this.prismaService.movie.create({ data: newMovie });
         this.logger.log(`Movie ${newMovie.title} created`);
