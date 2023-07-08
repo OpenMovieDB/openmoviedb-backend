@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { MovieDtoV13 } from '@openmoviedb/kinopoiskdev_client';
 import { Prisma } from '@prisma/client';
-import { MovieType, Vendor } from '.prisma/client';
+import { ExternalIDSource, ExternalIDType, MovieType, Vendor } from '.prisma/client';
 import slugify from 'slugify';
+import { VendorType } from 'src/domains/rating/models/vendor-rating.enum';
 
 @Injectable()
 export class KpMovieConverter {
@@ -11,12 +12,27 @@ export class KpMovieConverter {
     const slugName = enTitleObj || model.name || model.alternativeName || model.enName || model.names[0]?.name;
     const slug = this.toSlug(slugName + ' ' + model.year);
 
+    const externalIDs = Object.keys(model.externalId)
+      .map((key) => ({
+        source: this.idSource2IdSourceType(key),
+        value: String(model.externalId[key]),
+        type: ExternalIDType.MOVIE,
+      }))
+      .filter((id) => id.source);
+
+    externalIDs.push({ source: VendorType.KINOPOISK, value: String(model.id), type: ExternalIDType.MOVIE });
+
     return {
       type: model.isSeries ? MovieType.TV_SERIES : MovieType.MOVIE,
       title: model.name || enTitleObj?.name,
       originalTitle: model.alternativeName,
       pageInfo: {
         create: { title: model.name || model.alternativeName + ' ' + model.year, description: model.description },
+      },
+      externalID: {
+        createMany: {
+          data: externalIDs,
+        },
       },
       rating: {
         create: {
@@ -70,6 +86,20 @@ export class KpMovieConverter {
         return Vendor.TMDB;
       default:
         console.warn(`Unknown vendor type: ${type}`);
+        break;
+    }
+  }
+
+  idSource2IdSourceType(type: string): ExternalIDSource {
+    switch (type) {
+      case 'kinopoisk':
+        return ExternalIDSource.KINOPOISK;
+      case 'imdb':
+        return ExternalIDSource.IMDB;
+      case 'tmdb':
+        return ExternalIDSource.TMDB;
+      default:
+        console.warn(`Unknown id source type: ${type}`);
         break;
     }
   }

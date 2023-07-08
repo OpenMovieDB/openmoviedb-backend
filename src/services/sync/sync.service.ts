@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { KinopoiskDev, MovieQueryBuilder, SORT_TYPE, SPECIAL_VALUE } from '@openmoviedb/kinopoiskdev_client';
 import { PrismaService } from 'nestjs-prisma';
 import { KpMovieConverter } from 'src/services/sync/converters/kp-movie.converter';
+import { ExternalIDSource } from 'src/domains/external-id/models/external-id-type.enum';
 
 @Injectable()
 export class SyncService {
@@ -38,17 +39,23 @@ export class SyncService {
       }
 
       const { data } = res;
-      const newMovies = this.movieConverter.models2CreateMovies(data.docs);
-      for (const newMovie of newMovies) {
+
+      for (const movie of data.docs) {
+        const newMovie = this.movieConverter.model2CreateMovie(movie);
         try {
-          await this.prismaService.movie.create({
-            data: newMovie,
+          const foundMovie = await this.prismaService.movie.findFirst({
+            where: { externalID: { every: { source: ExternalIDSource.KINOPOISK, value: String(movie.id) } } },
           });
+
+          if (!foundMovie) {
+            await this.prismaService.movie.create({ data: newMovie });
+            this.logger.log(`Movie ${newMovie.title} created`);
+          } else {
+            this.logger.debug(`Movie ${newMovie.title} already exists`);
+          }
         } catch (e) {
           this.logger.error(`Error creating movie: ${newMovie.slug}`, e);
         }
-
-        this.logger.log(`Movie ${newMovie.title} created`);
       }
     }
   }
