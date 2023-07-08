@@ -105,4 +105,17 @@ export class ImageProcessingService {
       data: { url: `${this.fileService.s3Url}/${outputPath}` },
     });
   }
+
+  async downloadImage(url: string): Promise<Buffer> {
+    const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error(`Unexpected response: ${response.statusText}`);
+    }
+
+    const data = await response.arrayBuffer();
+    const buffer = Buffer.from(data);
+
+    return buffer;
+  }
 }
