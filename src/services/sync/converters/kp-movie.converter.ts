@@ -67,6 +67,14 @@ export class KpMovieConverter {
           };
         }),
       },
+      fact: {
+        createMany: {
+          data: model.facts.map((fact) => ({
+            isSpoiler: fact.spoiler,
+            content: fact.value,
+          })),
+        },
+      },
     };
   }
 
