@@ -22,6 +22,24 @@ export class KpMovieConverter {
 
     externalIDs.push({ source: VendorType.KINOPOISK, value: String(model.id), type: ExternalIDType.MOVIE });
 
+    const medias: Prisma.MediaLinkCreateWithoutMovieInput[] = model?.videos?.trailers?.map((video) => ({
+      type: 'TRAILER',
+      media: {
+        create: {
+          source: 'YOUTUBE',
+          title: model.name || enTitleObj?.name,
+          assets: {
+            create: {
+              url: video.url,
+              duration: 0,
+              source: 'YOUTUBE',
+              format: 'MP4',
+            },
+          },
+        },
+      },
+    }));
+
     return {
       type: model.isSeries ? MovieType.TV_SERIES : MovieType.MOVIE,
       title: model.name || enTitleObj?.name,
@@ -76,6 +94,9 @@ export class KpMovieConverter {
               content: fact.value,
             })) || [],
         },
+      },
+      medias: {
+        create: medias,
       },
     };
   }
